@@ -45,7 +45,21 @@ layout_mode = 2
 text = "abcd"
 horizontal_alignment = 1
 
-[node name="ChartArea" type="Control" parent="MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="YAxisTitle" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChartArea" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="XAxisTitle" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2

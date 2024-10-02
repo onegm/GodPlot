@@ -1,10 +1,11 @@
 @tool
 class_name Axis extends Control
 
-@export_enum("Horizontal", "Vertical") var orientation : int:
+@export_enum("Horizontal", "Vertical") var is_vertical : int:
 	set(value):
-		orientation = value
-		direction = Vector2.UP if orientation else Vector2.RIGHT
+		is_vertical = value
+		direction = Vector2.UP if is_vertical else Vector2.RIGHT
+		out_direction = direction.rotated(PI/2 + is_vertical*PI)
 		queue_redraw()
 @export var length : float = 500.0:
 	set(value):
@@ -35,29 +36,38 @@ class_name Axis extends Control
 		queue_redraw()
 		
 var direction : Vector2 = Vector2.RIGHT
+var out_direction : Vector2 = Vector2.DOWN
 var tick_interval : float = 0.0
 var tick_length : float = 20.0
+var margin : Vector2 = Vector2.ZERO
 
 func _draw() -> void:
-	draw_line(Vector2.ZERO, Vector2.ZERO + length * direction, color, thickness)
+	draw_line(margin, margin + length * direction, color, thickness)
 	draw_ticks()
 	draw_tick_labels()
 	
 func draw_ticks() -> void:
-	var tick_direction = direction.rotated(PI/2 + orientation*PI)
 	for i in range(num_ticks):
-		var start = Vector2.ZERO + tick_interval * direction*(i+1)
-		draw_line(start , start + tick_length * tick_direction,
+		var start = margin + tick_interval * direction*(i+1)
+		draw_line(start , start + tick_length * out_direction,
 				  get_theme_color("font_color"), thickness / 3)
 
 func draw_tick_labels() -> void:
+	if !num_ticks: return
 	var axis_range = max_value - min_value
-	var perpendicular_offset = direction.rotated(PI/2 + orientation*PI) * tick_length * 2
 	for i in range(num_ticks + 1):
 		var value = str(min_value + axis_range / num_ticks * i)
-		var offset = perpendicular_offset - direction * get_theme_default_font_size() / 3.5 * (1 + (value.length()-1)*orientation)
-		var start = Vector2.ZERO + tick_interval * direction * i
+		var offset = calculate_string_offset(value.length())
+		var start = margin + tick_interval * direction * i
 		draw_string(get_theme_default_font(), start + offset, 
 					value, HORIZONTAL_ALIGNMENT_LEFT, -1,
 					get_theme_default_font_size(), get_theme_color("font_color"))
-		
+
+func calculate_string_offset(string_length : int) -> Vector2:
+	var offset = out_direction * (tick_length + get_theme_default_font_size())
+	if is_vertical:
+		offset += out_direction * get_theme_default_font_size()/2 * (string_length - 1)
+		offset -= direction * get_theme_default_font_size() / 3
+	else:
+		offset -= direction * get_theme_default_font_size() / 3.5 * string_length
+	return offset
