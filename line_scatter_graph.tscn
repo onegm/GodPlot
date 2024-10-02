@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgxhfygiwxfhw"]
+
+[ext_resource type="Script" path="res://addons/graphs/scatter_plot.gd" id="1_073md"]
+[ext_resource type="Script" path="res://addons/graphs/quantitative_series.gd" id="2_5ragf"]
+
+[node name="ScatterPlot" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_073md")
+title = "Text Graph"
+
+[node name="QuantitativeSeries" type="Node" parent="."]
+script = ExtResource("2_5ragf")
+data = PackedVector2Array(0, 0, 1, 1, 2, 2, 3, 5)

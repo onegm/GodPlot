@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://edlyuogdmdfm"]
+
+[ext_resource type="PackedScene" uid="uid://bnenufdn4w6f4" path="res://addons/graphs/Graph.tscn" id="1_oaiyb"]
+[ext_resource type="Script" path="res://addons/graphs/quantitative_graph.gd" id="2_aob0y"]
+[ext_resource type="Script" path="res://addons/graphs/axis.gd" id="3_882nf"]
+
+[node name="QuantitativeGraph" instance=ExtResource("1_oaiyb")]
+script = ExtResource("2_aob0y")
+x_min = 0.0
+x_max = 10.0
+x_auto_scaling = true
+x_title = ""
+x_tick_count = 0
+x_tick_labels = true
+x_show_axis = true
+y_min = 0.0
+y_max = 10.0
+y_auto_scaling = true
+y_title = ""
+y_tick_count = 0
+y_tick_labels = true
+y_show_axis = true
+
+[node name="Background" parent="." index="0"]
+color = Color(0.168627, 0.568627, 0.486275, 1)
+
+[node name="X-Axis" type="Control" parent="MarginContainer/VBoxContainer/ChartArea" index="0"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+script = ExtResource("3_882nf")
+length = 800.0
+thickness = 5.0
+color = Color(0.69246, 1.841e-06, 7.70092e-07, 1)
+num_ticks = 10
+
+[node name="Y-Axis" type="Control" parent="MarginContainer/VBoxContainer/ChartArea" index="1"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+script = ExtResource("3_882nf")
+orientation = 1
+thickness = 5.0
+color = Color(0.69246, 1.841e-06, 7.70092e-07, 1)
+num_ticks = 10
