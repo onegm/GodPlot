@@ -1,7 +1,7 @@
 @tool
 class_name Axis extends Control
 
-@export_enum("Horizontal", "Vertical") var is_vertical : int:
+@export_enum("Horizontal", "Vertical") var is_vertical : int = 0:
 	set(value):
 		is_vertical = value
 		direction = Vector2.UP if is_vertical else Vector2.RIGHT
@@ -12,16 +12,16 @@ class_name Axis extends Control
 		length = value
 		tick_interval = length / float(num_ticks) if num_ticks else 0
 		queue_redraw()
-@export var thickness : float = 10.0:
+@export var thickness : float = 5.0:
 	set(value):
 		thickness = value
 		tick_length = 2 * thickness
 		queue_redraw()
-@export var color : Color = Color.RED:
+@export var color : Color = Color.BLACK:
 	set(value):
 		color = value
 		queue_redraw()
-@export var num_ticks : int:
+@export var num_ticks : int = 10:
 	set(value):
 		num_ticks = value
 		tick_interval = length / float(num_ticks) if num_ticks else 0

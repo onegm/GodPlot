@@ -15,5 +15,4 @@ script = ExtResource("1_y3avd")
 length = 452.935
 thickness = 6.545
 color = Color(0.344288, 0.483623, 1, 1)
-num_ticks = 10
 max_value = 100.0
