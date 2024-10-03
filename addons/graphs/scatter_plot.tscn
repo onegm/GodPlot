@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://buw7ystoc8chg"]
+
+[ext_resource type="PackedScene" uid="uid://edlyuogdmdfm" path="res://addons/graphs/quantitative_graph.tscn" id="1_7hooq"]
+[ext_resource type="Script" path="res://addons/graphs/scatter_plot.gd" id="2_ca8es"]
+
+[node name="ScatterPlot" instance=ExtResource("1_7hooq")]
+script = ExtResource("2_ca8es")
+background_color = Color(0, 0, 0, 1)

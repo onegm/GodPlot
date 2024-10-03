@@ -11,6 +11,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_aob0y")
+x_title = "Horizontal Title"
+x_tick_count = 8
+y_title = "Vertical "
+y_tick_count = 9
+y_decimal_places = 1
+background_color = Color(0.483862, 0.459691, 0.461786, 1)
 
 [node name="Background" type="ColorRect" parent="."]
 unique_name_in_owner = true
@@ -21,7 +27,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.423651, 0.423651, 0.423651, 1)
+color = Color(0.483862, 0.459691, 0.461786, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -51,7 +57,7 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
-text = "Vertical Title"
+text = "Vertical "
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -69,7 +75,8 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 grow_vertical = 0
 script = ExtResource("3_882nf")
-length = 818.0
+length = 860.0
+num_ticks = 8
 
 [node name="YAxis" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/ChartArea"]
 unique_name_in_owner = true
@@ -79,11 +86,13 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 grow_vertical = 0
 script = ExtResource("3_882nf")
-is_vertical = 1
-length = 385.0
+is_vertical = true
+length = 395.0
+num_ticks = 9
 
 [node name="XAxisTitle" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+text = "Horizontal Title"
 horizontal_alignment = 1
 vertical_alignment = 1

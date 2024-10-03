@@ -1,4 +1,4 @@
-class_name QuantitativeSeries extends Series
+class_name QuantitativeSeries extends Node
 
 @export var data : PackedVector2Array
 @export_group("Display")
