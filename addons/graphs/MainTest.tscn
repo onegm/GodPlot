@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://kjeajr5u11pn"]
+
+[ext_resource type="PackedScene" uid="uid://buw7ystoc8chg" path="res://addons/graphs/scatter_plot.tscn" id="1_4wn4c"]
+[ext_resource type="Script" path="res://addons/graphs/quantitative_series.gd" id="2_v3slv"]
+
+[node name="MainTest" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScatterPlot" parent="." instance=ExtResource("1_4wn4c")]
+layout_mode = 1
+x_tick_count = 10
+
+[node name="QuantitativeSeries" type="Node" parent="ScatterPlot"]
+script = ExtResource("2_v3slv")
+data = PackedVector2Array(0, 0, 2, 2, 3, 5, 4, 1, 5, 8, 7, 7, 9, 9, 10, 5, 11, 2)
+size = 20.0

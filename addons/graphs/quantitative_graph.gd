@@ -130,3 +130,10 @@ func update_margins():
 	var top_margin = get_theme_default_font_size()/2
 	%XAxis.length = %ChartArea.size.x - (left_margin + right_margin)
 	%YAxis.length = %ChartArea.size.y - (bottom_margin + top_margin)
+
+func get_origin_on_screen() -> Vector2:
+	return %XAxis.global_position + %XAxis.origin
+func get_range() -> Vector2:
+	return Vector2(x_max - x_min, y_max - y_min)
+func  get_axes_lengths() -> Vector2:
+	return Vector2(%XAxis.length, %YAxis.length)
