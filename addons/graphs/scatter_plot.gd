@@ -22,7 +22,7 @@ func plot_scatter(series : QuantitativeSeries) -> void:
 	var length : Vector2 = get_axes_lengths()
 	var origin_on_screen : Vector2 = get_origin_on_screen()
 	for point in series.data:
-		var vector_from_origin = (point - Vector2(x_min, y_min)) 
+		var vector_from_origin = point - min_limits
 		var point_position = Vector2(vector_from_origin.x / range.x * length.x,
 									 -vector_from_origin.y / range.y * length.y)
 		point_position += origin_on_screen
@@ -33,13 +33,12 @@ func plot_line(series : QuantitativeSeries) -> void:
 	var origin_on_screen : Vector2 = get_origin_on_screen()
 	var line : PackedVector2Array
 	for point in series.data:
-		var vector_from_origin = (point - Vector2(x_min, y_min)) 
+		var vector_from_origin = point - min_limits
 		var point_position = Vector2(vector_from_origin.x / range.x * length.x,
 									 -vector_from_origin.y / range.y * length.y)
 		point_position += origin_on_screen
 		line.append(point_position)
 	to_draw.append([series.type, line, series.color, series.size])
-
 
 func plot_area(series : QuantitativeSeries) -> void:
 	var length : Vector2 = get_axes_lengths()
@@ -48,7 +47,8 @@ func plot_area(series : QuantitativeSeries) -> void:
 	polygon.append(origin_on_screen)
 	var last_x_coordinate = 0.0
 	for point in series.data:
-		var vector_from_origin = (point - Vector2(x_min, y_min)) 
+		if not is_within_limits(point): continue
+		var vector_from_origin = point - min_limits
 		var point_position = Vector2(vector_from_origin.x / range.x * length.x,
 									 -vector_from_origin.y / range.y * length.y)
 		point_position += origin_on_screen
@@ -56,8 +56,22 @@ func plot_area(series : QuantitativeSeries) -> void:
 		last_x_coordinate = point_position.x
 	polygon.append(Vector2(last_x_coordinate, origin_on_screen.y))
 	to_draw.append([series.type, polygon, series.color])
-	
+
+func scale_axes() -> void:
+	var min_data_limits := Vector2(INF, INF)
+	var max_data_limits := Vector2(-INF, -INF)
+	for series in series_arr:
+		for point in series.data:
+			min_data_limits = min_data_limits.min(point)
+			max_data_limits = max_data_limits.max(point)
+	min_limits = min_data_limits.min(Vector2(x_min, y_min))
+	max_limits = max_data_limits.max(Vector2(x_max, y_max))
+
+func is_within_limits(point : Vector2) -> bool:
+	return 	point.clamp(min_limits, max_limits) == point
+
 func _draw() -> void:
+	if auto_scaling: scale_axes()
 	super._draw()
 	draw_circle(Vector2(400, 400), 20.0, Color.RED)
 	draw_circle(Vector2(0, 0), 20.0, Color.RED)

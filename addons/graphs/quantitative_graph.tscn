@@ -10,7 +10,4 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_aob0y")
-x_title = "Horizontal Title"
 x_decimal_places = 0
-y_title = "Vertical Title"
-background_color = Color(0.483862, 0.459691, 0.461786, 1)

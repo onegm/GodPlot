@@ -1,31 +1,35 @@
 @tool
 class_name QuantitativeGraph extends Graph
 
-## A node for creating scatter plots and line graphs.
+## A node for creating scatter plots, line graphs, or area graphs.
 
+## Color of both axes.
+@export var axes_color : Color = Color.BLACK:
+	set(value):
+		axes_color = value
+		queue_redraw()
+## Allows ([member x_min], [member x_max]) and ([member y_min], [member y_max]) to dynamically change to accomodate new data points.
+@export var auto_scaling : bool = true:
+	set(value):
+		auto_scaling = value
+		if not auto_scaling:
+			min_limits = Vector2(x_min, y_min)
+			max_limits = Vector2(x_max, y_max)
+		queue_redraw()
 @export_group("X Axis", "x_")
-## Minimun value on X-axis
+## Minimun value on X-axis. Can be overriden if auto-scaling is set to true.
 @export var x_min: float = 0.0:
 	set(value):
 		x_min = value
-		range.x = x_max - x_min
+		min_limits = Vector2(x_min, y_min)
 		queue_redraw()
-## Maximum value on X-axis
+## Maximum value on X-axis. Can be overriden if auto-scaling is set to true.
 @export var x_max: float = 10.0:
 	set(value):
 		x_max = value
-		range.x = x_max - x_min
+		max_limits = Vector2(x_max, y_max)
 		queue_redraw()
-## Allows [member x_max] and [member x_min] to dynamically change to accomodate new data points.
-@export var x_auto_scaling : bool = true:
-	set(value):
-		x_auto_scaling = value
 @export_subgroup("Display", "x_")
-## Title of x-axis
-@export var x_title: String = "":
-	set(value):
-		x_title = value
-		queue_redraw()
 ## Number of ticks displayed on the x-axis. Includes border ticks.
 @export var x_tick_count: int = 10:
 	set(value):
@@ -47,28 +51,19 @@ class_name QuantitativeGraph extends Graph
 		queue_redraw()
 
 @export_group("Y Axis", "y_")
-## Minimun value on y-axis.
+## Minimun value on y-axis. Can be overriden if auto-scaling is set to true.
 @export var y_min: float = 0.0:
 	set(value):
 		y_min = value
-		range.y = y_max - y_min
+		min_limits = Vector2(x_min, y_min)
 		queue_redraw()
-## Maximum value on y-axis.
+## Maximum value on y-axis. Can be overriden if auto-scaling is set to true.
 @export var y_max: float = 10.0:
 	set(value):
 		y_max = value
-		range.y = y_max - y_min
+		max_limits = Vector2(x_max, y_max)
 		queue_redraw()
-## Allows [member y_max] and [member y_min] to dynamically change to accomodate new data points.
-@export var y_auto_scaling : bool = true:
-	set(value):
-		y_auto_scaling = value
 @export_subgroup("Display", "y_")
-## Title of y-axis.
-@export var y_title: String = "":
-	set(value):
-		y_title = value
-		queue_redraw()
 ## Number of ticks displayed on the y-axis. Includes border ticks.
 @export var y_tick_count: int = 10:
 	set(value):
@@ -89,6 +84,14 @@ class_name QuantitativeGraph extends Graph
 		y_axis_thickness = value
 		queue_redraw()
 
+var min_limits := Vector2(x_min, y_min) : 
+	set(value):
+		min_limits = value
+		range = Vector2(max_limits.x - min_limits.x, max_limits.y - min_limits.y)
+var max_limits := Vector2(x_max, y_max):
+	set(value):
+		max_limits = value
+		range = Vector2(max_limits.x - min_limits.x, max_limits.y - min_limits.y)
 var range := Vector2(x_max - x_min, y_max - y_min)
 var x_axis := Axis.new()
 var y_axis := Axis.new()
@@ -112,21 +115,21 @@ func _draw() -> void:
 	y_axis.queue_redraw()
 
 func update_axes() -> void:
-	x_axis_title.text = x_title 
-	x_axis.min_value = x_min
-	x_axis.max_value = x_max
+	x_axis.min_value = min_limits.x
+	x_axis.max_value = max_limits.x
 	x_axis.num_ticks = x_tick_count
 	x_axis.show_tick_labels = x_tick_labels
 	x_axis.decimal_places = x_decimal_places
 	x_axis.thickness = x_axis_thickness
+	x_axis.color = axes_color
 	
-	y_axis_title.text = y_title
-	y_axis.min_value = y_min
-	y_axis.max_value = y_max
+	y_axis.min_value = min_limits.y
+	y_axis.max_value = max_limits.y
 	y_axis.num_ticks = y_tick_count
 	y_axis.show_tick_labels = y_tick_labels
 	y_axis.decimal_places = y_decimal_places
 	y_axis.thickness = y_axis_thickness
+	y_axis.color = axes_color
 	
 func update_margins():
 	var bottom_margin = x_axis.tick_length * int(bool(x_tick_count))

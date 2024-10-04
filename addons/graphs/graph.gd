@@ -2,16 +2,26 @@
 class_name Graph extends Control
 
 enum TYPE{LINE_SCATTER, BAR, HISTOGRAM}
-## Title of the graph.
-@export var title : String:
-	set(value):
-		title = value
-		if is_node_ready(): graph_title.text = value
-		
-@export var background_color : Color:
+## Graph background color
+@export var background_color : Color = Color.WHITE:
 	set(value):
 		background_color = value
 		if is_node_ready(): background.color = value
+## Title of the graph.
+@export var title : String = "":
+	set(value):
+		title = value
+		if is_node_ready(): graph_title.text = value
+## Horizontal axis title. 
+@export var h_axis_title : String = "":
+	set(value):
+		h_axis_title = value
+		if is_inside_tree(): x_axis_title.text = value
+## Vertical axis title. 
+@export var v_axis_title : String = "":
+	set(value):
+		v_axis_title = value
+		if is_inside_tree(): y_axis_title.text = value
 
 var background := ColorRect.new()
 var graph_v_box := VBoxContainer.new()
