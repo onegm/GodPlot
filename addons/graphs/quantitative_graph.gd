@@ -8,11 +8,13 @@ class_name QuantitativeGraph extends Graph
 @export var x_min: float = 0.0:
 	set(value):
 		x_min = value
+		range.x = x_max - x_min
 		queue_redraw()
 ## Maximum value on X-axis
 @export var x_max: float = 10.0:
 	set(value):
 		x_max = value
+		range.x = x_max - x_min
 		queue_redraw()
 ## Allows [member x_max] and [member x_min] to dynamically change to accomodate new data points.
 @export var x_auto_scaling : bool = true:
@@ -34,7 +36,7 @@ class_name QuantitativeGraph extends Graph
 	set(value):
 		x_tick_labels = value
 		queue_redraw()
-@export var x_decimal_places : int = 0:
+@export var x_decimal_places : int = 1:
 	set(value):
 		x_decimal_places = value
 		queue_redraw()
@@ -49,11 +51,13 @@ class_name QuantitativeGraph extends Graph
 @export var y_min: float = 0.0:
 	set(value):
 		y_min = value
+		range.y = y_max - y_min
 		queue_redraw()
 ## Maximum value on y-axis.
 @export var y_max: float = 10.0:
 	set(value):
 		y_max = value
+		range.y = y_max - y_min
 		queue_redraw()
 ## Allows [member y_max] and [member y_min] to dynamically change to accomodate new data points.
 @export var y_auto_scaling : bool = true:
@@ -75,7 +79,7 @@ class_name QuantitativeGraph extends Graph
 	set(value):
 		y_tick_labels = value
 		queue_redraw()
-@export var y_decimal_places : int = 0:
+@export var y_decimal_places : int = 1:
 	set(value):
 		y_decimal_places = value
 		queue_redraw()
@@ -84,6 +88,8 @@ class_name QuantitativeGraph extends Graph
 	set(value):
 		y_axis_thickness = value
 		queue_redraw()
+
+var range := Vector2(x_max - x_min, y_max - y_min)
 
 func _ready() -> void:
 	await get_tree().process_frame
@@ -121,19 +127,17 @@ func update_margins():
 	var left_margin = %YAxis.tick_length * int(bool(y_tick_count))
 	left_margin += get_theme_default_font_size() * int(y_tick_labels)
 	left_margin += y_axis_thickness
-	left_margin += get_theme_default_font_size() / 2 * (str(y_max).length() + y_decimal_places)
+	left_margin += get_theme_default_font_size() / 2 * (floor(log(abs(y_max))) + y_decimal_places)
 
 	%XAxis.origin = Vector2(left_margin, -bottom_margin)
 	%YAxis.origin = Vector2(left_margin, -bottom_margin)
 	
-	var right_margin =  get_theme_default_font_size()/3 * (str(x_max).length() + x_decimal_places)
+	var right_margin =  get_theme_default_font_size()/3 * (floor(log(abs(x_max))) + x_decimal_places)
 	var top_margin = get_theme_default_font_size()/2
 	%XAxis.length = %ChartArea.size.x - (left_margin + right_margin)
 	%YAxis.length = %ChartArea.size.y - (bottom_margin + top_margin)
 
 func get_origin_on_screen() -> Vector2:
 	return %XAxis.global_position + %XAxis.origin
-func get_range() -> Vector2:
-	return Vector2(x_max - x_min, y_max - y_min)
-func  get_axes_lengths() -> Vector2:
+func get_axes_lengths() -> Vector2:
 	return Vector2(%XAxis.length, %YAxis.length)

@@ -1,9 +1,27 @@
+@tool
 class_name QuantitativeSeries extends Node
 
-@export var data : PackedVector2Array
+enum TYPE {SCATTER, LINE, AREA}
+
+@export var type : TYPE = TYPE.SCATTER:
+	set(value):
+		type = value
+		property_changed.emit()
+@export var data : PackedVector2Array : 
+	set(value):
+		data = value
+		property_changed.emit()
 @export_group("Display")
-@export var color : Color = Color.BLUE
-@export var size : float = 1.0
+@export var color : Color = Color.BLUE:
+	set(value):
+		color = value
+		property_changed.emit()
+@export var size : float = 1.0:
+	set(value):
+		size = value
+		property_changed.emit()
+
+signal property_changed 
 
 func add_point(point : Vector2) -> void:
 	data.append(point)
