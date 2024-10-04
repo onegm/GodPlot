@@ -90,8 +90,17 @@ class_name QuantitativeGraph extends Graph
 		queue_redraw()
 
 var range := Vector2(x_max - x_min, y_max - y_min)
+var x_axis := Axis.new()
+var y_axis := Axis.new()
 
 func _ready() -> void:
+	super._ready()
+	chart_area.add_child(x_axis)
+	chart_area.add_child(y_axis)
+	x_axis.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	y_axis.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	y_axis.is_vertical = true
+	
 	await get_tree().process_frame
 	queue_redraw()
 	
@@ -99,45 +108,45 @@ func _draw() -> void:
 	if not is_inside_tree(): await ready
 	update_axes()
 	update_margins()
-	%XAxis.queue_redraw()
-	%YAxis.queue_redraw()
+	x_axis.queue_redraw()
+	y_axis.queue_redraw()
 
 func update_axes() -> void:
-	%XAxisTitle.text = x_title 
-	%XAxis.min_value = x_min
-	%XAxis.max_value = x_max
-	%XAxis.num_ticks = x_tick_count
-	%XAxis.show_tick_labels = x_tick_labels
-	%XAxis.decimal_places = x_decimal_places
-	%XAxis.thickness = x_axis_thickness
+	x_axis_title.text = x_title 
+	x_axis.min_value = x_min
+	x_axis.max_value = x_max
+	x_axis.num_ticks = x_tick_count
+	x_axis.show_tick_labels = x_tick_labels
+	x_axis.decimal_places = x_decimal_places
+	x_axis.thickness = x_axis_thickness
 	
-	%YAxisTitle.text = y_title
-	%YAxis.min_value = y_min
-	%YAxis.max_value = y_max
-	%YAxis.num_ticks = y_tick_count
-	%YAxis.show_tick_labels = y_tick_labels
-	%YAxis.decimal_places = y_decimal_places
-	%YAxis.thickness = y_axis_thickness
+	y_axis_title.text = y_title
+	y_axis.min_value = y_min
+	y_axis.max_value = y_max
+	y_axis.num_ticks = y_tick_count
+	y_axis.show_tick_labels = y_tick_labels
+	y_axis.decimal_places = y_decimal_places
+	y_axis.thickness = y_axis_thickness
 	
 func update_margins():
-	var bottom_margin = %XAxis.tick_length * int(bool(x_tick_count))
+	var bottom_margin = x_axis.tick_length * int(bool(x_tick_count))
 	bottom_margin += get_theme_default_font_size() * int(x_tick_labels)
 	bottom_margin += x_axis_thickness
 	
-	var left_margin = %YAxis.tick_length * int(bool(y_tick_count))
+	var left_margin = y_axis.tick_length * int(bool(y_tick_count))
 	left_margin += get_theme_default_font_size() * int(y_tick_labels)
 	left_margin += y_axis_thickness
 	left_margin += get_theme_default_font_size() / 2 * (floor(log(abs(y_max))) + y_decimal_places)
 
-	%XAxis.origin = Vector2(left_margin, -bottom_margin)
-	%YAxis.origin = Vector2(left_margin, -bottom_margin)
+	x_axis.origin = Vector2(left_margin, -bottom_margin)
+	y_axis.origin = Vector2(left_margin, -bottom_margin)
 	
 	var right_margin =  get_theme_default_font_size()/3 * (floor(log(abs(x_max))) + x_decimal_places)
 	var top_margin = get_theme_default_font_size()/2
-	%XAxis.length = %ChartArea.size.x - (left_margin + right_margin)
-	%YAxis.length = %ChartArea.size.y - (bottom_margin + top_margin)
+	x_axis.length = chart_area.size.x - (left_margin + right_margin)
+	y_axis.length = chart_area.size.y - (bottom_margin + top_margin)
 
 func get_origin_on_screen() -> Vector2:
-	return %XAxis.global_position + %XAxis.origin
+	return x_axis.global_position + x_axis.origin
 func get_axes_lengths() -> Vector2:
-	return Vector2(%XAxis.length, %YAxis.length)
+	return Vector2(x_axis.length, y_axis.length)

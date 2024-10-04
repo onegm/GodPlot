@@ -6,7 +6,7 @@ var to_draw := []
 
 func _ready() -> void:
 	super._ready()
-	for child in get_children():
+	for child in get_children().duplicate():
 		if child is QuantitativeSeries:
 			series_arr.append(child)
 			child.property_changed.connect(queue_redraw)
@@ -60,6 +60,7 @@ func plot_area(series : QuantitativeSeries) -> void:
 func _draw() -> void:
 	super._draw()
 	draw_circle(Vector2(400, 400), 20.0, Color.RED)
+	draw_circle(Vector2(0, 0), 20.0, Color.RED)
 	for series in series_arr:
 		plot_series(series)
 	for point in to_draw:

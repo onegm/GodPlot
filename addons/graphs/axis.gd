@@ -22,6 +22,7 @@ var tick_length : float = 20.0
 var show_tick_labels : bool = true
 var decimal_places : int = 0
 
+
 func _draw() -> void:
 	draw_line(origin, origin + length * direction, color, thickness)
 	draw_ticks()

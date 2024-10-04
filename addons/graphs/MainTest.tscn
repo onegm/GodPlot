@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://kjeajr5u11pn"]
 
-[ext_resource type="PackedScene" uid="uid://buw7ystoc8chg" path="res://addons/graphs/scatter_plot.tscn" id="1_4wn4c"]
+[ext_resource type="Script" path="res://addons/graphs/scatter_plot.gd" id="1_c81sc"]
 [ext_resource type="Script" path="res://addons/graphs/quantitative_series.gd" id="2_v3slv"]
 
 [node name="MainTest" type="Control"]
@@ -11,27 +11,27 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ScatterPlot" parent="." instance=ExtResource("1_4wn4c")]
+[node name="ScatterPlot2" type="Control" parent="."]
 layout_mode = 1
-x_tick_count = 10
-x_decimal_places = 1
-y_tick_count = 10
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_c81sc")
+background_color = Color(0.706384, 0.795429, 0.887832, 1)
 
-[node name="QuantitativeSeries" type="Node" parent="ScatterPlot"]
-script = ExtResource("2_v3slv")
-type = 1
-data = PackedVector2Array(0, 0, 2, 2, 3, 5, 4, 1, 5, 8, 7, 7, 9, 9, 10, 5, 11, 2)
-size = 10.26
-
-[node name="QuantitativeSeries2" type="Node" parent="ScatterPlot"]
+[node name="QuantitativeSeries" type="Node" parent="ScatterPlot2"]
 script = ExtResource("2_v3slv")
 type = 2
-data = PackedVector2Array(0, 5, 2, 3, 3, 5, 4, 7, 5, 9, 7, 3, 9, 2, 10, 1, 11, 0)
-color = Color(0.607843, 0.113725, 0.180392, 0.803922)
-size = 10.085
+data = PackedVector2Array(0, 0, 1, 1, 2, 2, 3, 3, 4, 3, 5, 3, 6, 4, 7, 6, 8, 5, 9, 9, 10, 3, 11, 2)
+color = Color(0.129412, 0.364706, 1, 1)
+size = 3.0
 
-[node name="QuantitativeSeries3" type="Node" parent="ScatterPlot"]
+[node name="QuantitativeSeries2" type="Node" parent="ScatterPlot2"]
 script = ExtResource("2_v3slv")
-data = PackedVector2Array(0, 5, 2, 3, 3, 5, 4, 7, 5, 9, 7, 3, 9, 2, 10, 1, 11, 0)
-color = Color(0.0823529, 0.4, 0.211765, 1)
-size = 10.0
+data = PackedVector2Array(0, 0, 1, 1, 2, 2, 3, 3, 4, 3, 5, 3, 6, 4, 7, 6, 8, 5, 9, 9, 10, 3, 11, 2)
+
+[node name="QuantitativeSeries3" type="Node" parent="ScatterPlot2"]
+script = ExtResource("2_v3slv")
+data = PackedVector2Array(0, 0, 1, 1, 2, 2, 3, 3, 4, 3, 5, 3, 6, 4, 7, 6, 8, 5, 9, 9, 10, 3, 11, 2)
