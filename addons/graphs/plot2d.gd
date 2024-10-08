@@ -1,5 +1,5 @@
 @tool
-class_name ScatterPlot extends QuantitativeGraph
+class_name Plot2D extends QuantitativeGraph
 
 var series_arr : Array[QuantitativeSeries] = []
 var to_draw := []
@@ -8,25 +8,17 @@ func _ready() -> void:
 	super._ready()
 	
 	await get_tree().process_frame
-	for child in get_children():
-		if child is QuantitativeSeries:
-			series_arr.append(child)
-			child.property_changed.connect(queue_redraw)
-			
-	child_entered_tree.connect(on_child_entered)
-	child_exiting_tree.connect(on_child_exiting)
+	load_children_series()
+	child_order_changed.connect(load_children_series)
 	queue_redraw()
 
-func on_child_entered(child : Node):
-	if child is QuantitativeSeries:
+func load_children_series():
+	series_arr = []
+	for child in get_children().filter(func(s): return s is QuantitativeSeries):	
 		series_arr.append(child)
-		child.property_changed.connect(queue_redraw)
-	queue_redraw()
-	
-func on_child_exiting(child : Node):
-	if child is QuantitativeSeries:
-		series_arr.erase(child)
-		child.property_changed.disconnect(queue_redraw)
+		print(child)
+		if !child.property_changed.is_connected(queue_redraw):
+			child.property_changed.connect(queue_redraw)
 	queue_redraw()
 
 func add_series(type := QuantitativeSeries.TYPE.SCATTER, color := Color.BLUE, 
@@ -107,7 +99,7 @@ func plot_points():
 
 func _draw() -> void:
 	if auto_scaling: scale_axes()
-	update_axes()
+	super._draw()
 	plot_points()
 	for point in to_draw:
 		match point[0]:

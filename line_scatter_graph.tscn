@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dgxhfygiwxfhw"]
 
-[ext_resource type="Script" path="res://addons/graphs/scatter_plot.gd" id="1_073md"]
+[ext_resource type="Script" path="res://addons/graphs/plot2d.gd" id="1_073md"]
 [ext_resource type="Script" path="res://addons/graphs/quantitative_series.gd" id="2_5ragf"]
 
 [node name="ScatterPlot" type="Control"]
