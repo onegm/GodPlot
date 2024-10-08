@@ -5,15 +5,13 @@ class_name Axis extends Control
 	set(value):
 		is_vertical = value
 		direction = Vector2.UP if is_vertical else Vector2.RIGHT
-		out_direction = Vector2.LEFT if is_vertical else Vector2.DOWN
-		
+		out_direction = Vector2.LEFT if is_vertical else Vector2.DOWN		
 @export var min_value : float = 0
 @export var max_value : float = 10
 @export var length : float = 500.0
 @export var thickness : float = 5.0
 @export var color : Color = Color.BLACK
 @export var num_ticks : int = 10
-		
 var origin : Vector2 = Vector2.ZERO
 var direction : Vector2 = Vector2.RIGHT
 var out_direction : Vector2 = Vector2.DOWN
@@ -21,7 +19,6 @@ var tick_interval : float = 0.0
 var tick_length : float = 20.0
 var show_tick_labels : bool = true
 var decimal_places : int = 0
-
 
 func _draw() -> void:
 	draw_line(origin, origin + length * direction, color, thickness)

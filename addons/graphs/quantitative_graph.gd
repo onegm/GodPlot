@@ -8,26 +8,27 @@ class_name QuantitativeGraph extends Graph
 	set(value):
 		axes_color = value
 		queue_redraw()
-## Allows ([member x_min], [member x_max]) and ([member y_min], [member y_max]) to dynamically change to accomodate new data points.
+## Allows ([member x_min], [member x_max]) and ([member y_min], [member y_max]) to dynamically change 
+## to accomodate new data points. If not enabled, points lying outside the limits will be clipped.
 @export var auto_scaling : bool = true:
 	set(value):
 		auto_scaling = value
-		if not auto_scaling:
-			min_limits = Vector2(x_min, y_min)
-			max_limits = Vector2(x_max, y_max)
+		update_limits()
 		queue_redraw()
 @export_group("X Axis", "x_")
-## Minimun value on X-axis. Can be overriden if auto-scaling is set to true.
+## Minimun value on X-axis. Can be automatically decreased if auto-scaling is set to true. 
 @export var x_min: float = 0.0:
 	set(value):
 		x_min = value
-		min_limits = Vector2(x_min, y_min)
+		if x_min > x_max: x_max = x_min
+		update_limits()
 		queue_redraw()
 ## Maximum value on X-axis. Can be overriden if auto-scaling is set to true.
 @export var x_max: float = 10.0:
 	set(value):
 		x_max = value
-		max_limits = Vector2(x_max, y_max)
+		if x_max < x_min: x_min = x_max
+		update_limits()
 		queue_redraw()
 @export_subgroup("Display", "x_")
 ## Number of ticks displayed on the x-axis. Includes border ticks.
@@ -55,13 +56,15 @@ class_name QuantitativeGraph extends Graph
 @export var y_min: float = 0.0:
 	set(value):
 		y_min = value
-		min_limits = Vector2(x_min, y_min)
+		if y_min > y_max: y_max = y_min
+		update_limits()
 		queue_redraw()
 ## Maximum value on y-axis. Can be overriden if auto-scaling is set to true.
 @export var y_max: float = 10.0:
 	set(value):
 		y_max = value
-		max_limits = Vector2(x_max, y_max)
+		if y_max < y_min: y_min = y_max
+		update_limits()
 		queue_redraw()
 @export_subgroup("Display", "y_")
 ## Number of ticks displayed on the y-axis. Includes border ticks.
@@ -95,6 +98,7 @@ var max_limits := Vector2(x_max, y_max):
 var range := Vector2(x_max - x_min, y_max - y_min)
 var x_axis := Axis.new()
 var y_axis := Axis.new()
+var global_origin := x_axis.global_position + x_axis.origin
 
 func _ready() -> void:
 	super._ready()
@@ -106,15 +110,17 @@ func _ready() -> void:
 	
 	await get_tree().process_frame
 	queue_redraw()
-	
-func _draw() -> void:
-	if not is_inside_tree(): await ready
-	update_axes()
-	update_margins()
-	x_axis.queue_redraw()
-	y_axis.queue_redraw()
+
+func update_limits() -> void:
+	if auto_scaling:
+		max_limits = max_limits.max(Vector2(x_max, y_max))
+		min_limits = min_limits.min(Vector2(x_min, y_min))
+	else:
+		min_limits = Vector2(x_min, y_min)
+		max_limits = Vector2(x_max, y_max)
 
 func update_axes() -> void:
+	if not is_inside_tree(): await ready
 	x_axis.min_value = min_limits.x
 	x_axis.max_value = max_limits.x
 	x_axis.num_ticks = x_tick_count
@@ -130,6 +136,12 @@ func update_axes() -> void:
 	y_axis.decimal_places = y_decimal_places
 	y_axis.thickness = y_axis_thickness
 	y_axis.color = axes_color
+	
+	update_margins()
+	
+	x_axis.queue_redraw()
+	y_axis.queue_redraw()
+	global_origin = x_axis.global_position + x_axis.origin
 	
 func update_margins():
 	var bottom_margin = x_axis.tick_length * int(bool(x_tick_count))
@@ -149,7 +161,8 @@ func update_margins():
 	x_axis.length = chart_area.size.x - (left_margin + right_margin)
 	y_axis.length = chart_area.size.y - (bottom_margin + top_margin)
 
-func get_origin_on_screen() -> Vector2:
-	return x_axis.global_position + x_axis.origin
 func get_axes_lengths() -> Vector2:
 	return Vector2(x_axis.length, y_axis.length)
+
+func _draw() -> void:
+	update_axes()

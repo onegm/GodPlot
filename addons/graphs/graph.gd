@@ -1,7 +1,6 @@
 @tool
 class_name Graph extends Control
 
-enum TYPE{LINE_SCATTER, BAR, HISTOGRAM}
 ## Graph background color
 @export var background_color : Color = Color.WHITE:
 	set(value):

@@ -6,11 +6,34 @@ var to_draw := []
 
 func _ready() -> void:
 	super._ready()
-	for child in get_children().duplicate():
+	
+	await get_tree().process_frame
+	for child in get_children():
 		if child is QuantitativeSeries:
 			series_arr.append(child)
 			child.property_changed.connect(queue_redraw)
+			
+	child_entered_tree.connect(on_child_entered)
+	child_exiting_tree.connect(on_child_exiting)
 	queue_redraw()
+
+func on_child_entered(child : Node):
+	if child is QuantitativeSeries:
+		series_arr.append(child)
+		child.property_changed.connect(queue_redraw)
+	queue_redraw()
+	
+func on_child_exiting(child : Node):
+	if child is QuantitativeSeries:
+		series_arr.erase(child)
+		child.property_changed.disconnect(queue_redraw)
+	queue_redraw()
+
+func add_series(type := QuantitativeSeries.TYPE.SCATTER, color := Color.BLUE, 
+				display_size := 10.0) -> QuantitativeSeries:
+	var series = QuantitativeSeries.new(type, color, display_size)
+	add_child(series)
+	return series
 
 func plot_series(series : QuantitativeSeries) -> void:
 	match series.type:
@@ -19,44 +42,51 @@ func plot_series(series : QuantitativeSeries) -> void:
 		QuantitativeSeries.TYPE.AREA: plot_area(series)
 
 func plot_scatter(series : QuantitativeSeries) -> void:
-	var length : Vector2 = get_axes_lengths()
-	var origin_on_screen : Vector2 = get_origin_on_screen()
 	for point in series.data:
-		var vector_from_origin = point - min_limits
-		var point_position = Vector2(vector_from_origin.x / range.x * length.x,
-									 -vector_from_origin.y / range.y * length.y)
-		point_position += origin_on_screen
+		if not is_within_limits(point): continue
+		var point_position = find_point_global_position(point)
 		to_draw.append([series.type, point_position, series.size, series.color])
 
 func plot_line(series : QuantitativeSeries) -> void:
-	var length : Vector2 = get_axes_lengths()
-	var origin_on_screen : Vector2 = get_origin_on_screen()
+	if series.data.size() < 2:
+		printerr("Line series must contain at least 2 data points")
+		return
 	var line : PackedVector2Array
 	for point in series.data:
-		var vector_from_origin = point - min_limits
-		var point_position = Vector2(vector_from_origin.x / range.x * length.x,
-									 -vector_from_origin.y / range.y * length.y)
-		point_position += origin_on_screen
+		if not is_within_limits(point): continue
+		var point_position = find_point_global_position(point)
 		line.append(point_position)
 	to_draw.append([series.type, line, series.color, series.size])
 
 func plot_area(series : QuantitativeSeries) -> void:
-	var length : Vector2 = get_axes_lengths()
-	var origin_on_screen : Vector2 = get_origin_on_screen()
 	var polygon : PackedVector2Array
-	polygon.append(origin_on_screen)
-	var last_x_coordinate = 0.0
+	var first_x_coordinate := min_limits.x - 1.0
+	var last_x_coordinate := min_limits.x - 1.0
+	var zero_y = min(find_point_global_position(Vector2(0,0)).y, 
+					 find_point_global_position(min_limits).y)
+	var found_first := false
 	for point in series.data:
 		if not is_within_limits(point): continue
-		var vector_from_origin = point - min_limits
-		var point_position = Vector2(vector_from_origin.x / range.x * length.x,
-									 -vector_from_origin.y / range.y * length.y)
-		point_position += origin_on_screen
+		var point_position = find_point_global_position(point)
+		if !found_first:
+			first_x_coordinate = point_position.x
+			polygon.append(Vector2(point_position.x, zero_y))
+			found_first = true
 		polygon.append(point_position)
 		last_x_coordinate = point_position.x
-	polygon.append(Vector2(last_x_coordinate, origin_on_screen.y))
-	to_draw.append([series.type, polygon, series.color])
 
+	if polygon.size() < 3: 
+		printerr("Area series must contain at least 2 data points within the set limits")
+		return
+	polygon.append(Vector2(last_x_coordinate, zero_y))
+	to_draw.append([series.type, polygon, series.color])
+	
+func find_point_global_position(point : Vector2) -> Vector2:
+	var vector_from_local_origin = point - min_limits
+	var position_from_origin = Vector2(vector_from_local_origin.x / range.x * x_axis.length,
+								 	   -vector_from_local_origin.y / range.y * y_axis.length)
+	return position_from_origin + global_origin
+	
 func scale_axes() -> void:
 	var min_data_limits := Vector2(INF, INF)
 	var max_data_limits := Vector2(-INF, -INF)
@@ -70,13 +100,15 @@ func scale_axes() -> void:
 func is_within_limits(point : Vector2) -> bool:
 	return 	point.clamp(min_limits, max_limits) == point
 
-func _draw() -> void:
-	if auto_scaling: scale_axes()
-	super._draw()
-	draw_circle(Vector2(400, 400), 20.0, Color.RED)
-	draw_circle(Vector2(0, 0), 20.0, Color.RED)
+func plot_points():
+	to_draw = []
 	for series in series_arr:
 		plot_series(series)
+
+func _draw() -> void:
+	if auto_scaling: scale_axes()
+	update_axes()
+	plot_points()
 	for point in to_draw:
 		match point[0]:
 			QuantitativeSeries.TYPE.SCATTER:
@@ -85,5 +117,3 @@ func _draw() -> void:
 				draw_polyline(point[1], point[2], point[3])
 			QuantitativeSeries.TYPE.AREA:
 				draw_colored_polygon(point[1], point[2])
-
-	to_draw = []
