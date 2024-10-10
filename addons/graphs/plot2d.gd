@@ -66,12 +66,14 @@ func plot_area(series : QuantitativeSeries) -> void:
 			found_first = true
 		polygon.append(point_position)
 		last_x_coordinate = point_position.x
-
+		
 	if polygon.size() < 3: 
 		printerr("Area series must contain at least 2 data points within the set limits")
 		return
 	polygon.append(Vector2(last_x_coordinate, zero_y))
-	to_draw.append([series.type, polygon, series.color])
+	var poly_array = Geometry2D.merge_polygons(polygon, PackedVector2Array([]))
+	for piece in poly_array:
+		to_draw.append([series.type, piece, series.color])
 	
 func find_point_global_position(point : Vector2) -> Vector2:
 	var vector_from_local_origin = point - min_limits
