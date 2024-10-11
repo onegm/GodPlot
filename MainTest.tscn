@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://kjeajr5u11pn"]
+
+[ext_resource type="Script" path="res://addons/god_plot/plot_2d.gd" id="1_emgpt"]
+[ext_resource type="Script" path="res://addons/god_plot/quantitative_series.gd" id="2_u5vvg"]
+
+[node name="MainTest" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Plot2D" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.485703, 0.485704, 0.485703, 1)
+script = ExtResource("1_emgpt")
+
+[node name="QuantitativeSeries" type="Node" parent="Plot2D"]
+script = ExtResource("2_u5vvg")
+type = 2
+data = PackedVector2Array(0, 2, 1, 1, 4, 1, 5, -3)
+
+[node name="QuantitativeSeries2" type="Node" parent="Plot2D"]
+script = ExtResource("2_u5vvg")
+data = PackedVector2Array(0, 2, 1, 1, 5, 6)
+color = Color(0.573721, 0.0909977, 0.428396, 1)
+size = 0.0
