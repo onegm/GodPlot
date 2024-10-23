@@ -1,9 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://edlyuogdmdfm"]
+[gd_scene load_steps=2 format=3 uid="uid://edlyuogdmdfm"]
 
 [ext_resource type="Script" path="res://addons/god_plot/quantitative_graph.gd" id="2_aob0y"]
-
-[sub_resource type="Theme" id="Theme_ehoj4"]
-default_font_size = 45
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -17,7 +14,8 @@ grow_vertical = 2
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = SubResource("Theme_ehoj4")
-color = Color(0.295867, 0.295866, 0.295866, 1)
+color = Color(0.501961, 0.501961, 0.501961, 1)
 script = ExtResource("2_aob0y")
-v_axis_title = "sadasdCCC"
+title = "dsada a"
+h_axis_title = "sdfsfd a"
+v_axis_title = "fdga a "

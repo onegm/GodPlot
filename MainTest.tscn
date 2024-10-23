@@ -11,23 +11,44 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Plot2D" type="ColorRect" parent="."]
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.485703, 0.485704, 0.485703, 1)
-script = ExtResource("1_emgpt")
 
-[node name="QuantitativeSeries" type="Node" parent="Plot2D"]
+[node name="Plot2D" type="ColorRect" parent="HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.501961, 0.501961, 0.501961, 1)
+script = ExtResource("1_emgpt")
+axis_color = Color(0.973535, 0.973535, 0.973535, 1)
+label_size = 1.871
+x_tick_count = 8
+y_tick_count = 11
+y_gridlines_major_thickness = 5.0
+y_gridlines_minor = 1
+y_gridlines_minor_thickness = 2.0
+
+[node name="QuantitativeSeries" type="Node" parent="HSplitContainer/Plot2D"]
 script = ExtResource("2_u5vvg")
 type = 2
 data = PackedVector2Array(0, 2, 1, 1, 4, 1, 5, -3)
 
-[node name="QuantitativeSeries2" type="Node" parent="Plot2D"]
+[node name="QuantitativeSeries3" type="Node" parent="HSplitContainer/Plot2D"]
+script = ExtResource("2_u5vvg")
+type = 1
+data = PackedVector2Array(0, 2, 1, 1, 5, 6)
+color = Color(0.586375, 0.47071, 0.90726, 1)
+
+[node name="QuantitativeSeries2" type="Node" parent="HSplitContainer/Plot2D"]
 script = ExtResource("2_u5vvg")
 data = PackedVector2Array(0, 2, 1, 1, 5, 6)
 color = Color(0.573721, 0.0909977, 0.428396, 1)
-size = 0.0
+
+[node name="Control" type="Control" parent="HSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
