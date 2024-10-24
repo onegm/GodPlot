@@ -13,7 +13,7 @@ class_name Graph extends ColorRect
 @export var font_color : Color = Color.BLACK:
 	set(value):
 		font_color = value
-		set_label_colors(font_color)
+		_set_label_colors(font_color)
 ## Margin between graph and borders (on all sides) in px. Use [MarginContainer] 
 ## as node parent with [member margin] set to 0 for custom margins. 
 @export var margin : float = 10.0:
@@ -49,6 +49,7 @@ var chart_area := Control.new() ## A container for drawings created by inheritin
 func _ready() -> void:
 	color = Color.WEB_GRAY
 	theme_changed.connect(_on_theme_changed)
+	resized.connect(queue_redraw)
 	
 	add_child(graph_v_box)
 	graph_v_box.set_anchors_and_offsets_preset(PRESET_FULL_RECT, PRESET_MODE_MINSIZE, margin)
@@ -58,7 +59,8 @@ func _ready() -> void:
 	graph_v_box.add_child(graph_title)
 	graph_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	graph_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	graph_title.visible = false
+	graph_title.text = title
+	graph_title.visible = !title.is_empty()
 	
 	graph_v_box.add_child(graph_h_box)
 	graph_h_box.size_flags_vertical = SIZE_EXPAND_FILL
@@ -67,21 +69,22 @@ func _ready() -> void:
 	x_axis_title.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 	x_axis_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	x_axis_title.size_flags_vertical = SIZE_SHRINK_END
-	x_axis_title.visible = false
+	x_axis_title.text = h_axis_title
+	x_axis_title.visible = !h_axis_title.is_empty()
 	
 	graph_h_box.add_child(y_axis_title)
 	y_axis_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	y_axis_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	y_axis_title.visible = false
+	y_axis_title.text = v_axis_title
+	y_axis_title.visible = !v_axis_title.is_empty()
 	
 	graph_h_box.add_child(chart_area)
 	chart_area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	chart_area.resized.connect(queue_redraw)
 	
-	await get_tree().process_frame
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
-func set_label_colors(label_color : Color) -> void:
+func _set_label_colors(label_color : Color) -> void:
 	graph_title.add_theme_color_override("font_color", label_color)
 	x_axis_title.add_theme_color_override("font_color", label_color)
 	y_axis_title.add_theme_color_override("font_color", label_color)

@@ -55,10 +55,10 @@ class_name QuantitativeGraph extends Graph
 		queue_redraw()
 @export_subgroup("Gridlines", "x_gridlines")
 ## Show major gridlines along the x-axis.
-@export var x_gridlines_major : bool = true:
+@export var x_gridlines_visible : bool = true:
 	set(value):
-		x_gridlines_major = value
-		queue_redraw()
+		x_gridlines_visible = value
+		x_gridlines.visible = value
 ## Set the thickness of the major gridlines
 @export var x_gridlines_major_thickness : float = 1.0:
 	set(value):
@@ -104,10 +104,10 @@ class_name QuantitativeGraph extends Graph
 		queue_redraw()
 @export_subgroup("Gridlines", "y_gridlines")
 ## Show major gridlines along the y-axis.
-@export var y_gridlines_major : bool = true:
+@export var y_gridlines_visible : bool = true:
 	set(value):
-		y_gridlines_major = value
-		queue_redraw()
+		y_gridlines_visible = value
+		y_gridlines.visible = value
 ## Set the thickness of the major gridlines
 @export var y_gridlines_major_thickness : float = 1.0:
 	set(value):
@@ -142,8 +142,10 @@ var range := Vector2(x_max - x_min, y_max - y_min)
 var x_axis := Axis.new()
 ## An [Axis] object used as the vertical axis of the graph
 var y_axis := Axis.new()
-## The global position of the graph's origin
-var local_origin_position := x_axis.global_position - global_position + x_axis.origin
+## Vertical gridlines
+var x_gridlines := Gridlines.new(x_axis, y_axis)
+## Horizontal gridlines
+var y_gridlines := Gridlines.new(y_axis, x_axis)
 
 func _ready() -> void:
 	super._ready()
@@ -153,18 +155,16 @@ func _ready() -> void:
 	y_axis.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 	y_axis.is_vertical = true
 	
-	await get_tree().process_frame
-	queue_redraw()
+	chart_area.add_child(x_gridlines)
+	chart_area.add_child(y_gridlines)
+	x_gridlines.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	y_gridlines.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 
 func _update_limits() -> void:	
 	## Updates the values of [member min_limits] and [member max_limits] based on
 	## the state of [member auto_scaling].
-	if auto_scaling:
-		max_limits = max_limits.max(Vector2(x_max, y_max))
-		min_limits = min_limits.min(Vector2(x_min, y_min))
-	else:
-		min_limits = Vector2(x_min, y_min)
-		max_limits = Vector2(x_max, y_max)
+	max_limits = max_limits.max(Vector2(x_max, y_max)) if auto_scaling else Vector2(x_max, y_max)
+	min_limits = min_limits.min(Vector2(x_min, y_min)) if auto_scaling else Vector2(x_min, y_min)
 
 func _update_axes() -> void:
 	## Updates the properties of [member x_axis] and [member y_axis].
@@ -199,8 +199,6 @@ func _update_margins():
 	x_axis.origin = Vector2(left_margin, -bottom_margin)
 	y_axis.origin = Vector2(left_margin, -bottom_margin)
 	
-	local_origin_position = x_axis.global_position - global_position + x_axis.origin
-	
 	var right_margin =  get_theme_font_size("", "") * label_size/3 * (floor(log(abs(x_max))) + x_decimal_places)
 	var top_margin = get_theme_font_size("", "") * title_size / 2
 	x_axis.length = chart_area.size.x - (left_margin + right_margin)
@@ -211,45 +209,26 @@ func get_axes_lengths() -> Vector2:
 	return Vector2(x_axis.length, y_axis.length)
 
 func _update_grid_lines():
-	var x_minor_interval = x_axis.tick_interval / float(x_gridlines_minor + 1)	
-	for tick_num in x_axis.num_ticks:
-		var x_major_pos = local_origin_position.x + tick_num * x_axis.tick_interval
-		draw_line(
-			Vector2(x_major_pos, local_origin_position.y),
-			Vector2(x_major_pos, local_origin_position.y - y_axis.length),
-			axis_color, x_gridlines_major_thickness
-			)
-		for line_num in x_gridlines_minor:
-			var x_minor_pos = x_major_pos + (line_num + 1) * x_minor_interval
-			draw_line(
-				Vector2(x_minor_pos, local_origin_position.y),
-				Vector2(x_minor_pos, local_origin_position.y - y_axis.length), 
-				axis_color, x_gridlines_minor_thickness
-			)
+	x_gridlines.color = axis_color
+	x_gridlines.major_thickness = x_gridlines_major_thickness
+	x_gridlines.minor_thickness = x_gridlines_minor_thickness
+	x_gridlines.minor_count = x_gridlines_minor
 	
-	var y_minor_interval = y_axis.tick_interval / float(y_gridlines_minor + 1)	
-	for tick_num in y_axis.num_ticks:
-		var y_major_pos = local_origin_position.y - tick_num * y_axis.tick_interval
-		draw_line(
-			Vector2(local_origin_position.x, y_major_pos),
-			Vector2(local_origin_position.x + x_axis.length, y_major_pos),
-			axis_color, y_gridlines_major_thickness
-			)
-		for line_num in y_gridlines_minor:
-			var y_minor_pos = y_major_pos - (line_num + 1) * y_minor_interval
-			draw_line(
-				Vector2(local_origin_position.x, y_minor_pos),
-				Vector2(local_origin_position.x + x_axis.length, y_minor_pos),
-				axis_color, y_gridlines_minor_thickness
-			)
-
+	y_gridlines.color = axis_color
+	y_gridlines.major_thickness = y_gridlines_major_thickness
+	y_gridlines.minor_thickness = y_gridlines_minor_thickness
+	y_gridlines.minor_count = y_gridlines_minor
+	
 func _draw() -> void:
 	_update_limits()
 	_update_axes()
 	_update_margins()
+	_update_grid_lines()
+	
 	x_axis.queue_redraw()
 	y_axis.queue_redraw()
-	_update_grid_lines()
+	x_gridlines.queue_redraw()
+	y_gridlines.queue_redraw()
 	
 func _on_theme_changed():
 	if !is_node_ready(): return

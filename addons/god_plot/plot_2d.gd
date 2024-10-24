@@ -6,12 +6,15 @@ class_name Plot2D extends QuantitativeGraph
 
 ## Typed array of [QuantitativeSeries] nodes to be plotted on the graph 
 var series_arr : Array[QuantitativeSeries] = []
+## Plotter object used for plotting data
+var plotter : Plotter = Plotter.new()
 ## Array of items to be drawn in global coordinates.
 var to_draw := []
 
 func _ready() -> void:
 	super._ready()
-	
+	chart_area.add_child(plotter)
+	plotter.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 	await get_tree().process_frame
 	_load_children_series()
 	child_order_changed.connect(_load_children_series)
@@ -104,7 +107,7 @@ func find_point_local_postion(point : Vector2) -> Vector2:
 	var vector_from_local_origin = point - min_limits
 	var position_from_origin = Vector2(vector_from_local_origin.x / range.x * x_axis.length,
 								 	   -vector_from_local_origin.y / range.y * y_axis.length)
-	return position_from_origin + local_origin_position
+	return position_from_origin + x_axis.origin
 func _scale_axes() -> void:
 	## Only runs if [constant QuantitativeGraph.auto_scaling] is enabled. Finds maximum and minimum
 	## values in current data and scales axes to fit all points. Will never increase the value of [member x_min] or 
@@ -137,11 +140,14 @@ func _draw() -> void:
 	if auto_scaling: _scale_axes()
 	super._draw()
 	_plot_points()
-	for point in to_draw:
-		match point[0]:
-			QuantitativeSeries.TYPE.SCATTER:
-				draw_circle(point[1], point[2], point[3])
-			QuantitativeSeries.TYPE.LINE:
-				draw_polyline(point[1], point[2], point[3])
-			QuantitativeSeries.TYPE.AREA:
-				draw_colored_polygon(point[1], point[2])
+	plotter.to_draw = to_draw
+	plotter.queue_redraw()
+	#
+	#for point in to_draw:
+		#match point[0]:
+			#QuantitativeSeries.TYPE.SCATTER:
+				#draw_circle(point[1], point[2], point[3])
+			#QuantitativeSeries.TYPE.LINE:
+				#draw_polyline(point[1], point[2], point[3])
+			#QuantitativeSeries.TYPE.AREA:
+				#draw_colored_polygon(point[1], point[2])

@@ -14,6 +14,7 @@ grow_vertical = 2
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
+size_flags_horizontal = 3
 color = Color(0.501961, 0.501961, 0.501961, 1)
 script = ExtResource("2_aob0y")
 title = "dsada a"

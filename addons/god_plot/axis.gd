@@ -1,6 +1,5 @@
 @tool
 class_name Axis extends Control
-
 ## Class used to draw a custom axis. 
 
 ## Axis is oriented horizontally by default. If enabled, axis will be oriented vertically.
@@ -14,7 +13,10 @@ class_name Axis extends Control
 ## The maximum value shown on the axis.
 @export var max_value : float = 10
 ## The pixel length of the axis.
-@export var length : float = 500.0
+@export var length : float = 500.0:
+	set(value):
+		length = value
+		_update_tick_interval()
 ## The pixel thickness of the axis.
 @export var thickness : float = 5.0:
 	set(value):

@@ -11,7 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HSplitContainer" type="HSplitContainer" parent="."]
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,7 +19,46 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Plot2D" type="ColorRect" parent="HSplitContainer"]
+[node name="HSplitContainer2" type="HSplitContainer" parent="VSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="VSplitContainer/HSplitContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.702373, 0.0255848, 0.390479, 1)
+
+[node name="Plot2D" type="ColorRect" parent="VSplitContainer/HSplitContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.501961, 0.501961, 0.501961, 1)
+script = ExtResource("1_emgpt")
+x_gridlines_major_thickness = 2.0
+x_gridlines_minor = 4
+
+[node name="QuantitativeSeries" type="Node" parent="VSplitContainer/HSplitContainer2/Plot2D"]
+script = ExtResource("2_u5vvg")
+type = 2
+data = PackedVector2Array(0, 2, 1, 1, 4, 1, 5, -3)
+
+[node name="QuantitativeSeries3" type="Node" parent="VSplitContainer/HSplitContainer2/Plot2D"]
+script = ExtResource("2_u5vvg")
+type = 1
+data = PackedVector2Array(0, 2, 1, 1, 5, 6)
+color = Color(0.586375, 0.47071, 0.90726, 1)
+
+[node name="QuantitativeSeries2" type="Node" parent="VSplitContainer/HSplitContainer2/Plot2D"]
+script = ExtResource("2_u5vvg")
+data = PackedVector2Array(0, 2, 1, 1, 5, 6)
+color = Color(0.573721, 0.0909977, 0.428396, 1)
+
+[node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Plot2D" type="ColorRect" parent="VSplitContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -33,22 +72,24 @@ y_gridlines_major_thickness = 5.0
 y_gridlines_minor = 1
 y_gridlines_minor_thickness = 2.0
 
-[node name="QuantitativeSeries" type="Node" parent="HSplitContainer/Plot2D"]
+[node name="QuantitativeSeries" type="Node" parent="VSplitContainer/HSplitContainer/Plot2D"]
 script = ExtResource("2_u5vvg")
 type = 2
 data = PackedVector2Array(0, 2, 1, 1, 4, 1, 5, -3)
 
-[node name="QuantitativeSeries3" type="Node" parent="HSplitContainer/Plot2D"]
+[node name="QuantitativeSeries3" type="Node" parent="VSplitContainer/HSplitContainer/Plot2D"]
 script = ExtResource("2_u5vvg")
 type = 1
 data = PackedVector2Array(0, 2, 1, 1, 5, 6)
 color = Color(0.586375, 0.47071, 0.90726, 1)
 
-[node name="QuantitativeSeries2" type="Node" parent="HSplitContainer/Plot2D"]
+[node name="QuantitativeSeries2" type="Node" parent="VSplitContainer/HSplitContainer/Plot2D"]
 script = ExtResource("2_u5vvg")
 data = PackedVector2Array(0, 2, 1, 1, 5, 6)
 color = Color(0.573721, 0.0909977, 0.428396, 1)
 
-[node name="Control" type="Control" parent="HSplitContainer"]
+[node name="ColorRect2" type="ColorRect" parent="VSplitContainer/HSplitContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
+color = Color(0.00134256, 0.256689, 0.890407, 1)
