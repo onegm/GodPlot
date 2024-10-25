@@ -8,7 +8,6 @@ func _draw() -> void:
 		match point[0]:
 			QuantitativeSeries.TYPE.SCATTER:
 				draw_circle(point[1], point[2], point[3])
-				printt(point[1], point[2])
 			QuantitativeSeries.TYPE.LINE:
 				draw_polyline(point[1], point[2], point[3])
 			QuantitativeSeries.TYPE.AREA:

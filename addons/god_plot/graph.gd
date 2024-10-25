@@ -38,10 +38,16 @@ class_name Graph extends ColorRect
 		v_axis_title = value
 		if is_inside_tree(): y_axis_title.text = value
 		y_axis_title.visible = !v_axis_title.is_empty()
+## Rotate the vertical axis title. 
+@export var rotated_v_title : bool = true:
+	set(value):
+		rotated_v_title = value
+		y_axis_title.pivot_offset = Vector2(y_axis_title.size.y/2, y_axis_title.size.y/2)
+		y_axis_title.rotation = -PI/2 * int(rotated_v_title)
+		queue_redraw()
 
 var graph_v_box := VBoxContainer.new() ## Contains [member graph_title], [member graph_h_box], and [member x_axis_title].
 var graph_title := Label.new() ## Graph title [Label].
-var graph_h_box := HBoxContainer.new() ## Contains [member y_axis_title], and [member chart_area].
 var x_axis_title := Label.new() ## X Axis title [Label].
 var y_axis_title := Label.new() ## Y Axis title [Label].
 var chart_area := Control.new() ## A container for drawings created by inheriting classes. This is where graphical data is presented. 
@@ -51,10 +57,13 @@ func _ready() -> void:
 	theme_changed.connect(_on_theme_changed)
 	resized.connect(queue_redraw)
 	
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	size_flags_vertical = Control.SIZE_EXPAND_FILL
+	
 	add_child(graph_v_box)
 	graph_v_box.set_anchors_and_offsets_preset(PRESET_FULL_RECT, PRESET_MODE_MINSIZE, margin)
 	graph_v_box.size_flags_horizontal = SIZE_EXPAND_FILL
-	graph_v_box.size_flags_vertical = SIZE_EXPAND_FILL
 	
 	graph_v_box.add_child(graph_title)
 	graph_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -62,9 +71,9 @@ func _ready() -> void:
 	graph_title.text = title
 	graph_title.visible = !title.is_empty()
 	
-	graph_v_box.add_child(graph_h_box)
-	graph_h_box.size_flags_vertical = SIZE_EXPAND_FILL
-	
+	graph_v_box.add_child(chart_area)
+	chart_area.size_flags_vertical = Control.SIZE_EXPAND_FILL
+
 	graph_v_box.add_child(x_axis_title)
 	x_axis_title.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 	x_axis_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -72,17 +81,13 @@ func _ready() -> void:
 	x_axis_title.text = h_axis_title
 	x_axis_title.visible = !h_axis_title.is_empty()
 	
-	graph_h_box.add_child(y_axis_title)
-	y_axis_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	chart_area.add_child(y_axis_title)
+	y_axis_title.pivot_offset = Vector2(y_axis_title.size.y/2, y_axis_title.size.y/2)
+	y_axis_title.rotation = -PI/2 if rotated_v_title else 0
 	y_axis_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	y_axis_title.set_anchors_preset(Control.PRESET_CENTER_LEFT)
 	y_axis_title.text = v_axis_title
 	y_axis_title.visible = !v_axis_title.is_empty()
-	
-	graph_h_box.add_child(chart_area)
-	chart_area.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 func _set_label_colors(label_color : Color) -> void:
 	graph_title.add_theme_color_override("font_color", label_color)
@@ -94,3 +99,6 @@ func _on_theme_changed():
 	## Sets [member graph_title]'s font_size according to [member title_size] and [constant Theme.default_font_size].
 	## Connected to the [signal Control.theme_changed] signal.
 	graph_title.add_theme_font_size_override("font_size", get_theme_font_size("", "") * title_size)
+
+func _draw() -> void:
+	pass

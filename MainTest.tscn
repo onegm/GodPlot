@@ -37,6 +37,11 @@ color = Color(0.501961, 0.501961, 0.501961, 1)
 script = ExtResource("1_emgpt")
 x_gridlines_major_thickness = 2.0
 x_gridlines_minor = 4
+title = "Hello
+"
+h_axis_title = "adad
+"
+v_axis_title = "Title (m)"
 
 [node name="QuantitativeSeries" type="Node" parent="VSplitContainer/HSplitContainer2/Plot2D"]
 script = ExtResource("2_u5vvg")

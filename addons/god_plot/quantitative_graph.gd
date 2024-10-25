@@ -195,7 +195,8 @@ func _update_margins():
 	left_margin += get_theme_font_size("", "") * label_size * int(y_tick_labels)
 	left_margin += axis_thickness
 	left_margin += get_theme_font_size("", "") * label_size / 2 * (floor(log(abs(y_max))) + y_decimal_places)
-
+	left_margin += y_axis_title.size.y if rotated_v_title else y_axis_title.size.x
+	
 	x_axis.origin = Vector2(left_margin, -bottom_margin)
 	y_axis.origin = Vector2(left_margin, -bottom_margin)
 	
@@ -220,6 +221,7 @@ func _update_grid_lines():
 	y_gridlines.minor_count = y_gridlines_minor
 	
 func _draw() -> void:
+	super._draw()
 	_update_limits()
 	_update_axes()
 	_update_margins()
