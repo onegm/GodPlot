@@ -53,9 +53,8 @@ var y_axis_title := Label.new() ## Y Axis title [Label].
 var chart_area := Control.new() ## A container for drawings created by inheriting classes. This is where graphical data is presented. 
 
 func _ready() -> void:
-	color = Color.WEB_GRAY
 	theme_changed.connect(_on_theme_changed)
-	resized.connect(queue_redraw)
+	chart_area.resized.connect(queue_redraw)
 	
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL

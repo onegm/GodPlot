@@ -52,7 +52,9 @@ var font_size : int = 16
 var decimal_places : int = 0
 
 func _draw() -> void:
+	draw_circle(origin, thickness/2, color)
 	draw_line(origin, origin + length * direction, color, thickness)
+	draw_circle(origin + length * direction, thickness/2, color)
 	_draw_ticks()
 	_draw_tick_labels()
 	

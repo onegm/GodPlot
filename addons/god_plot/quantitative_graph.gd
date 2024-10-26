@@ -54,11 +54,11 @@ class_name QuantitativeGraph extends Graph
 		x_decimal_places = value
 		queue_redraw()
 @export_subgroup("Gridlines", "x_gridlines")
-## Show major gridlines along the x-axis.
-@export var x_gridlines_visible : bool = true:
+## Control opacity of gridlines along the x-axis.
+@export_range(0, 1) var x_gridlines_opacity : float = 1.0:
 	set(value):
-		x_gridlines_visible = value
-		x_gridlines.visible = value
+		x_gridlines_opacity = value
+		x_gridlines.modulate.a = value
 ## Set the thickness of the major gridlines
 @export var x_gridlines_major_thickness : float = 1.0:
 	set(value):
@@ -103,11 +103,11 @@ class_name QuantitativeGraph extends Graph
 		y_decimal_places = value
 		queue_redraw()
 @export_subgroup("Gridlines", "y_gridlines")
-## Show major gridlines along the y-axis.
-@export var y_gridlines_visible : bool = true:
+## Control opacity of gridlines along the y-axis.
+@export_range(0, 1) var y_gridlines_opacity : float = 1.0:
 	set(value):
-		y_gridlines_visible = value
-		y_gridlines.visible = value
+		y_gridlines_opacity = value
+		y_gridlines.modulate.a = value
 ## Set the thickness of the major gridlines
 @export var y_gridlines_major_thickness : float = 1.0:
 	set(value):
@@ -194,7 +194,7 @@ func _update_margins():
 	var left_margin = y_axis.tick_length * int(bool(y_tick_count))
 	left_margin += get_theme_font_size("", "") * label_size * int(y_tick_labels)
 	left_margin += axis_thickness
-	left_margin += get_theme_font_size("", "") * label_size / 2 * (floor(log(abs(y_max))) + y_decimal_places)
+	left_margin += get_theme_font_size("", "") * label_size / 1.5 * (_get_max_num_of_digits(max_limits.y, min_limits.y) + y_decimal_places)
 	left_margin += y_axis_title.size.y if rotated_v_title else y_axis_title.size.x
 	
 	x_axis.origin = Vector2(left_margin, -bottom_margin)
@@ -204,7 +204,11 @@ func _update_margins():
 	var top_margin = get_theme_font_size("", "") * title_size / 2
 	x_axis.length = chart_area.size.x - (left_margin + right_margin)
 	y_axis.length = chart_area.size.y - (bottom_margin + top_margin)
-	
+
+func _get_max_num_of_digits(a, b):
+	var max_num = max(abs(a), abs(b))
+	return floor(log(max_num)/log(10))
+
 ## Returns the pixel length of the x and y axis drawings a [Vector2].
 func get_axes_lengths() -> Vector2:
 	return Vector2(x_axis.length, y_axis.length)
