@@ -3,11 +3,8 @@ extends EditorPlugin
 
 
 func _enter_tree() -> void:
-	# Initialization of the plugin goes here.
-	add_custom_type("Plot2D", "ColorRect", preload("plot_2d.gd"), preload("res://addons/god_plot/icon.svg"))
-	pass
+	add_custom_type("Plot2D", "ColorRect", preload("tools/plot_2d.gd"), preload("icon.svg"))
 
 
 func _exit_tree() -> void:
-	# Clean-up of the plugin goes here.
-	pass
+	remove_custom_type("Plot2D")

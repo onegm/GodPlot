@@ -18,7 +18,7 @@ class_name Graph extends ColorRect
 ## as node parent with [member margin] set to 0 for custom margins. 
 @export var margin : float = 10.0:
 	set(value):
-		margin = value
+		margin = max(0, value)
 		graph_v_box.set_offsets_preset(PRESET_FULL_RECT, PRESET_MODE_MINSIZE, margin)
 ## Title of the graph. Sets the [constant Label.text] property of [member graph_title]
 @export_multiline var title : String = "":
@@ -38,6 +38,7 @@ class_name Graph extends ColorRect
 		v_axis_title = value
 		if is_inside_tree(): y_axis_title.text = value
 		y_axis_title.visible = !v_axis_title.is_empty()
+		queue_redraw()
 ## Rotate the vertical axis title. 
 @export var rotated_v_title : bool = true:
 	set(value):

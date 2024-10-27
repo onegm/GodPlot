@@ -3,31 +3,31 @@ class_name Axis extends Control
 ## Class used to draw a custom axis. 
 
 ## Axis is oriented horizontally by default. If enabled, axis will be oriented vertically.
-@export var is_vertical : bool = false: 
+var is_vertical : bool = false: 
 	set(value):
 		is_vertical = value
 		direction = Vector2.UP if is_vertical else Vector2.RIGHT
 		out_direction = Vector2.LEFT if is_vertical else Vector2.DOWN
 ## The minimum value shown on the axis.
-@export var min_value : float = 0
+var min_value : float = 0
 ## The maximum value shown on the axis.
-@export var max_value : float = 10
+var max_value : float = 10
 ## The pixel length of the axis.
-@export var length : float = 500.0:
+var length : float = 500.0:
 	set(value):
-		length = value
+		length = max(0, value)
 		_update_tick_interval()
 ## The pixel thickness of the axis.
-@export var thickness : float = 5.0:
+var thickness : float = 5.0:
 	set(value):
-		thickness = value
+		thickness = max(0, value)
 		tick_length = 2 * thickness
 ## The color of the axis and its ticks.
-@export var color : Color = Color.BLACK
+var color : Color = Color.BLACK
 ## The number of ticks shown on the axis. No tick is drawn at the minimum value.
-@export var num_ticks : int = 10:
+var num_ticks : int = 10:
 	set(value):
-		num_ticks = value
+		num_ticks = max(0, value)
 		_update_tick_interval()
 ## The position of the axis origin relative the control node parent. 
 var origin : Vector2 = Vector2.ZERO
@@ -40,10 +40,7 @@ var out_direction : Vector2 = Vector2.DOWN
 ## Spacing between ticks. 
 var tick_interval : float = 0.0
 ## Pixel length of ticks
-var tick_length : float = 20.0:
-	set(value):
-		tick_length = value
-		_update_tick_interval()
+var tick_length : float = 10.0
 ## Used to show/hide values by the axis ticks.
 var show_tick_labels : bool = true
 ## Font size of the tick labels.

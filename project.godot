@@ -12,7 +12,6 @@ config_version=5
 
 config/name="GodPlot"
 config/features=PackedStringArray("4.3", "GL Compatibility")
-config/icon="res://addons/god_plot/icon.svg"
 
 [editor_plugins]
 

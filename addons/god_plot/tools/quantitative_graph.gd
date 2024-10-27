@@ -176,6 +176,7 @@ func _update_axes() -> void:
 	x_axis.decimal_places = x_decimal_places
 	x_axis.thickness = axis_thickness
 	x_axis.color = axis_color
+	x_axis.font_size = get_theme_font_size("", "") * label_size
 	
 	y_axis.min_value = min_limits.y
 	y_axis.max_value = max_limits.y
@@ -184,6 +185,7 @@ func _update_axes() -> void:
 	y_axis.decimal_places = y_decimal_places
 	y_axis.thickness = axis_thickness
 	y_axis.color = axis_color
+	y_axis.font_size = get_theme_font_size("", "") * label_size
 	
 func _update_margins():
 	## Update margins keeping drawings within the chart area. 
@@ -195,7 +197,7 @@ func _update_margins():
 	left_margin += get_theme_font_size("", "") * label_size * int(y_tick_labels)
 	left_margin += axis_thickness
 	left_margin += get_theme_font_size("", "") * label_size / 1.5 * (_get_max_num_of_digits(max_limits.y, min_limits.y) + y_decimal_places)
-	left_margin += y_axis_title.size.y if rotated_v_title else y_axis_title.size.x
+	left_margin += y_axis_title.size.y if (rotated_v_title and y_axis_title.visible) else y_axis_title.size.x
 	
 	x_axis.origin = Vector2(left_margin, -bottom_margin)
 	y_axis.origin = Vector2(left_margin, -bottom_margin)
