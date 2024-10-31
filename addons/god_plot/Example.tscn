@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b1eqbeh55eyfi"]
 
-[ext_resource type="Script" path="res://addons/god_plot/tools/plot_2d.gd" id="1_k1tl6"]
-[ext_resource type="Script" path="res://addons/god_plot/tools/quantitative_series.gd" id="2_qdif7"]
+[ext_resource type="Script" path="res://addons/god_plot/tools/graph_2d.gd" id="1_jlmqc"]
+[ext_resource type="Script" path="res://addons/god_plot/tools/series.gd" id="2_qdif7"]
 
 [node name="MainTest" type="Control"]
 layout_mode = 3
@@ -29,39 +29,28 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0.702373, 0.0255848, 0.390479, 1)
 
-[node name="Plot2D" type="ColorRect" parent="VSplitContainer/HSplitContainer2"]
+[node name="Graph2D" type="Control" parent="VSplitContainer/HSplitContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color(0, 0, 0, 1)
-script = ExtResource("1_k1tl6")
-axis_color = Color(1, 1, 1, 1)
-axis_thickness = 3.0
-x_gridlines_opacity = 0.5
-x_gridlines_major_thickness = 2.0
-y_gridlines_opacity = 0.5
-y_gridlines_major_thickness = 2.0
-y_gridlines_minor = 1
+script = ExtResource("1_jlmqc")
 title = "Title"
-h_axis_title = "Horizontal Title
-"
-v_axis_title = "Vertical Title"
+horizontal_title = "Horizontal Title"
 
-[node name="QuantitativeSeries" type="Node" parent="VSplitContainer/HSplitContainer2/Plot2D"]
+[node name="QuantitativeSeries" type="Node" parent="VSplitContainer/HSplitContainer2/Graph2D"]
 script = ExtResource("2_qdif7")
 type = 2
 data = PackedVector2Array(0, 2, 1, 4, 4, 1, 8, 2.2)
 
-[node name="QuantitativeSeries3" type="Node" parent="VSplitContainer/HSplitContainer2/Plot2D"]
+[node name="QuantitativeSeries3" type="Node" parent="VSplitContainer/HSplitContainer2/Graph2D"]
 script = ExtResource("2_qdif7")
 type = 1
 data = PackedVector2Array(0, 2, 1, 1, 5, 6, 7, 3, 8, 1)
 color = Color(1, 0.210008, 0.183029, 1)
 size = 5.0
 
-[node name="QuantitativeSeries2" type="Node" parent="VSplitContainer/HSplitContainer2/Plot2D"]
+[node name="QuantitativeSeries2" type="Node" parent="VSplitContainer/HSplitContainer2/Graph2D"]
 script = ExtResource("2_qdif7")
-data = PackedVector2Array(0, 2, 2.3, 2.6, 7.5, 2)
+data = PackedVector2Array(0, 2, 2, 5, 7.5, 2)
 color = Color(0, 0.843137, 0.117647, 1)
 size = 5.0
 
@@ -69,35 +58,26 @@ size = 5.0
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Plot2D" type="ColorRect" parent="VSplitContainer/HSplitContainer"]
+[node name="Graph2D2" type="Control" parent="VSplitContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color(0, 0, 0, 1)
-script = ExtResource("1_k1tl6")
-axis_color = Color(0, 0.843137, 0.117647, 1)
-x_tick_count = 0
-x_tick_labels = false
-y_tick_count = 0
-y_gridlines_major_thickness = 5.0
-y_gridlines_minor = 1
-y_gridlines_minor_thickness = 2.0
+script = ExtResource("1_jlmqc")
 
-[node name="QuantitativeSeries" type="Node" parent="VSplitContainer/HSplitContainer/Plot2D"]
+[node name="QuantitativeSeries" type="Node" parent="VSplitContainer/HSplitContainer/Graph2D2"]
 script = ExtResource("2_qdif7")
 type = 2
-data = PackedVector2Array(0, 2, 1, 1, 4, 1, 5, 3, 8, 4, 9, 3)
+data = PackedVector2Array(0, 2, 1, 4, 4, 1, 8, 2.2)
 
-[node name="QuantitativeSeries3" type="Node" parent="VSplitContainer/HSplitContainer/Plot2D"]
+[node name="QuantitativeSeries3" type="Node" parent="VSplitContainer/HSplitContainer/Graph2D2"]
 script = ExtResource("2_qdif7")
 type = 1
-data = PackedVector2Array(0, 2, 1, 1, 5, 6, 6, 2, 7, 3, 8, 5)
-color = Color(1, 0, 0, 1)
-size = 3.0
+data = PackedVector2Array(0, 2, 1, 1, 5, 6, 7, 3, 8, 1)
+color = Color(1, 0.210008, 0.183029, 1)
+size = 5.0
 
-[node name="QuantitativeSeries2" type="Node" parent="VSplitContainer/HSplitContainer/Plot2D"]
+[node name="QuantitativeSeries2" type="Node" parent="VSplitContainer/HSplitContainer/Graph2D2"]
 script = ExtResource("2_qdif7")
-data = PackedVector2Array(1, 5, 2, 7, 3, 3, 4, 5, 5, 8, 6, 6)
+data = PackedVector2Array(0, 2, 2.3, 2.6, 7.5, 2)
 color = Color(0, 0.843137, 0.117647, 1)
 size = 5.0
 

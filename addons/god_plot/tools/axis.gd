@@ -18,12 +18,12 @@ var length : float = 500.0:
 		length = max(0, value)
 		_update_tick_interval()
 ## The pixel thickness of the axis.
-var thickness : float = 5.0:
+var thickness : float = 3.0:
 	set(value):
 		thickness = max(0, value)
 		tick_length = 2 * thickness
 ## The color of the axis and its ticks.
-var color : Color = Color.BLACK
+var color : Color = Color.WHITE
 ## The number of ticks shown on the axis. No tick is drawn at the minimum value.
 var num_ticks : int = 10:
 	set(value):
@@ -56,8 +56,9 @@ func _draw() -> void:
 	_draw_tick_labels()
 	
 func _draw_ticks() -> void:
-	for i in range(num_ticks):
-		var start = origin + tick_interval * direction*(i+1)
+	if num_ticks <= 0: return
+	for i in range(num_ticks + 1):
+		var start = origin + (thickness / 2  + tick_interval * i) * direction
 		draw_line(start , start + tick_length * out_direction,
 				  color, thickness / 3)
 
@@ -83,4 +84,7 @@ func _calculate_label_offset(string_length : int) -> Vector2:
 	return offset
 
 func _update_tick_interval():
-	tick_interval = length / float(num_ticks) if num_ticks else 0
+	tick_interval = (length - thickness) / float(num_ticks) if num_ticks else 0
+
+func get_zero_position_offset() -> Vector2:
+	return thickness/2 * direction

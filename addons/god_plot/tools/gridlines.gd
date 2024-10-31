@@ -10,7 +10,7 @@ var major_thickness : float = 1.0
 ## Thickness of the minor gridlines.
 var minor_thickness : float = 1.0
 ## Number of minor gridlines between each pair of major gridlines.
-var minor_count : int = 2
+var minor_count : int = 0
 ## The axis from which the gridlines are drawn. The major gridlines will match the ticks on that axis.
 var origin_axis : Axis
 ## The axis parallel to the gridlines. The gridlines will match the length of this axis.
@@ -23,7 +23,7 @@ func _init(origin : Axis, parallel : Axis) -> void:
 func _draw() -> void:
 	var minor_interval = origin_axis.tick_interval / float(minor_count + 1)	
 	for tick_num in origin_axis.num_ticks:
-		var major_pos = origin_axis.origin + (tick_num + 1) * origin_axis.tick_interval * origin_axis.direction
+		var major_pos = origin_axis.origin + (origin_axis.thickness/2 + origin_axis.tick_interval * (tick_num + 1)) * origin_axis.direction
 		draw_line(
 			major_pos,
 			major_pos - parallel_axis.length * origin_axis.out_direction,

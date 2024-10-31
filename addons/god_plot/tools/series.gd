@@ -1,5 +1,5 @@
 @tool
-class_name QuantitativeSeries extends Node
+class_name Series extends Node
 
 ## A class for storing and managing series data and display information. This class
 ## is designed to be used as child of [Plot2D] and does not have any graphical capabilities

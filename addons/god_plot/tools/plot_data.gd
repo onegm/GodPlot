@@ -1,12 +1,12 @@
 @tool
 class_name PlotData extends Node
 
-var type : QuantitativeSeries.TYPE
+var type : Series.TYPE
 var points : PackedVector2Array = PackedVector2Array()
 var color : Color
 var size : float
 
-func _init(series_type : QuantitativeSeries.TYPE, series_color : Color, series_size = 1.0) -> void:
+func _init(series_type : Series.TYPE, series_color : Color, series_size = 1.0) -> void:
 	type = series_type
 	color = series_color
 	size = series_size
