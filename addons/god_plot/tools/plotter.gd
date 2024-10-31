@@ -17,28 +17,28 @@ func _load_drawing_positions(series : Series) -> void:
 func _load_scatter_positions(series : Series) -> void:
 	for point in series.data:
 		if not is_within_limits(point): continue
-		var point_position = find_point_local_postion(point)
-		to_plot.append(PlotData.new(series.type, series.color, series.size).add_point(point_position))
+		var point_position = find_point_local_position(point)
+		to_plot.append(PlotData.new_scatter_point(point_position, series.color, series.size))
 
 func _load_line_positions(series : Series) -> void:
 	if series.data.size() < 2: return
-	var plot_data = PlotData.new(series.type, series.color, series.size)
+	var line = PlotData.new_line(series.color, series.size)
 	for point in series.data:
 		if not is_within_limits(point): continue
-		var point_position = find_point_local_postion(point)
-		plot_data.add_point(point_position)
-	to_plot.append(plot_data)
+		var point_position = find_point_local_position(point)
+		line.add_point(point_position)
+	to_plot.append(line)
 
 func _load_area_positions(series : Series) -> void:
 	var polygon : PackedVector2Array
 	var first_x_coordinate := graph.min_limits.x - 1.0
 	var last_x_coordinate := graph.min_limits.x - 1.0
-	var zero_y = min(find_point_local_postion(Vector2(0,0)).y, 
-					 find_point_local_postion(graph.min_limits).y)
+	var zero_y = min(find_point_local_position(Vector2(0,0)).y, 
+					 find_point_local_position(graph.min_limits).y)
 	var found_first := false
 	for point in series.data:
 		if not is_within_limits(point): continue
-		var point_position = find_point_local_postion(point)
+		var point_position = find_point_local_position(point)
 		if !found_first:
 			first_x_coordinate = point_position.x
 			polygon.append(Vector2(point_position.x, zero_y))
@@ -50,12 +50,12 @@ func _load_area_positions(series : Series) -> void:
 	polygon.append(Vector2(last_x_coordinate, zero_y))
 	var poly_array = Geometry2D.merge_polygons(polygon, PackedVector2Array([]))
 	for piece in poly_array:
-		to_plot.append(PlotData.new(series.type, series.color).set_points(piece))
+		to_plot.append(PlotData.new_area(piece, series.color))
 
 func is_within_limits(point : Vector2) -> bool:
 	return 	point.clamp(graph.min_limits, graph.max_limits) == point
 
-func find_point_local_postion(point : Vector2) -> Vector2:
+func find_point_local_position(point : Vector2) -> Vector2:
 	var vector_from_graph_origin = point - graph.min_limits
 	var position_from_origin = Vector2(
 		vector_from_graph_origin.x / graph.range.x * (graph.x_axis.length - graph.axis_thickness/2),

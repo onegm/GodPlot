@@ -6,15 +6,24 @@ var points : PackedVector2Array = PackedVector2Array()
 var color : Color
 var size : float
 
-func _init(series_type : Series.TYPE, series_color : Color, series_size = 1.0) -> void:
-	type = series_type
-	color = series_color
-	size = series_size
+static func new_scatter_point(coordinates : Vector2, point_color : Color, point_size : float) -> PlotData:
+	var plot_point = PlotData.new(Series.TYPE.SCATTER, point_color, point_size)
+	plot_point.add_point(coordinates)
+	return plot_point
+
+static func new_line(line_color : Color, thickness : float) -> PlotData:
+	return PlotData.new(Series.TYPE.LINE, line_color, thickness)
+
+static func new_area(polygon : PackedVector2Array, area_color : Color) -> PlotData:
+	var area = PlotData.new(Series.TYPE.AREA, area_color)
+	area.points = polygon
+	return area
+
+func _init(the_type : Series.TYPE, the_color : Color, the_size = 1.0) -> void:
+	type = the_type
+	color = the_color
+	size = the_size
 
 func add_point(point : Vector2) -> PlotData:
 	points.append(point)
-	return self
-
-func set_points(point_array : PackedVector2Array) -> PlotData:
-	points = point_array
 	return self
