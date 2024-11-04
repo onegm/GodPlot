@@ -72,4 +72,5 @@ func _draw() -> void:
 				draw_polyline(plot_point.points, plot_point.color, plot_point.size, true)
 			Series.TYPE.AREA:
 				draw_colored_polygon(plot_point.points, plot_point.color)
+		plot_point.queue_free()
 	to_plot = []

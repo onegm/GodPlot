@@ -1,5 +1,5 @@
 # GodPlot
-A Godot 4 plug-in for creating graphs. The following graph types are supported:
+A Godot 4 plug-in for creating graphs. Works in the editor. The following graph types are supported:
 - Scatter plots
 - Line graphs
 - Area graphs

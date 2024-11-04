@@ -55,12 +55,12 @@ func add_point(point : Vector2) -> void:
 	data = _sort_by_x(data)
 	property_changed.emit()
 
-func _sort_by_x(series : PackedVector2Array) -> PackedVector2Array:
+static func _sort_by_x(series : PackedVector2Array) -> PackedVector2Array:
 	var array := Array(series)
 	array.sort_custom(_point_sort)
 	return PackedVector2Array(array)
 
-func _point_sort(a : Vector2, b : Vector2):
+static func _point_sort(a : Vector2, b : Vector2):
 	if a.x == b.x:
 		return a.y < b.y
 	return a.x < b.x

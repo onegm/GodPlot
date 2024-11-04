@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1eqbeh55eyfi"]
+[gd_scene load_steps=4 format=3 uid="uid://b1eqbeh55eyfi"]
 
+[ext_resource type="Script" path="res://addons/god_plot/example.gd" id="1_dxxyd"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/graph_2d.gd" id="1_jlmqc"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/series.gd" id="2_qdif7"]
 
@@ -10,6 +11,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_dxxyd")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="."]
 layout_mode = 1
@@ -23,11 +25,13 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="ColorRect" type="ColorRect" parent="VSplitContainer/HSplitContainer2"]
+[node name="LiveGraph" type="Control" parent="VSplitContainer/HSplitContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color(0.702373, 0.0255848, 0.390479, 1)
+script = ExtResource("1_jlmqc")
+color = Color(1, 1, 1, 1)
+font_color = Color(0, 0, 0, 1)
+axis_color = Color(0, 0, 0, 1)
 
 [node name="Graph2D" type="Control" parent="VSplitContainer/HSplitContainer2"]
 layout_mode = 2

@@ -12,6 +12,12 @@ func _ready() -> void:
 	series_container = SeriesContainer.new(self)
 	add_child(series_container)
 
+func new_series(type : Series.TYPE, color := Color.BLUE, size := 10.0):
+	return series_container.create_new_series(type, color, size)
+
+func remove_series(series : Series):
+	series_container.remove_series(series)
+
 func _draw() -> void:
 	_update_axes_limits()
 	super._draw()
