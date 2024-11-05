@@ -67,10 +67,10 @@ func _draw() -> void:
 	for plot_point in to_plot:
 		match plot_point.type:
 			Series.TYPE.SCATTER:
+				## Use a callable from ScatterPoint class instead??
 				draw_circle(plot_point.points[0], plot_point.size, plot_point.color)
 			Series.TYPE.LINE:
 				draw_polyline(plot_point.points, plot_point.color, plot_point.size, true)
 			Series.TYPE.AREA:
 				draw_colored_polygon(plot_point.points, plot_point.color)
-		plot_point.queue_free()
 	to_plot = []
