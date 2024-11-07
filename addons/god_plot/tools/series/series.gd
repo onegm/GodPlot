@@ -1,55 +1,40 @@
 @tool
 class_name Series extends Node
 
-## A class for storing and managing series data and display information. This class
-## is designed to be used as child of [Plot2D] and does not have any graphical capabilities
-## of its own.
-
-enum TYPE { ## Determines how the [Plot2D] will display this series on the graph.
-	SCATTER, ## Scatter plot with [member size] determining radius of each point.
-	## Line graph with [member size] determining thickness of line. Must 
-	## include at least [b]two[/b] data points to trigger drawing.
+enum TYPE {
+	SCATTER,
 	LINE, 
-	## Area graph. [member size] is not used in this case. Must 
-	## include at least [b]two[/b] data points to trigger drawing.
 	AREA 
 	}
-## Emitted when any property of the series is changed. Triggers a redraw of the graph.
 signal property_changed
 
-## Determines how the [Plot2D] will display this series on the graph.
 @export var type : TYPE = TYPE.SCATTER:
 	set(value):
 		type = value
 		property_changed.emit()
-## The (x, y) values of the series. Must include at least [b]two[/b] data points to trigger
-## drawing a [constant LINE] or [constant AREA] graph. 
 @export var data : PackedVector2Array: 
 	set(value):
 		data = _sort_by_x(value)
 		property_changed.emit()
-@export_group("Display")
-## Color of the series. Use transparency to allow for visible overlapping shapes. 
 @export var color : Color = Color.BLUE:
 	set(value):
 		color = value
 		property_changed.emit()
-## Determines the display size of [constant SCATTER] (radius) and [constant LINE] (thickness) plots.
-@export var size : float = 10.0:
-	set(value):
-		size = value
-		property_changed.emit()
+		
+func _init() -> void:
+	push_error("Cannot instantiate abstract class: " + get_script().get_global_name())
 
-func _init(series_type := TYPE.SCATTER, display_color := Color.BLUE, display_size := 10.0) -> void:
-	type = series_type
-	color = display_color
-	size = display_size
+static func create_new(type : Series.TYPE, color := Color.BLUE, size := 10.0):
+	match type:
+		TYPE.SCATTER: return ScatterSeries.new(color, size)
+		TYPE.LINE: return LineSeries.new(color, size)
+		TYPE.AREA: return AreaSeries.new(color)
+		_: push_error("Cannot create series of type: " + str(type))
 
 func _set_data(data_2D : PackedVector2Array):
 	data = _sort_by_x(data_2D)
 	property_changed.emit()
 
-## Adds a point to [member data] and emits [signal property_changed] signal.
 func add_point(point : Vector2) -> void:
 	data.append(point)
 	data = _sort_by_x(data)
@@ -65,9 +50,6 @@ static func _point_sort(a : Vector2, b : Vector2):
 		return a.y < b.y
 	return a.x < b.x
 
-## Removes a data point and, if found, returns it (as a [Vector2]) and 
-## emits [signal property_changed] signal. Returns null and does not emit a 
-## signal if not found.
 func remove_point(point : Vector2):
 	var point_idx = data.find(point)
 	if point_idx <= -1 : return null
@@ -75,13 +57,10 @@ func remove_point(point : Vector2):
 	data.remove_at(point_idx)
 	property_changed.emit()
 	return removed_point
-## Removes a point from [member data] using only the x value. Then returns it (as a [Vector2]) and 
-## emits [signal property_changed] signal if found. Returns null and does not emit a 
-## signal if not found.
+	
 func remove_point_by_x(x : float):
 	var point = Array(data).filter(func(point): return point.x == x).pop_front()
 	return remove_point(point)
 
-## Clears [member data] and emits [signal property_changed] signal. 
-func clear():
+func clear_data():
 	_set_data(PackedVector2Array())

@@ -29,15 +29,7 @@ func _connect_signals():
 	for series in series_arr:
 		if !series.property_changed.is_connected(graph.queue_redraw):
 			series.property_changed.connect(graph.queue_redraw)
-	
-## Dynamically creates and returns a [Series] node. A [Series] 
-## node can also be added manually in the editor.
-func create_new_series(type : Series.TYPE, color := Color.BLUE, display_size := 10.0) -> Series:
-	var series = Series.new(type, color, display_size)
-	graph.add_child(series)
-	return series
 
-## Removes a [Series] from the plot.
 func remove_series(series : Series):
 	graph.remove_child(series)
 

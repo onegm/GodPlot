@@ -3,11 +3,8 @@ class_name PlotData
 
 var color : Color
 
-static func new_scatter_point(position : Vector2, color := Color.BLUE, size := 5.0) -> ScatterPoint:
-	return ScatterPoint.new(position, color, size)
+func _init() -> void:
+	push_error("Cannot instantiate abstract class: " + get_script().get_global_name())
 
-static func new_line(line_color := Color.RED, thickness := 5.0) -> PlotData:
-	return Line.new(line_color, thickness)
-
-static func new_area(area_color : Color) -> PlotData:
-	return Area.new(area_color)
+func draw_on(canvas_item : CanvasItem):
+	push_error("Method draw_on() not defined for object " + get_script().get_global_name())

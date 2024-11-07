@@ -2,8 +2,8 @@ extends Control
 
 @onready var live_graph : Graph2D = $VSplitContainer/HSplitContainer2/LiveGraph
 
-var series_1 : Series
-var series_2 : Series
+var series_1 : ScatterSeries
+var series_2 : AreaSeries
 
 var timer : Timer = Timer.new()
 var x := 0.0

@@ -1,4 +1,4 @@
-class_name Area extends PlotData
+class_name AreaPlotData extends PlotData
 
 var polygon_points := PackedVector2Array()
 

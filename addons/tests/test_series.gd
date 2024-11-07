@@ -19,7 +19,7 @@ var sorted_packed_vector2_array := PackedVector2Array([
 ])
 
 func before_each():
-	series = autofree(Series.new(Series.TYPE.SCATTER))
+	series = autofree(Series.new())
 	series._set_data(sorted_packed_vector2_array)
 
 func test_static_sort_by_x():
@@ -27,11 +27,11 @@ func test_static_sort_by_x():
 	assert_eq(result, sorted_packed_vector2_array)
 
 func test_clear():
-	series.clear()
+	series.clear_data()
 	assert_eq(series.data, PackedVector2Array())
 
 func test_set_data():
-	series.clear()
+	series.clear_data()
 	assert_eq(series.data, PackedVector2Array())
 	series._set_data(unsorted_packed_vector2_array)
 	assert_eq(series.data, sorted_packed_vector2_array)

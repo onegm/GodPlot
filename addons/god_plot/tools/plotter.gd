@@ -14,28 +14,28 @@ func _load_drawing_positions(series : Series) -> void:
 		Series.TYPE.LINE: _load_line_positions(series)
 		Series.TYPE.AREA: _load_area_positions(series)
 
-func _load_scatter_positions(series : Series) -> void:
+func _load_scatter_positions(series : ScatterSeries) -> void:
 	for point in series.data:
 		if not is_within_limits(point):
 			continue
 		var point_position = find_point_local_position(point)
-		to_plot.append(PlotData.new_scatter_point(point_position, series.color, series.size))
+		to_plot.append(ScatterPlotData.new(point_position, series.color, series.size))
 
-func _load_line_positions(series : Series) -> void:
-	var line := PlotData.new_line(series.color, series.size)
-	for point in series.data:
+func _load_line_positions(line_series : LineSeries) -> void:
+	var line := LinePlotData.new(line_series.color, line_series.thickness)
+	for point in line_series.data:
 		if not is_within_limits(point): 
 			continue
 		var point_position = find_point_local_position(point)
 		line.add_point(point_position)
 	to_plot.append(line)
 
-func _load_area_positions(series : Series) -> void:
+func _load_area_positions(series : AreaSeries) -> void:
 	var points_within_limits = Array(series.data).filter(is_within_limits)
 	if points_within_limits.size() < 2:
 		return
 	
-	var area := PlotData.new_area(series.color)
+	var area := AreaPlotData.new(series.color)
 	var base_y = find_y_coordinate_of_area_base()
 	var starting_point := Vector2(
 		find_point_local_position(points_within_limits[0]).x, base_y

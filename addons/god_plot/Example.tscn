@@ -1,8 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://b1eqbeh55eyfi"]
+[gd_scene load_steps=3 format=3 uid="uid://b1eqbeh55eyfi"]
 
 [ext_resource type="Script" path="res://addons/god_plot/example.gd" id="1_dxxyd"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/graph_2d.gd" id="1_jlmqc"]
-[ext_resource type="Script" path="res://addons/god_plot/tools/series/series.gd" id="2_qdif7"]
 
 [node name="MainTest" type="Control"]
 layout_mode = 3
@@ -30,7 +29,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
 color = Color(1, 1, 1, 1)
-font_color = Color(0, 0, 0, 1)
 axis_color = Color(0, 0, 0, 1)
 
 [node name="Graph2D" type="Control" parent="VSplitContainer/HSplitContainer2"]
@@ -40,24 +38,6 @@ script = ExtResource("1_jlmqc")
 title = "Title"
 horizontal_title = "Horizontal Title"
 
-[node name="QuantitativeSeries" type="Node" parent="VSplitContainer/HSplitContainer2/Graph2D"]
-script = ExtResource("2_qdif7")
-type = 2
-data = PackedVector2Array(0, 2, 1, 4, 4, 1, 8, 2.2)
-
-[node name="QuantitativeSeries3" type="Node" parent="VSplitContainer/HSplitContainer2/Graph2D"]
-script = ExtResource("2_qdif7")
-type = 1
-data = PackedVector2Array(0, 2, 1, 1, 5, 6, 7, 3, 8, 1)
-color = Color(1, 0.210008, 0.183029, 1)
-size = 5.0
-
-[node name="QuantitativeSeries2" type="Node" parent="VSplitContainer/HSplitContainer2/Graph2D"]
-script = ExtResource("2_qdif7")
-data = PackedVector2Array(0, 2, 2, 5, 7.5, 2)
-color = Color(0, 0.843137, 0.117647, 1)
-size = 5.0
-
 [node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
 layout_mode = 2
 size_flags_vertical = 3
@@ -66,24 +46,6 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
-
-[node name="QuantitativeSeries" type="Node" parent="VSplitContainer/HSplitContainer/Graph2D2"]
-script = ExtResource("2_qdif7")
-type = 2
-data = PackedVector2Array(0, 2, 1, 4, 4, 1, 8, 2.2)
-
-[node name="QuantitativeSeries3" type="Node" parent="VSplitContainer/HSplitContainer/Graph2D2"]
-script = ExtResource("2_qdif7")
-type = 1
-data = PackedVector2Array(0, 2, 1, 1, 5, 6, 7, 3, 8, 1)
-color = Color(1, 0.210008, 0.183029, 1)
-size = 5.0
-
-[node name="QuantitativeSeries2" type="Node" parent="VSplitContainer/HSplitContainer/Graph2D2"]
-script = ExtResource("2_qdif7")
-data = PackedVector2Array(0, 2, 2.3, 2.6, 7.5, 2)
-color = Color(0, 0.843137, 0.117647, 1)
-size = 5.0
 
 [node name="ColorRect2" type="ColorRect" parent="VSplitContainer/HSplitContainer"]
 layout_mode = 2

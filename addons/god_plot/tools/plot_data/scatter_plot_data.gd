@@ -1,4 +1,4 @@
-class_name ScatterPoint extends PlotData
+class_name ScatterPlotData extends PlotData
 
 var position : Vector2
 var size : float
