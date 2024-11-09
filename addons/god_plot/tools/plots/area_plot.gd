@@ -1,4 +1,4 @@
-class_name AreaPlotData extends PlotData
+class_name AreaPlot extends Plot
 
 var polygon_points := PackedVector2Array()
 
@@ -10,9 +10,10 @@ func add_point(point : Vector2):
 		polygon_points.append(point)
 
 func draw_on(canvas_item : CanvasItem) -> void:
-	var doesnt_have_enough_points_to_draw_area = polygon_points.size() < 3
-	if doesnt_have_enough_points_to_draw_area: 
-		return
-	var poly_array = Geometry2D.merge_polygons(polygon_points, PackedVector2Array([]))
-	for piece in poly_array:
+	var polygon_arr = Geometry2D.merge_polygons(polygon_points, PackedVector2Array([]))
+
+	for piece in polygon_arr.filter(has_atleast_4_points):
 		canvas_item.draw_colored_polygon(piece, color)
+
+func has_atleast_4_points(packed_array : PackedVector2Array) -> bool:
+	return packed_array.size() >= 4

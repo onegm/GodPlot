@@ -1,8 +1,7 @@
 @tool
 class_name Plotter extends Control
-## Class responsible for drawing data onto the graph.
 
-var to_plot : Array[PlotData] = []
+var to_plot : Array[Plot] = []
 var graph : Graph2D
 
 func _init(graph_2D : Graph2D) -> void:
@@ -19,10 +18,10 @@ func _load_scatter_positions(series : ScatterSeries) -> void:
 		if not is_within_limits(point):
 			continue
 		var point_position = find_point_local_position(point)
-		to_plot.append(ScatterPlotData.new(point_position, series.color, series.size))
+		to_plot.append(ScatterPlot.new(point_position, series.color, series.size))
 
 func _load_line_positions(line_series : LineSeries) -> void:
-	var line := LinePlotData.new(line_series.color, line_series.thickness)
+	var line := LinePlot.new(line_series.color, line_series.thickness)
 	for point in line_series.data:
 		if not is_within_limits(point): 
 			continue
@@ -35,7 +34,7 @@ func _load_area_positions(series : AreaSeries) -> void:
 	if points_within_limits.size() < 2:
 		return
 	
-	var area := AreaPlotData.new(series.color)
+	var area := AreaPlot.new(series.color)
 	var base_y = find_y_coordinate_of_area_base()
 	var starting_point := Vector2(
 		find_point_local_position(points_within_limits[0]).x, base_y

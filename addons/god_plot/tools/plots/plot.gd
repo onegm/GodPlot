@@ -1,5 +1,5 @@
 @tool
-class_name PlotData
+class_name Plot
 
 var color : Color
 

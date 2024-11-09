@@ -1,4 +1,4 @@
-class_name LinePlotData extends PlotData
+class_name LinePlot extends Plot
 
 var points := PackedVector2Array()
 var thickness : float

@@ -48,6 +48,14 @@ var font_size : int = 16
 ## Number of decimal places shown in tick labels. 
 var decimal_places : int = 0
 
+static func new_x_axis() -> Axis:
+	return Axis.new()
+
+static func new_y_axis() -> Axis:
+	var axis = Axis.new()
+	axis.is_vertical = true
+	return axis
+
 func _draw() -> void:
 	draw_circle(origin, thickness/2, color)
 	draw_line(origin, origin + length * direction, color, thickness)
@@ -57,9 +65,10 @@ func _draw() -> void:
 	
 func _draw_ticks() -> void:
 	if num_ticks <= 0: return
+	_update_tick_interval()
 	for i in range(num_ticks + 1):
 		var start = origin + (thickness / 2  + tick_interval * i) * direction
-		draw_line(start , start + tick_length * out_direction,
+		draw_line(start - tick_length * out_direction , start + tick_length * out_direction,
 				  color, thickness / 3)
 
 func _draw_tick_labels() -> void:
@@ -88,3 +97,11 @@ func _update_tick_interval():
 
 func get_zero_position_offset() -> Vector2:
 	return thickness/2 * direction
+
+func get_zero_position_clipped() -> float:
+	if min_value >= 0:
+		return 0.0
+	if max_value <= 0:
+		return length
+	else:
+		return (0.0 - min_value) / (max_value - min_value) * length

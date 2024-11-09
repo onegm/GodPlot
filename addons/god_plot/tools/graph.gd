@@ -260,23 +260,6 @@ func _build_chart_area():
 	chart_area.add_child(plotter)
 	plotter.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 
-func _build_axes():
-	chart_area.add_child(x_axis)
-	x_axis.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
-	
-	chart_area.add_child(y_axis)
-	y_axis.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
-	y_axis.is_vertical = true
-	
-	
-
-func _build_gridlines():
-	chart_area.add_child(x_gridlines)
-	x_gridlines.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
-	
-	chart_area.add_child(y_gridlines)
-	y_gridlines.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
-
 func _build_y_axis_title():
 	chart_area.add_child(y_axis_title)
 	_update_y_axis_title_rotation_and_position()
@@ -296,6 +279,21 @@ func _update_y_axis_title_rotation_and_position():
 	else:
 		y_axis_title.rotation = 0
 		y_axis_title.position.y = chart_area.size.y/2
+
+func _build_axes():
+	chart_area.add_child(x_axis)
+	x_axis.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	
+	chart_area.add_child(y_axis)
+	y_axis.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	y_axis.is_vertical = true
+	
+func _build_gridlines():
+	chart_area.add_child(x_gridlines)
+	x_gridlines.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+	
+	chart_area.add_child(y_gridlines)
+	y_gridlines.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 
 func _build_x_axis_title():
 	graph_v_box.add_child(x_axis_title)
@@ -338,10 +336,18 @@ func _update_chart_margin():
 	chart_margin.left += get_theme_font_size("", "") * label_size * int(y_tick_labels)
 	chart_margin.left += axis_thickness
 	chart_margin.left += get_theme_font_size("", "") * label_size / 1.5 * (_get_max_num_of_digits(max_limits.y, min_limits.y) + y_decimal_places)
-	chart_margin.left += y_axis_title.size.y if (rotated_v_title and y_axis_title.visible) else y_axis_title.size.x
+	chart_margin.left += _get_y_axis_title_width()
 		
 	chart_margin.right =  get_theme_font_size("", "") * label_size/3 * (floor(log(abs(x_max))) + x_decimal_places)
-	chart_margin.top = get_theme_font_size("", "") * title_size / 2
+	chart_margin.top = _get_graph_title_height() / 2
+
+func _get_y_axis_title_width() -> float:
+	if rotated_v_title and y_axis_title.visible:
+		return y_axis_title.size.y
+	return y_axis_title.size.x
+
+func _get_graph_title_height() -> float:
+	return get_theme_font_size("", "") * title_size
 
 func _get_max_num_of_digits(a, b):
 	var max_num = max(abs(a), abs(b))
