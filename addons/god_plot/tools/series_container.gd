@@ -8,32 +8,22 @@ var graph : Graph
 
 func _init(the_graph : Graph) -> void:
 	graph = the_graph
-	
-func _ready() -> void:
-	await get_tree().process_frame
-	_load_series_in_order()
-	graph.child_order_changed.connect(_load_series_in_order)
-	graph.queue_redraw()
-
-func _load_series_in_order() -> void:
-	series_arr = []
-	for series in graph.get_children().filter(is_series):
-		series_arr.append(series)
-	_connect_signals()
-	graph.queue_redraw()
 
 func is_series(node : Node) -> bool:
 	return node is Series
 
-func _connect_signals():
-	for series in series_arr:
-		if !series.property_changed.is_connected(graph.queue_redraw):
-			series.property_changed.connect(graph.queue_redraw)
-
+func add_series(series : Series):
+	if series_arr.has(series):
+		return
+	series_arr.append(series)
+	series.property_changed.connect(graph.queue_redraw)
+	graph.queue_redraw()
+	
 func remove_series(series : Series):
-	graph.remove_child(series)
+	series.property_changed.disconnect(graph.queue_redraw)
+	series_arr.erase(series)
 
-func get_all_series():
+func get_all_series() -> Array[Series]:
 	return series_arr
 
 func get_min_values() -> Vector2:

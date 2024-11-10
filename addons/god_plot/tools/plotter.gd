@@ -52,20 +52,21 @@ func _load_area_positions(series : AreaSeries) -> void:
 	to_plot.append(area)
 	
 func find_y_coordinate_of_area_base() -> float:
-	if is_within_limits(Vector2(graph.min_limits.x, 0)):
-		return find_point_local_position(Vector2(graph.min_limits.x, 0)).y
-	if graph.min_limits.y < 0:
-		return find_point_local_position(Vector2(graph.min_limits.x, graph.max_limits.y)).y
-	return find_point_local_position(Vector2(graph.min_limits.x, graph.min_limits.y)).y
+	if is_within_limits(Vector2(graph.pair_of_axes.get_min_limits().x, 0)):
+		return find_point_local_position(Vector2(graph.pair_of_axes.get_min_limits().x, 0)).y
+	if graph.pair_of_axes.get_min_limits().y < 0:
+		return find_point_local_position(Vector2(graph.pair_of_axes.get_min_limits().x, graph.pair_of_axes.get_max_limits().y)).y
+	return find_point_local_position(Vector2(graph.pair_of_axes.get_min_limits().x, graph.pair_of_axes.get_min_limits().y)).y
 
 func is_within_limits(point : Vector2) -> bool:
-	return 	point.clamp(graph.min_limits, graph.max_limits) == point
+	return 	point.clamp(graph.pair_of_axes.get_min_limits(), graph.pair_of_axes.get_max_limits()) == point
 
 func find_point_local_position(point : Vector2) -> Vector2:
-	var vector_from_graph_origin = point - graph.min_limits
+	var vector_from_graph_origin = point - graph.pair_of_axes.get_min_limits()
+	var axes_range = graph.pair_of_axes.get_range()
 	var position_from_origin = Vector2(
-		vector_from_graph_origin.x / graph.range.x * (graph.x_axis.length - graph.axis_thickness/2),
-		-vector_from_graph_origin.y / graph.range.y * (graph.y_axis.length - graph.axis_thickness/2)
+		vector_from_graph_origin.x / axes_range.x * (graph.pair_of_axes.x_axis.length - graph.axis_thickness/2),
+		-vector_from_graph_origin.y / axes_range.y * (graph.pair_of_axes.y_axis.length - graph.axis_thickness/2)
 		)
 	return graph.get_zero_position() + position_from_origin 
 
