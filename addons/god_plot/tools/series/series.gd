@@ -7,6 +7,8 @@ enum TYPE {
 	AREA 
 	}
 signal property_changed
+var min_value := Vector2(INF, INF)
+var max_value := Vector2(-INF, -INF)
 
 @export var type : TYPE = TYPE.SCATTER:
 	set(value):
@@ -38,7 +40,12 @@ func _set_data(data_2D : PackedVector2Array):
 func add_point(point : Vector2) -> void:
 	data.append(point)
 	data = _sort_by_x(data)
+	_update_min_and_max(point)
 	property_changed.emit()
+
+func _update_min_and_max(point : Vector2):
+	min_value = min_value.min(point)
+	max_value = max_value.max(point)
 
 static func _sort_by_x(series : PackedVector2Array) -> PackedVector2Array:
 	var array := Array(series)

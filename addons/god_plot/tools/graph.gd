@@ -172,10 +172,9 @@ var graph_v_box := VBoxContainer.new() ## Contains [member graph_title], [member
 var graph_title := Label.new() ## Graph title [Label].
 var x_axis_title := Label.new() ## X Axis title [Label].
 var y_axis_title := Label.new() ## Y Axis title [Label].
-var chart_area := Control.new() ## A container for drawings created by inheriting classes. This is where graphical data is presented. 
 
-var plotter : Plotter = Plotter.new(self)
-var pair_of_axes := PairOfAxes.new(self)
+var pair_of_axes := PairOfAxes.new()
+var plotter : Plotter = Plotter.new(pair_of_axes)
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -196,7 +195,7 @@ func _build_vbox():
 	graph_v_box.set_anchors_and_offsets_preset(PRESET_FULL_RECT, PRESET_MODE_MINSIZE, border_margin)
 	graph_v_box.size_flags_horizontal = SIZE_EXPAND_FILL
 	_build_graph_title()
-	_build_chart_area()
+	_build_pair_of_axes()
 	_build_x_axis_title()
 
 func _build_graph_title():
@@ -206,18 +205,17 @@ func _build_graph_title():
 	graph_title.text = title
 	graph_title.visible = !title.is_empty()
 
-func _build_chart_area():
-	graph_v_box.add_child(chart_area)
-	chart_area.resized.connect(queue_redraw)
-	chart_area.size_flags_vertical = Control.SIZE_EXPAND_FILL
+func _build_pair_of_axes():
+	graph_v_box.add_child(pair_of_axes)
+	pair_of_axes.resized.connect(queue_redraw)
+	pair_of_axes.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_build_y_axis_title()
-	_build_axes()
 	
-	chart_area.add_child(plotter)
+	pair_of_axes.add_child(plotter)
 	plotter.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 
 func _build_y_axis_title():
-	chart_area.add_child(y_axis_title)
+	pair_of_axes.add_child(y_axis_title)
 	_update_y_axis_title_rotation_and_position()
 	y_axis_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	y_axis_title.set_anchors_preset(Control.PRESET_CENTER_LEFT)	
@@ -229,14 +227,10 @@ func _update_y_axis_title_rotation_and_position():
 	y_axis_title.pivot_offset = Vector2(y_axis_title.size.y/2, y_axis_title.size.y/2)
 	if rotated_v_title:
 		y_axis_title.rotation = -PI/2
-		y_axis_title.position.y = chart_area.size.y/2 + y_axis_title.size.x/3.0
+		y_axis_title.position.y = pair_of_axes.size.y/2 + y_axis_title.size.x/3.0
 	else:
 		y_axis_title.rotation = 0
-		y_axis_title.position.y = chart_area.size.y/2
-
-func _build_axes():
-	chart_area.add_child(pair_of_axes)
-	pair_of_axes.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+		y_axis_title.position.y = pair_of_axes.size.y/2
 
 func _build_x_axis_title():
 	graph_v_box.add_child(x_axis_title)
@@ -267,8 +261,5 @@ func get_y_axis_title_width() -> float:
 		return y_axis_title.size.y
 	return y_axis_title.size.x
 
-func get_graph_title_height() -> float:
-	return get_theme_font_size("", "") * title_size
-
 func get_zero_position() -> Vector2:
-	return pair_of_axes.x_axis.origin + pair_of_axes.x_axis.get_zero_position_offset() + pair_of_axes.y_axis.get_zero_position_offset()
+	return pair_of_axes.get_axes_bottom_left_position()

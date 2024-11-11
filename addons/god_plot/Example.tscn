@@ -35,7 +35,8 @@ axis_color = Color(0, 0, 0, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
-title = "Title"
+title = "Title
+(m)"
 horizontal_title = "Horizontal Title"
 vertical_title = "Vertical Title"
 
@@ -47,6 +48,7 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
+title = "Title"
 
 [node name="ColorRect2" type="ColorRect" parent="VSplitContainer/HSplitContainer"]
 layout_mode = 2

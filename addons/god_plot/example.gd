@@ -21,6 +21,6 @@ func _ready() -> void:
 	timer.start()
 	
 func add_point():
-	series_1.add_point(Vector2(randf()*10, randf()*10))
+	series_1.add_point(Vector2(randf()*10-5, randf()*10-5))
 	series_2.add_point(Vector2(x, sin(x + 3)*5))
 	x += 1/60.0

@@ -2,16 +2,31 @@
 class_name Plotter extends Control
 
 var to_plot : Array[Plot] = []
-var graph : Graph2D
+var axes : PairOfAxes
+var min_limits : Vector2
+var max_limits : Vector2
+var range : Vector2
 
-func _init(graph_2D : Graph2D) -> void:
-	graph = graph_2D
+func _init(pair_of_axes : PairOfAxes) -> void:
+	axes = pair_of_axes
+
+func plot_all(series_arr : Array[Series]):
+	to_plot = []
+	for series in series_arr:
+		_load_drawing_positions(series)
+	queue_redraw()
 
 func _load_drawing_positions(series : Series) -> void:
+	_update_axes_info()
 	match series.type:
 		Series.TYPE.SCATTER: _load_scatter_positions(series)
 		Series.TYPE.LINE: _load_line_positions(series)
 		Series.TYPE.AREA: _load_area_positions(series)
+		
+func _update_axes_info():
+	min_limits = axes.get_min_limits()
+	max_limits = axes.get_max_limits()
+	range = axes.get_range()
 
 func _load_scatter_positions(series : ScatterSeries) -> void:
 	for point in series.data:
@@ -35,7 +50,7 @@ func _load_area_positions(series : AreaSeries) -> void:
 		return
 	
 	var area := AreaPlot.new(series.color)
-	var base_y = find_y_coordinate_of_area_base()
+	var base_y = find_y_position_of_area_base()
 	var starting_point := Vector2(
 		find_point_local_position(points_within_limits[0]).x, base_y
 	)
@@ -50,27 +65,30 @@ func _load_area_positions(series : AreaSeries) -> void:
 	)
 	area.add_point(ending_point)
 	to_plot.append(area)
-	
-func find_y_coordinate_of_area_base() -> float:
-	if is_within_limits(Vector2(graph.pair_of_axes.get_min_limits().x, 0)):
-		return find_point_local_position(Vector2(graph.pair_of_axes.get_min_limits().x, 0)).y
-	if graph.pair_of_axes.get_min_limits().y < 0:
-		return find_point_local_position(Vector2(graph.pair_of_axes.get_min_limits().x, graph.pair_of_axes.get_max_limits().y)).y
-	return find_point_local_position(Vector2(graph.pair_of_axes.get_min_limits().x, graph.pair_of_axes.get_min_limits().y)).y
 
 func is_within_limits(point : Vector2) -> bool:
-	return 	point.clamp(graph.pair_of_axes.get_min_limits(), graph.pair_of_axes.get_max_limits()) == point
+	return 	point.clamp(min_limits, max_limits) == point
+	
+func find_y_position_of_area_base() -> float:
+	if max_limits.y < 0:
+		var top_edge_of_graph = max_limits
+		return find_point_local_position(top_edge_of_graph).y
+	
+	if min_limits.y > 0:
+		var bottom_edge_of_graph = min_limits
+		return find_point_local_position(bottom_edge_of_graph).y
+	
+	var y_equals_zero = Vector2(min_limits.x, 0)
+	return find_point_local_position(y_equals_zero).y
 
 func find_point_local_position(point : Vector2) -> Vector2:
-	var vector_from_graph_origin = point - graph.pair_of_axes.get_min_limits()
-	var axes_range = graph.pair_of_axes.get_range()
+	var vector_from_graph_minimum = point - min_limits
 	var position_from_origin = Vector2(
-		vector_from_graph_origin.x / axes_range.x * (graph.pair_of_axes.x_axis.length - graph.axis_thickness/2),
-		-vector_from_graph_origin.y / axes_range.y * (graph.pair_of_axes.y_axis.length - graph.axis_thickness/2)
+		vector_from_graph_minimum.x / range.x * (axes.x_axis.length - axes.thickness/2),
+		-vector_from_graph_minimum.y / range.y * (axes.y_axis.length - axes.thickness/2)
 		)
-	return graph.get_zero_position() + position_from_origin 
+	return axes.get_axes_bottom_left_position() + position_from_origin
 
 func _draw() -> void:
 	for plot_point in to_plot:
 		plot_point.draw_on(self)
-	to_plot = []

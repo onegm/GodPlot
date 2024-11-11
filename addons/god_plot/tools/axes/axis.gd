@@ -95,9 +95,6 @@ func _calculate_label_offset(string_length : int) -> Vector2:
 func _update_tick_interval():
 	tick_interval = (length - thickness) / float(num_ticks) if num_ticks else 0
 
-func get_zero_position_offset() -> Vector2:
-	return thickness/2 * direction
-
 func get_zero_position_clipped() -> float:
 	if min_value >= 0:
 		return 0.0

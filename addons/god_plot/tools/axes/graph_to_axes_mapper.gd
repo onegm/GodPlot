@@ -1,6 +1,8 @@
 class_name GraphToAxesMapper
 
-static func map(graph : Graph, axes : PairOfAxes):
+static func map(graph : Graph2D, axes : PairOfAxes):
+	axes.set_min_limits(graph.min_limits)
+	axes.set_max_limits(graph.max_limits)
 	axes.color = graph.axis_color
 	axes.thickness = graph.axis_thickness
 	axes.font_size = graph.get_theme_font_size("", "") * graph.label_size
@@ -17,3 +19,4 @@ static func map(graph : Graph, axes : PairOfAxes):
 	axes.y_gridlines.minor_thickness = graph.y_gridlines_minor_thickness
 	axes.y_gridlines.minor_count = graph.y_gridlines_minor
 	axes.y_gridlines.color = Color(graph.axis_color, graph.y_gridlines_opacity)
+	axes.y_title_margin = graph.get_y_axis_title_width()
