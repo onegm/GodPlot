@@ -16,11 +16,16 @@ func _ready() -> void:
 	live_graph.add_series(series_2)
 	
 	timer.wait_time = 0.25
-	timer.timeout.connect(add_point)
+	timer.timeout.connect(add_random_point)
+	timer.timeout.connect(remove_point)
 	add_child(timer)
 	timer.start()
 	
-func add_point():
+func add_random_point():
 	series_1.add_point(Vector2(randf()*10-5, randf()*10-5))
 	series_2.add_point(Vector2(x, sin(x + 3)*5))
 	x += 1/60.0
+
+func remove_point():
+	if series_1.data.size() < 10: return
+	series_1.remove_point(series_1.data[0])

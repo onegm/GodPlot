@@ -63,7 +63,15 @@ func remove_point(point : Vector2):
 	var removed_point = data[point_idx]
 	data.remove_at(point_idx)
 	property_changed.emit()
+	_recalculate_min_and_max()
 	return removed_point
+
+func _recalculate_min_and_max():
+	min_value = Vector2(INF, INF)
+	max_value = Vector2(-INF, -INF)
+	for point in data:
+		min_value = min_value.min(point)
+		max_value = max_value.max(point)
 	
 func remove_point_by_x(x : float):
 	var point = Array(data).filter(func(point): return point.x == x).pop_front()

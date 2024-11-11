@@ -1,9 +1,14 @@
+@tool
 class_name PairOfAxes extends Control
 
 var x_axis := Axis.new_x_axis()
 var y_axis := Axis.new_y_axis()
 var x_gridlines := Gridlines.new(x_axis, y_axis)
 var y_gridlines := Gridlines.new(y_axis, x_axis)
+var x_labels := AxisLabels.new(x_axis)
+var y_labels := AxisLabels.new(y_axis)
+
+var bottom_left_corner := Marker2D.new()
 
 var margin := {
 	"top" : 0.0,
@@ -28,8 +33,8 @@ var thickness : float:
 var font_size : float:
 	set(value):
 		font_size = value
-		x_axis.font_size = font_size
-		y_axis.font_size = font_size
+		x_labels.font_size = font_size
+		y_labels.font_size = font_size
 
 var num_ticks : Vector2i:
 	set(value):
@@ -40,24 +45,19 @@ var num_ticks : Vector2i:
 var visible_tick_labels : bool:
 	set(value):
 		visible_tick_labels = value
-		x_axis.show_tick_labels = visible_tick_labels
-		y_axis.show_tick_labels = visible_tick_labels
+		x_labels.visible = visible_tick_labels
+		y_labels.visible = visible_tick_labels
 
 var decimal_places : Vector2i:
 	set(value):
 		decimal_places = value
-		x_axis.decimal_places = decimal_places.x
-		y_axis.decimal_places = decimal_places.y	
+		x_labels.decimal_places = decimal_places.x
+		y_labels.decimal_places = decimal_places.y	
 	
 func _ready() -> void:
-	for axis in [x_axis, y_axis]:
-		add_child(axis)
-		axis.color = Color.DEEP_PINK
-		axis.show_tick_labels = true
-		axis.min_value = -15.0
-		axis.max_value = 0.0
-	add_child(x_gridlines)
-	add_child(y_gridlines)
+	add_child(bottom_left_corner)
+	for object in [x_axis, y_axis, x_gridlines, y_gridlines, x_labels, y_labels]:
+		bottom_left_corner.add_child(object)
 
 func get_min_limits() -> Vector2: return Vector2(x_axis.min_value, y_axis.min_value)
 	
@@ -72,55 +72,56 @@ func set_max_limits(max_limits : Vector2):
 	y_axis.max_value = max_limits.y
 	
 func get_range() -> Vector2:
-	return Vector2(x_axis.max_value - x_axis.min_value, y_axis.max_value - y_axis.min_value)
+	return Vector2(x_axis.get_range(), y_axis.get_range())
 	
 func _draw() -> void:
 	_update_margin()
-	_set_axes_margins()
-	_set_origin_position()
+	_set_bottom_left_corner()
+	_set_axes_origin_positions_and_lengths()
 	
 	x_axis.queue_redraw()
 	y_axis.queue_redraw()
 	x_gridlines.queue_redraw()
 	y_gridlines.queue_redraw()
+	x_labels.queue_redraw()
+	y_labels.queue_redraw()
 
 func _update_margin():
 	margin.bottom = _calculate_bottom_margin()
 	margin.left = _calculate_left_margin()
-	margin.right =  font_size/3 * (get_num_digits(x_axis.max_value) + x_axis.decimal_places)
+	margin.right =  font_size/3 * (get_max_num_digits(x_axis.min_value, x_axis.max_value) + decimal_places.x)
 
 func _calculate_bottom_margin() -> float:
 	var result = x_axis.tick_length if x_axis.num_ticks > 0 else 0.0
-	result += font_size if x_axis.show_tick_labels else 0.0
+	result += font_size if x_labels.visible else 0.0
 	result += thickness
 	return result
 
 func _calculate_left_margin(y_title_width : float = 0.0) -> float:
 	var result = y_title_width
 	result += y_axis.tick_length if y_axis.num_ticks > 0 else 0.0
-	result += font_size if y_axis.show_tick_labels else 0.0
+	result += font_size if y_labels.visible else 0.0
 	result += thickness
-	result += font_size / 1.5 * (max(get_num_digits(y_axis.max_value), get_num_digits(y_axis.min_value)) + y_axis.decimal_places)
+	result += font_size / 1.5 * (get_max_num_digits(y_axis.min_value, y_axis.max_value) + decimal_places.y)
 	result += y_title_margin
 	return result
+
+static func get_max_num_digits(num_1 : float, num_2 : float) -> int:
+	return max(get_num_digits(num_1), get_num_digits(num_2))
 
 static func get_num_digits(num : float) -> int:
 	num = abs(num)
 	return floor(log(num)/log(10)) if num > 0 else 1
 
-func _set_axes_margins():
-	x_axis.origin = Vector2(margin.left, -margin.bottom + size.y)
-	x_gridlines.origin = Vector2(margin.left, -margin.bottom + size.y)
-	
-	y_axis.origin = Vector2(margin.left, -margin.bottom + size.y)
-	y_gridlines.origin = Vector2(margin.left, -margin.bottom + size.y)
+func _set_bottom_left_corner():
+	bottom_left_corner.position = Vector2(margin.left, -margin.bottom + size.y)
+
+func _set_axes_origin_positions_and_lengths():
+	x_axis.origin = Vector2.UP * y_axis.get_zero_position_clipped()
+	y_axis.origin = Vector2.RIGHT * x_axis.get_zero_position_clipped()
 	
 	x_axis.length = size.x - (margin.left + margin.right)
 	y_axis.length = size.y - (margin.bottom + margin.top)
-
-func _set_origin_position():
-	x_axis.origin += Vector2.UP * y_axis.get_zero_position_clipped()
-	y_axis.origin += Vector2.RIGHT * x_axis.get_zero_position_clipped()
 
 func get_axes_bottom_left_position() -> Vector2:
 	return Vector2(margin.left, -margin.bottom)

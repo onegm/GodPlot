@@ -2,17 +2,13 @@
 class_name Axis extends Control
 ## Class used to draw a custom axis. 
 
-## Axis is oriented horizontally by default. If enabled, axis will be oriented vertically.
 var is_vertical : bool = false: 
 	set(value):
 		is_vertical = value
 		direction = Vector2.UP if is_vertical else Vector2.RIGHT
 		out_direction = Vector2.LEFT if is_vertical else Vector2.DOWN
-## The minimum value shown on the axis.
 var min_value : float = 0
-## The maximum value shown on the axis.
 var max_value : float = 10
-## The pixel length of the axis.
 var length : float = 500.0:
 	set(value):
 		length = max(0, value)
@@ -41,12 +37,6 @@ var out_direction : Vector2 = Vector2.DOWN
 var tick_interval : float = 0.0
 ## Pixel length of ticks
 var tick_length : float = 10.0
-## Used to show/hide values by the axis ticks.
-var show_tick_labels : bool = true
-## Font size of the tick labels.
-var font_size : int = 16
-## Number of decimal places shown in tick labels. 
-var decimal_places : int = 0
 
 static func new_x_axis() -> Axis:
 	return Axis.new()
@@ -61,7 +51,6 @@ func _draw() -> void:
 	draw_line(origin, origin + length * direction, color, thickness)
 	draw_circle(origin + length * direction, thickness/2, color)
 	_draw_ticks()
-	_draw_tick_labels()
 	
 func _draw_ticks() -> void:
 	if num_ticks <= 0: return
@@ -70,27 +59,6 @@ func _draw_ticks() -> void:
 		var start = origin + (thickness / 2  + tick_interval * i) * direction
 		draw_line(start - tick_length * out_direction , start + tick_length * out_direction,
 				  color, thickness / 3)
-
-func _draw_tick_labels() -> void:
-	if !num_ticks or !show_tick_labels: return
-	var axis_range = max_value - min_value
-	for i in range(num_ticks + 1):
-		var value = min_value + axis_range / num_ticks * i
-		var str_value = "%0.*f" % [decimal_places, value]
-		var offset = _calculate_label_offset(str_value.length())
-		var start = origin + tick_interval * direction * i
-		draw_string(get_theme_default_font(), start + offset, 
-					str_value, HORIZONTAL_ALIGNMENT_LEFT, -1,
-					font_size, color)
-
-func _calculate_label_offset(string_length : int) -> Vector2:
-	var offset = out_direction * (tick_length + font_size)
-	if is_vertical:
-		offset += out_direction * font_size/2.0 * (string_length - 1)
-		offset -= direction * font_size / 3.0
-	else:
-		offset -= direction * font_size / 3.5 * string_length
-	return offset
 
 func _update_tick_interval():
 	tick_interval = (length - thickness) / float(num_ticks) if num_ticks else 0
@@ -102,3 +70,13 @@ func get_zero_position_clipped() -> float:
 		return length
 	else:
 		return (0.0 - min_value) / (max_value - min_value) * length
+
+func get_range() -> float:
+	return max_value - min_value
+
+func get_value_at_each_tick() -> Array[float]:
+	var tick_values : Array[float] = []
+	var range := get_range()
+	for tick in (num_ticks + 1):
+		tick_values.append(min_value + range/num_ticks * tick)
+	return tick_values

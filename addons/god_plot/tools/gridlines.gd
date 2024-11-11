@@ -14,21 +14,33 @@ var parallel_axis : Axis
 
 var origin := Vector2.ZERO
 
+var major_gridline_positions : Array[Vector2] = []
+
 func _init(origin : Axis, parallel : Axis) -> void:
 	origin_axis = origin
 	parallel_axis = parallel
 	
 func _draw() -> void:
-	var minor_interval = origin_axis.tick_interval / float(minor_count + 1)	
+	draw_major_gridlines()
+	draw_minor_gridlines()
+
+func draw_major_gridlines():
+	major_gridline_positions = []
 	for tick_num in (origin_axis.num_ticks + 1):
 		var major_pos = origin + (origin_axis.thickness/2 + origin_axis.tick_interval * tick_num) * origin_axis.direction
+		major_gridline_positions.append(major_pos)
 		draw_line(
 			major_pos,
 			major_pos - parallel_axis.length * origin_axis.out_direction,
 			color, major_thickness
 			)
+
+func draw_minor_gridlines():
+	var minor_interval = origin_axis.tick_interval / float(minor_count + 1)	
+	var all_but_last_major_gridline = major_gridline_positions.slice(0, -1)
+	for major_pos in all_but_last_major_gridline:
 		for line_num in minor_count:
-			var minor_pos = major_pos - (line_num + 1) * minor_interval * origin_axis.direction
+			var minor_pos = major_pos + (line_num + 1) * minor_interval * origin_axis.direction
 			draw_line(
 				minor_pos,
 				minor_pos - parallel_axis.length * origin_axis.out_direction, 

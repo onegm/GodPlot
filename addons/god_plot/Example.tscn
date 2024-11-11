@@ -30,6 +30,7 @@ size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
 background_color = Color(1, 1, 1, 1)
 axis_color = Color(0, 0, 0, 1)
+x_gridlines_minor = 4
 
 [node name="Graph2D" type="Control" parent="VSplitContainer/HSplitContainer2"]
 layout_mode = 2
