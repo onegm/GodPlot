@@ -38,6 +38,9 @@ var tick_interval : float = 0.0
 ## Pixel length of ticks
 var tick_length : float = 10.0
 
+var tick_positions_along_axis : Array[float] = []
+var tick_positions : Array[Vector2] = []
+
 static func new_x_axis() -> Axis:
 	return Axis.new()
 
@@ -55,13 +58,40 @@ func _draw() -> void:
 func _draw_ticks() -> void:
 	if num_ticks <= 0: return
 	_update_tick_interval()
-	for i in range(num_ticks + 1):
-		var start = origin + (thickness / 2  + tick_interval * i) * direction
-		draw_line(start - tick_length * out_direction , start + tick_length * out_direction,
-				  color, thickness / 3)
+	_update_tick_positions()
+	for tick_position in tick_positions:
+		_draw_tick(tick_position)
+
+func _update_tick_positions():
+	tick_positions_along_axis.clear()
+	var zero_position = get_zero_position_clipped()
+	var tick_position_along_axis = zero_position
+	while tick_position_along_axis < length:
+		tick_positions_along_axis.append(tick_position_along_axis)
+		tick_position_along_axis += tick_interval
+	
+	tick_position_along_axis = zero_position - tick_interval
+	while tick_position_along_axis > 0:
+		tick_positions_along_axis.append(tick_position_along_axis)
+		tick_position_along_axis -= tick_interval
+	tick_positions_along_axis.sort()
+	
+	_set_tick_positions()
+
+func _set_tick_positions():
+	tick_positions.clear()
+	for tick_position in tick_positions_along_axis:
+		tick_positions.append(tick_position * direction + origin)
+
+func _draw_tick(start : Vector2):
+	draw_line(
+		start - tick_length * out_direction , 
+		start + tick_length * out_direction,
+		color, thickness / 3
+		)
 
 func _update_tick_interval():
-	tick_interval = (length - thickness) / float(num_ticks) if num_ticks else 0
+	tick_interval = length / float(num_ticks) if num_ticks else 0
 
 func get_zero_position_clipped() -> float:
 	if min_value >= 0:
@@ -69,7 +99,7 @@ func get_zero_position_clipped() -> float:
 	if max_value <= 0:
 		return length
 	else:
-		return (0.0 - min_value) / (max_value - min_value) * length
+		return (0.0 - min_value) / get_range() * length
 
 func get_range() -> float:
 	return max_value - min_value
@@ -77,6 +107,7 @@ func get_range() -> float:
 func get_value_at_each_tick() -> Array[float]:
 	var tick_values : Array[float] = []
 	var range := get_range()
-	for tick in (num_ticks + 1):
-		tick_values.append(min_value + range/num_ticks * tick)
+	for tick_position in tick_positions_along_axis:
+		var value = min_value + tick_position / length * range
+		tick_values.append(value)
 	return tick_values

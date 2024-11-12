@@ -17,7 +17,6 @@ func _ready() -> void:
 	
 	timer.wait_time = 0.25
 	timer.timeout.connect(add_random_point)
-	timer.timeout.connect(remove_point)
 	add_child(timer)
 	timer.start()
 	

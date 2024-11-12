@@ -12,7 +12,7 @@ var origin_axis : Axis
 ## The axis parallel to the gridlines. The gridlines will match the length of this axis.
 var parallel_axis : Axis
 
-var origin := Vector2.ZERO
+var minor_interval : float
 
 var major_gridline_positions : Array[Vector2] = []
 
@@ -25,24 +25,41 @@ func _draw() -> void:
 	draw_minor_gridlines()
 
 func draw_major_gridlines():
-	major_gridline_positions = []
-	for tick_num in (origin_axis.num_ticks + 1):
-		var major_pos = origin + (origin_axis.thickness/2 + origin_axis.tick_interval * tick_num) * origin_axis.direction
-		major_gridline_positions.append(major_pos)
+	_set_major_gridline_positions()
+	for major_pos in major_gridline_positions:
 		draw_line(
 			major_pos,
 			major_pos - parallel_axis.length * origin_axis.out_direction,
 			color, major_thickness
 			)
 
+func _set_major_gridline_positions():
+	major_gridline_positions.clear()
+	for tick_position in origin_axis.tick_positions_along_axis:
+		major_gridline_positions.append(tick_position * origin_axis.direction)
+
 func draw_minor_gridlines():
-	var minor_interval = origin_axis.tick_interval / float(minor_count + 1)	
-	var all_but_last_major_gridline = major_gridline_positions.slice(0, -1)
-	for major_pos in all_but_last_major_gridline:
-		for line_num in minor_count:
-			var minor_pos = major_pos + (line_num + 1) * minor_interval * origin_axis.direction
-			draw_line(
-				minor_pos,
-				minor_pos - parallel_axis.length * origin_axis.out_direction, 
-				color, minor_thickness
-			)
+	if !minor_count:
+		return
+	_update_minor_interval()
+	var first_minor_position = get_first_minor_position()
+	
+	var minor_gridline_position = first_minor_position
+	var graph_edge = origin_axis.length * origin_axis.direction
+	while minor_gridline_position < graph_edge:
+		draw_line(
+			minor_gridline_position,
+			minor_gridline_position - parallel_axis.length * origin_axis.out_direction, 
+			color, minor_thickness
+		)
+		minor_gridline_position += minor_interval * origin_axis.direction
+
+func _update_minor_interval():
+	minor_interval = origin_axis.tick_interval / float(minor_count + 1)	
+
+func get_first_minor_position() -> Vector2:
+	var first_minor_position = major_gridline_positions[0]
+	var smallest_remaining_gap = minor_interval * origin_axis.direction
+	while first_minor_position >= smallest_remaining_gap:
+		first_minor_position -= minor_interval * origin_axis.direction
+	return first_minor_position

@@ -1,4 +1,3 @@
-@tool
 class_name PairOfAxes extends Control
 
 var x_axis := Axis.new_x_axis()
