@@ -29,6 +29,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
 background_color = Color(1, 1, 1, 1)
+title = "Example Chart"
+title_size = 1.5
+horizontal_title = "Horizontal Title"
+vertical_title = "Vertical Title"
+font_color = Color(0, 0, 0, 1)
 axis_color = Color(0, 0, 0, 1)
 
 [node name="Graph2D" type="Control" parent="VSplitContainer/HSplitContainer2"]

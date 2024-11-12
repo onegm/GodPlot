@@ -19,8 +19,8 @@ var sorted_packed_vector2_array := PackedVector2Array([
 ])
 
 func before_each():
-	series = autofree(Series.new())
-	series._set_data(sorted_packed_vector2_array)
+	series = autofree(ScatterSeries.new())
+	series.set_data(sorted_packed_vector2_array)
 
 func test_static_sort_by_x():
 	var result = Series._sort_by_x(unsorted_packed_vector2_array)
@@ -33,12 +33,12 @@ func test_clear():
 func test_set_data():
 	series.clear_data()
 	assert_eq(series.data, PackedVector2Array())
-	series._set_data(unsorted_packed_vector2_array)
+	series.set_data(unsorted_packed_vector2_array)
 	assert_eq(series.data, sorted_packed_vector2_array)
 
 func test_add_point_to_end():
 	var point_to_add = Vector2(100, 0)
-	series.add_point(point_to_add)
+	series.add_point_vector(point_to_add)
 	
 	var expected = sorted_packed_vector2_array + PackedVector2Array([point_to_add])
 	
@@ -46,7 +46,7 @@ func test_add_point_to_end():
 	
 func test_add_point_to_front():
 	var point_to_add = Vector2(-100, 0)
-	series.add_point(point_to_add)
+	series.add_point_vector(point_to_add)
 	
 	var expected = PackedVector2Array([point_to_add]) + sorted_packed_vector2_array
 	
@@ -54,7 +54,7 @@ func test_add_point_to_front():
 
 func test_add_point_in_middle():
 	var point_to_add = Vector2(0, 0)
-	series.add_point(point_to_add)
+	series.add_point_vector(point_to_add)
 	
 	var expected = Series._sort_by_x(PackedVector2Array([point_to_add]) + sorted_packed_vector2_array)
 	
