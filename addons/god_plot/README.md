@@ -5,7 +5,8 @@ A Godot 4 plug-in for creating graphs. Works in the editor. The following graph 
 - Area graphs
 
 ## Example: 
-![image](https://github.com/user-attachments/assets/cde1b6cf-b063-43cc-8615-6dc3d360d47f)
+![image](https://github.com/user-attachments/assets/802e9948-ab4a-478c-9842-6243ba98755a)
+
 
 Create a series
 ```GDScript
