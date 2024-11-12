@@ -11,7 +11,7 @@ func _init(axis_to_label : Axis) -> void:
 func _draw():
 	if !axis.num_ticks: return
 	var tick_positions_along_edge : Array = get_tick_positions_along_edge()
-	var tick_values : Array = axis.get_value_at_each_tick()
+	var tick_values : Array = axis.get_label_values_at_ticks()
 	for i in tick_positions_along_edge.size():
 		var value = tick_values[i]
 		var str_value = "%0.*f" % [decimal_places, value]

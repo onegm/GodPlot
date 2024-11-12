@@ -1,7 +1,7 @@
 @tool
 class_name Graph2D extends Graph
 ## A node for creating two-dimensional quantitative graphs. 
-## Used with [Series] to plot data on a 2D graph.
+## Used with a [Series] inheriting node to plot data on a 2D graph.
 
 var series_container := SeriesContainer.new()
 var min_limits := Vector2(x_min, y_min)

@@ -77,7 +77,6 @@ func _draw() -> void:
 	_update_margin()
 	_set_bottom_left_corner()
 	_set_axes_origin_positions_and_lengths()
-	
 	x_axis.queue_redraw()
 	y_axis.queue_redraw()
 	x_gridlines.queue_redraw()
@@ -123,4 +122,4 @@ func _set_axes_origin_positions_and_lengths():
 	y_axis.length = size.y - (margin.bottom + margin.top)
 
 func get_axes_bottom_left_position() -> Vector2:
-	return Vector2(margin.left, -margin.bottom)
+	return bottom_left_corner.position

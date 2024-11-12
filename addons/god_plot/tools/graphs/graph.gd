@@ -1,6 +1,6 @@
 @tool
 class_name Graph extends Control
-## Abstract class for creating graphs. Should not be used directly. Use inheriting classes instead.
+## Abstract class for creating graphs. Use inheriting classes instead.
 
 @export var background_color : Color = Color.BLACK:
 	set(value):
@@ -65,7 +65,7 @@ class_name Graph extends Control
 	set(value):
 		label_size = value
 		_on_theme_changed()
-		
+## Automatically adjusts axis min and max values to accommodate data. 
 @export var auto_scaling : bool = true:
 	set(value):
 		auto_scaling = value
@@ -100,78 +100,69 @@ class_name Graph extends Control
 		x_decimal_places = value
 		queue_redraw()
 @export_subgroup("Gridlines", "x_gridlines")
-## Control opacity of gridlines along the x-axis.
 @export_range(0, 1) var x_gridlines_opacity : float = 1.0:
 	set(value):
 		x_gridlines_opacity = value
 		queue_redraw()
-## Set the thickness of the major gridlines
+
 @export var x_gridlines_major_thickness : float = 1.0:
 	set(value):
 		x_gridlines_major_thickness = value
 		queue_redraw()
-## Number of minor gridlines between each interval along the x-axis.
+
 @export_range(0, 10) var x_gridlines_minor : int = 0:
 	set(value):
 		x_gridlines_minor = value
 		queue_redraw()
-## Set the thickness of the minor gridlines
+
 @export var x_gridlines_minor_thickness : float = 1.0:
 	set(value):
 		x_gridlines_minor_thickness = value
 		queue_redraw()
 
 @export_group("Y Axis", "y_")
-## Minimun value on y-axis. Can be overriden if auto-scaling is enabled.
 @export var y_min: float = 0.0:
 	set(value):
 		y_min = value
 		if y_min > y_max: y_max = y_min
 		queue_redraw()
-## Maximum value on y-axis. Can be overriden if auto-scaling is enabled.
 @export var y_max: float = 10.0:
 	set(value):
 		y_max = value
 		if y_max < y_min: y_min = y_max
 		queue_redraw()
-## Number of ticks displayed on the y-axis.
 @export var y_tick_count: int = 10:
 	set(value):
 		y_tick_count = value
 		queue_redraw()
 
-## Number of decimal places shown on the y-axis tick labels.
 @export_range(0, 5) var y_decimal_places : int = 1:
 	set(value):
 		y_decimal_places = value
 		queue_redraw()
 @export_subgroup("Gridlines", "y_gridlines")
-## Control opacity of gridlines along the y-axis.
 @export_range(0, 1) var y_gridlines_opacity : float = 1.0:
 	set(value):
 		y_gridlines_opacity = value
 		queue_redraw()
-## Set the thickness of the major gridlines
 @export var y_gridlines_major_thickness : float = 1.0:
 	set(value):
 		y_gridlines_major_thickness = value
 		queue_redraw()
-## Number of minor gridlines between each interval along the y-axis.
 @export_range(0, 10) var y_gridlines_minor : int = 0:
 	set(value):
 		y_gridlines_minor = value
 		queue_redraw()
-## Set the thickness of the minor gridlines.
 @export var y_gridlines_minor_thickness : float = 1.0:
 	set(value):
 		y_gridlines_minor_thickness = value
 		queue_redraw()
 
-var color_rect := ColorRect.new() ## Background color.
-var graph_v_box := VBoxContainer.new() ## Contains [member graph_title], [member graph_h_box], and [member x_axis_title].
-var graph_title := Label.new() ## Graph title [Label].
-var x_axis_title := Label.new() ## X Axis title [Label].
-var y_axis_title := Label.new() ## Y Axis title [Label].
+var color_rect := ColorRect.new()
+var graph_v_box := VBoxContainer.new()
+var graph_title := Label.new() 
+var x_axis_title := Label.new()
+var y_axis_title := Label.new()
 
 var pair_of_axes := PairOfAxes.new()
 var plotter : Plotter = Plotter.new(pair_of_axes)
@@ -212,7 +203,6 @@ func _build_pair_of_axes():
 	_build_y_axis_title()
 	
 	pair_of_axes.add_child(plotter)
-	plotter.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 
 func _build_y_axis_title():
 	pair_of_axes.add_child(y_axis_title)
@@ -260,6 +250,3 @@ func get_y_axis_title_width() -> float:
 	if rotated_v_title and y_axis_title.visible:
 		return y_axis_title.size.y
 	return y_axis_title.size.x
-
-func get_zero_position() -> Vector2:
-	return pair_of_axes.get_axes_bottom_left_position()

@@ -8,4 +8,3 @@ class_name LineSeries extends Series
 func _init(line_color : Color, line_thickness : float) -> void:
 	color = line_color
 	thickness = line_thickness
-	type = TYPE.LINE

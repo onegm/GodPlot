@@ -1,6 +1,5 @@
 @tool
 class_name Axis extends Control
-## Class used to draw a custom axis. 
 
 var is_vertical : bool = false: 
 	set(value):
@@ -13,31 +12,25 @@ var length : float = 500.0:
 	set(value):
 		length = max(0, value)
 		_update_tick_interval()
-## The pixel thickness of the axis.
+
 var thickness : float = 3.0:
 	set(value):
 		thickness = max(0, value)
 		tick_length = 2 * thickness
-## The color of the axis and its ticks.
+
 var color : Color = Color.WHITE
-## The number of ticks shown on the axis. No tick is drawn at the minimum value.
+
 var num_ticks : int = 10:
 	set(value):
 		num_ticks = max(0, value)
 		_update_tick_interval()
-## The position of the axis origin relative the control node parent. 
-var origin : Vector2 = Vector2.ZERO
-## The direction along the axis. [constant Vector2.RIGHT] for the horizontal and 
-## [constant Vector2.UP] for the vertical orientation. 
-var direction : Vector2 = Vector2.RIGHT
-## The direction "out" of the graph. [constant Vector2.DOWN] for the horizontal 
-## and [constant Vector2.LEFT] for the vertical orientation
-var out_direction : Vector2 = Vector2.DOWN
-## Spacing between ticks. 
-var tick_interval : float = 0.0
-## Pixel length of ticks
-var tick_length : float = 10.0
 
+var origin : Vector2 = Vector2.ZERO
+var direction : Vector2 = Vector2.RIGHT
+var out_direction : Vector2 = Vector2.DOWN
+
+var tick_interval : float = 0.0
+var tick_length : float = 10.0
 var tick_positions_along_axis : Array[float] = []
 var tick_positions : Array[Vector2] = []
 
@@ -62,36 +55,24 @@ func _draw_ticks() -> void:
 	for tick_position in tick_positions:
 		_draw_tick(tick_position)
 
+func _update_tick_interval():
+	tick_interval = length / float(num_ticks) if num_ticks else 0
+
 func _update_tick_positions():
 	tick_positions_along_axis.clear()
 	var zero_position = get_zero_position_clipped()
-	var tick_position_along_axis = zero_position
-	while tick_position_along_axis < length:
-		tick_positions_along_axis.append(tick_position_along_axis)
-		tick_position_along_axis += tick_interval
+	var tick_position : float = zero_position
+	while tick_position < length:
+		tick_positions_along_axis.append(tick_position)
+		tick_position += tick_interval
 	
-	tick_position_along_axis = zero_position - tick_interval
-	while tick_position_along_axis > 0:
-		tick_positions_along_axis.append(tick_position_along_axis)
-		tick_position_along_axis -= tick_interval
+	tick_position = zero_position - tick_interval
+	while tick_position > 0:
+		tick_positions_along_axis.append(tick_position)
+		tick_position -= tick_interval
+		
 	tick_positions_along_axis.sort()
-	
-	_set_tick_positions()
-
-func _set_tick_positions():
-	tick_positions.clear()
-	for tick_position in tick_positions_along_axis:
-		tick_positions.append(tick_position * direction + origin)
-
-func _draw_tick(start : Vector2):
-	draw_line(
-		start - tick_length * out_direction , 
-		start + tick_length * out_direction,
-		color, thickness / 3
-		)
-
-func _update_tick_interval():
-	tick_interval = length / float(num_ticks) if num_ticks else 0
+	_set_vector_tick_positions()
 
 func get_zero_position_clipped() -> float:
 	if min_value >= 0:
@@ -103,8 +84,21 @@ func get_zero_position_clipped() -> float:
 
 func get_range() -> float:
 	return max_value - min_value
+	
+func _set_vector_tick_positions():
+	tick_positions.clear()
+	for tick_position in tick_positions_along_axis:
+		var vector_tick_position = tick_position * direction + origin
+		tick_positions.append(vector_tick_position)
 
-func get_value_at_each_tick() -> Array[float]:
+func _draw_tick(start : Vector2):
+	draw_line(
+		start - tick_length * out_direction , 
+		start + tick_length * out_direction,
+		color, thickness / 3
+		)
+
+func get_label_values_at_ticks() -> Array[float]:
 	var tick_values : Array[float] = []
 	var range := get_range()
 	for tick_position in tick_positions_along_axis:

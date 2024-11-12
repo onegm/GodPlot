@@ -1,19 +1,11 @@
 @tool
 class_name Series extends Node
+## Abstract class for storing series info. Use inheriting classes. 
 
-enum TYPE {
-	SCATTER,
-	LINE, 
-	AREA 
-	}
 signal property_changed
 var min_value := Vector2(INF, INF)
 var max_value := Vector2(-INF, -INF)
 
-@export var type : TYPE = TYPE.SCATTER:
-	set(value):
-		type = value
-		property_changed.emit()
 @export var data : PackedVector2Array: 
 	set(value):
 		data = _sort_by_x(value)
@@ -26,18 +18,17 @@ var max_value := Vector2(-INF, -INF)
 func _init() -> void:
 	push_error("Cannot instantiate abstract class: " + get_script().get_global_name())
 
-static func create_new(type : Series.TYPE, color := Color.BLUE, size := 10.0):
-	match type:
-		TYPE.SCATTER: return ScatterSeries.new(color, size)
-		TYPE.LINE: return LineSeries.new(color, size)
-		TYPE.AREA: return AreaSeries.new(color)
-		_: push_error("Cannot create series of type: " + str(type))
-
-func _set_data(data_2D : PackedVector2Array):
+func set_data_from_Vector2_array(array : Array[Vector2]):
+	set_data(PackedVector2Array(array))
+	
+func set_data(data_2D : PackedVector2Array):
 	data = _sort_by_x(data_2D)
 	property_changed.emit()
 
-func add_point(point : Vector2) -> void:
+func add_point(x : float, y : float) -> void:
+	add_point_vector(Vector2(x, y))
+	
+func add_point_vector(point : Vector2) -> void:
 	data.append(point)
 	data = _sort_by_x(data)
 	_update_min_and_max(point)
@@ -57,6 +48,10 @@ static func _point_sort(a : Vector2, b : Vector2):
 		return a.y < b.y
 	return a.x < b.x
 
+func remove_front_point_by_x(x : float):
+	var point = Array(data).filter(func(point): return point.x == x).pop_front()
+	return remove_point(point)
+
 func remove_point(point : Vector2):
 	var point_idx = data.find(point)
 	if point_idx <= -1 : return null
@@ -72,10 +67,6 @@ func _recalculate_min_and_max():
 	for point in data:
 		min_value = min_value.min(point)
 		max_value = max_value.max(point)
-	
-func remove_point_by_x(x : float):
-	var point = Array(data).filter(func(point): return point.x == x).pop_front()
-	return remove_point(point)
 
 func clear_data():
-	_set_data(PackedVector2Array())
+	set_data(PackedVector2Array())
