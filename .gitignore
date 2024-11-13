@@ -15,6 +15,6 @@ data_*/
 mono_crash.*.json
 
 # Other
-addons/gut
-tests/
 *.kra
+/tests
+/addons/gut
