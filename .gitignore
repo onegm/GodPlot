@@ -16,4 +16,5 @@ mono_crash.*.json
 
 # Other
 addons/gut
+tests/
 *.kra
