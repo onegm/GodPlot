@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1eqbeh55eyfi"]
+[gd_scene load_steps=4 format=3 uid="uid://b1eqbeh55eyfi"]
 
 [ext_resource type="Script" path="res://addons/god_plot/example/example.gd" id="1_dxxyd"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/graphs/graph_2d.gd" id="1_jlmqc"]
+[ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/scatter_series.gd" id="3_tmo5p"]
 
 [node name="MainTest" type="Control"]
 layout_mode = 3
@@ -25,6 +26,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="LiveGraph" type="Control" parent="VSplitContainer/HSplitContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
@@ -35,6 +37,12 @@ horizontal_title = "Horizontal Title"
 vertical_title = "Vertical Title"
 font_color = Color(0, 0, 0, 1)
 axis_color = Color(0, 0, 0, 1)
+
+[node name="ScatterSeries" type="Node" parent="VSplitContainer/HSplitContainer2/LiveGraph"]
+unique_name_in_owner = true
+script = ExtResource("3_tmo5p")
+shape = 3
+color = Color(0.956863, 0, 0.0980392, 1)
 
 [node name="Graph2D" type="Control" parent="VSplitContainer/HSplitContainer2"]
 layout_mode = 2

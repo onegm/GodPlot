@@ -35,7 +35,7 @@ func _load_scatter_positions(series : ScatterSeries) -> void:
 		if not is_within_limits(point):
 			continue
 		var point_position = find_point_local_position(point)
-		to_plot.append(ScatterPlot.new(point_position, series.color, series.size))
+		to_plot.append(ScatterPlot.from_scatter_series(point_position, series))
 
 func _load_line_positions(line_series : LineSeries) -> void:
 	var line := LinePlot.new(line_series.color, line_series.thickness)

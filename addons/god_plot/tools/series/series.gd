@@ -70,3 +70,6 @@ func _recalculate_min_and_max():
 
 func clear_data():
 	set_data(PackedVector2Array())
+
+func get_color() -> Color:
+	return color
