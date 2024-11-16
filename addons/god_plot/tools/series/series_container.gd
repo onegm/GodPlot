@@ -30,3 +30,7 @@ func get_max_value() -> Vector2:
 	for series in series_arr:
 		max_value = max_value.max(series.max_value)
 	return max_value
+
+func clear():
+	for series in series_arr.duplicate():
+		remove_series(series)
