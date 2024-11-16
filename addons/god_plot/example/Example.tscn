@@ -41,9 +41,11 @@ axis_color = Color(0, 0, 0, 1)
 [node name="ScatterSquare" type="Node" parent="VSplitContainer/HSplitContainer2/LiveGraph"]
 unique_name_in_owner = true
 script = ExtResource("3_tmo5p")
-size = 3.0
-shape = 4
-color = Color(0.957, 0, 0.098, 0.752)
+size = 4.0
+shape = 1
+stroke = 1.0
+data = PackedVector2Array(0, 0, 5, 5)
+color = Color(0.641681, 0, 0.0959515, 1)
 
 [node name="Graph2D" type="Control" parent="VSplitContainer/HSplitContainer2"]
 layout_mode = 2

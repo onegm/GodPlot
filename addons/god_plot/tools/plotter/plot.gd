@@ -1,4 +1,3 @@
-@tool
 class_name Plot
 
 var color : Color

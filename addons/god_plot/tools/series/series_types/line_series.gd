@@ -1,3 +1,4 @@
+@tool
 class_name LineSeries extends Series
 
 @export var thickness : float:

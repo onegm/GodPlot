@@ -1,6 +1,5 @@
 @tool
 class_name SeriesContainer extends Node
-## This class handles all series linked to a particular graph.
 
 var series_arr : Array[Series] = []
 

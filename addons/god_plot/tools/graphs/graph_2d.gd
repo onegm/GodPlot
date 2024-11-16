@@ -11,6 +11,11 @@ func _ready() -> void:
 	super._ready()
 	add_child(series_container)
 	series_container.redraw_requested.connect(queue_redraw)
+	child_order_changed.connect(_load_children_series)
+	_load_children_series()
+
+func _load_children_series():
+	get_children().filter(func(child): return child is Series).map(add_series)
 
 func add_series(series : Series) -> void:
 	series_container.add_series(series)
