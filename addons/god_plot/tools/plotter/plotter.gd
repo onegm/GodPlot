@@ -24,7 +24,7 @@ func _load_drawing_positions(series : Series) -> void:
 		_load_line_positions(series)
 	elif series is AreaSeries:
 		_load_area_positions(series)
-		
+
 func _update_axes_info():
 	min_limits = axes.get_min_limits()
 	max_limits = axes.get_max_limits()
@@ -78,7 +78,7 @@ func find_point_local_position(point : Vector2) -> Vector2:
 		-vector_from_graph_minimum.y / range.y * axes.y_axis.length
 		)
 	return axes.get_axes_bottom_left_position() + position_from_origin
-	
+
 func find_y_position_of_area_base() -> float:
 	if max_limits.y < 0:
 		var top_edge_of_graph = max_limits
