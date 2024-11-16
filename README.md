@@ -1,6 +1,6 @@
 # GodPlot
 A Godot 4 plug-in for creating graphs. Works in the editor. The following graph types are supported:
-- Scatter plots
+- Scatter plots (circle, square, triangle, X, star)
 - Line graphs
 - Area graphs
 
@@ -26,3 +26,8 @@ Add data to series
 	series_2.add_point(x, sin(x)*5)
 	series_3.add_point(x, sqrt(x)*5)
 ```
+## Graph options
+![graph_options](https://github.com/user-attachments/assets/8cff2d7f-158b-44d2-85b5-2fe64e9d0cd0)
+
+## Scatter plot series options
+![series_options](https://github.com/user-attachments/assets/7a9f8c7d-a58d-4637-9bfb-0123a08101bc)
