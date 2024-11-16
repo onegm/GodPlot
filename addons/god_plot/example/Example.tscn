@@ -38,11 +38,12 @@ vertical_title = "Vertical Title"
 font_color = Color(0, 0, 0, 1)
 axis_color = Color(0, 0, 0, 1)
 
-[node name="ScatterSeries" type="Node" parent="VSplitContainer/HSplitContainer2/LiveGraph"]
+[node name="ScatterSquare" type="Node" parent="VSplitContainer/HSplitContainer2/LiveGraph"]
 unique_name_in_owner = true
 script = ExtResource("3_tmo5p")
-shape = 3
-color = Color(0.956863, 0, 0.0980392, 1)
+size = 3.0
+shape = 4
+color = Color(0.957, 0, 0.098, 0.752)
 
 [node name="Graph2D" type="Control" parent="VSplitContainer/HSplitContainer2"]
 layout_mode = 2

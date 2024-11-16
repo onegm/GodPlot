@@ -7,7 +7,7 @@ class_name ScatterSeries extends Series
 		size = value
 		property_changed.emit()
 		
-enum SHAPE {CIRCLE, SQUARE, TRIANGLE, X}
+enum SHAPE {CIRCLE, SQUARE, TRIANGLE, X, STAR}
 @export var shape : SHAPE = SHAPE.CIRCLE:
 	set(value):
 		shape = value
