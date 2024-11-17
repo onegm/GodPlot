@@ -51,8 +51,8 @@ var visible_tick_labels : bool:
 var decimal_places : Vector2i:
 	set(value):
 		decimal_places = value
-		x_labels.decimal_places = decimal_places.x
-		y_labels.decimal_places = decimal_places.y	
+		x_axis.decimal_places = decimal_places.x
+		y_axis.decimal_places = decimal_places.y
 	
 func _ready() -> void:
 	add_child(bottom_left_corner)
@@ -62,15 +62,17 @@ func _ready() -> void:
 func get_min_limits() -> Vector2: return Vector2(x_axis.min_value, y_axis.min_value)
 	
 func set_min_limits(min_limits : Vector2):
+	min_limits = Rounder.floor_vector_to_decimal_places(min_limits, decimal_places)
 	x_axis.min_value = min_limits.x
 	y_axis.min_value = min_limits.y
 	
 func get_max_limits() -> Vector2: return Vector2(x_axis.max_value, y_axis.max_value)
 	
 func set_max_limits(max_limits : Vector2):
+	max_limits = Rounder.ceil_vector_to_decimal_places(max_limits, decimal_places)
 	x_axis.max_value = max_limits.x
 	y_axis.max_value = max_limits.y
-	
+
 func get_range() -> Vector2:
 	return Vector2(x_axis.get_range(), y_axis.get_range())
 	

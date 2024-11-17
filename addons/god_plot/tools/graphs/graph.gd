@@ -77,16 +77,16 @@ class_name Graph extends Control
 		queue_redraw()
 		
 @export_group("X Axis", "x_")
-
+## Minimum value on x-axis. Precision must match [member x_decimal_places]
 @export var x_min: float = 0.0:
 	set(value):
-		x_min = value
+		x_min = Rounder.round_num_to_decimal_place(value, x_decimal_places)
 		if x_min > x_max: x_max = x_min
 		queue_redraw()
-		
+## Maximum value on x-axis. Precision must match [member x_decimal_places]
 @export var x_max: float = 10.0:
 	set(value):
-		x_max = value
+		x_max = Rounder.round_num_to_decimal_place(value, x_decimal_places)
 		if x_max < x_min: x_min = x_max
 		queue_redraw()
 		
@@ -121,14 +121,16 @@ class_name Graph extends Control
 		queue_redraw()
 
 @export_group("Y Axis", "y_")
+## Minimum value on y-axis. Precision must match [member y_decimal_places]
 @export var y_min: float = 0.0:
 	set(value):
-		y_min = value
+		y_min = Rounder.round_num_to_decimal_place(value, y_decimal_places)
 		if y_min > y_max: y_max = y_min
 		queue_redraw()
+## Maximum value on y-axis. Precision must match [member y_decimal_places]
 @export var y_max: float = 10.0:
 	set(value):
-		y_max = value
+		y_max = Rounder.round_num_to_decimal_place(value, y_decimal_places)
 		if y_max < y_min: y_min = y_max
 		queue_redraw()
 @export var y_tick_count: int = 10:

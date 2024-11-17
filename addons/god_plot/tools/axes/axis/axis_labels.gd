@@ -3,7 +3,6 @@ class_name AxisLabels extends Control
 
 var axis : Axis
 var font_size : float
-var decimal_places : int = 0
 
 func _init(axis_to_label : Axis) -> void:
 	axis = axis_to_label
@@ -14,7 +13,7 @@ func _draw():
 	var tick_values : Array = axis.get_label_values_at_ticks()
 	for i in tick_positions_along_edge.size():
 		var value = tick_values[i]
-		var str_value = "%0.*f" % [decimal_places, value]
+		var str_value = "%0.*f" % [axis.decimal_places, value]
 		var offset = _calculate_label_offset(str_value.length())
 		var start = tick_positions_along_edge[i]
 		draw_label(start + offset, str_value)

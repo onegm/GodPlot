@@ -106,7 +106,6 @@ static func _get_star_points_in_order() -> Array[Vector2]:
 	for i in range(5):
 		result.append(Vector2.UP.rotated(2*PI/5.0 * i) * expanded_radius)
 		result.append(Vector2.DOWN.rotated(2*PI/5.0 * (i + phase_shift)))
-		print(result[i*2])
-		print(result[i*2 + 1])
+
 	result.append(result[0])
 	return result

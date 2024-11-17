@@ -29,7 +29,7 @@ func _ready() -> void:
 	timer.start()
 	
 func add_points():
-	scatter_series_square.add_point_vector(Vector2(randf()*10, randf()*10-5))
+	scatter_series_square.add_point_vector(Vector2(randf()*10-5, randf()*10-5))
 	scatter_series_x.add_point(randf()*10, randf()*10)
 	area_series.add_point(x, sin(x)*5)
 	line_series.add_point(x, sqrt(x)*5)
