@@ -19,9 +19,10 @@ func _draw():
 		draw_label(start + offset, str_value)
 
 func get_tick_positions_along_edge() -> Array:
-	return axis.tick_positions_along_axis.map(
-		func(tick_position): return tick_position * axis.direction
-		)
+	return axis.tick_positions_along_axis.map(_transform_position_to_vector)
+
+func _transform_position_to_vector(tick_position : float): 
+	return tick_position * axis.direction
 
 func _calculate_label_offset(string_length : int) -> Vector2:
 	var offset = axis.out_direction * (axis.tick_length + font_size)

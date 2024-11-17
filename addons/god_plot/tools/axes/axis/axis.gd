@@ -6,8 +6,15 @@ var is_vertical : bool = false:
 		is_vertical = value
 		direction = Vector2.UP if is_vertical else Vector2.RIGHT
 		out_direction = Vector2.LEFT if is_vertical else Vector2.DOWN
-var min_value : float = 0
-var max_value : float = 10
+
+var min_value : float = 0:
+	set(value):
+		min_value = Rounder.floor_num_to_decimal_place(value, decimal_places)
+
+var max_value : float = 10:
+	set(value):
+		max_value = Rounder.ceil_num_to_decimal_place(value, decimal_places)
+
 var length : float = 500.0:
 	set(value):
 		length = max(0, value)
@@ -57,13 +64,16 @@ func _draw_ticks() -> void:
 		_draw_tick(tick_position)
 
 func _update_tick_interval():
-	var tick_value_interval =  get_range() / float(num_ticks + 1) if num_ticks else 0
+	var tick_value_interval =  get_range() / float(num_ticks) if num_ticks else 0
 	var rounded_value_interval = Rounder.round_num_to_decimal_place(tick_value_interval, decimal_places)
 	tick_interval = remap(rounded_value_interval, 0, get_range(), 0, length)
 
+func get_range() -> float:
+	return max_value - min_value
+
 func _update_tick_positions():
 	tick_positions_along_axis.clear()
-	var zero_position = get_zero_position_clipped()
+	var zero_position = get_zero_position_along_axis_clipped()
 	var tick_position : float = zero_position
 	while tick_position <= length:
 		tick_positions_along_axis.append(tick_position)
@@ -77,16 +87,13 @@ func _update_tick_positions():
 	tick_positions_along_axis.sort()
 	_set_vector_tick_positions()
 	
-func get_zero_position_clipped() -> float:
+func get_zero_position_along_axis_clipped() -> float:
 	if min_value >= 0:
 		return 0.0
 	if max_value <= 0:
 		return length
 	else:
 		return (0.0 - min_value) / get_range() * length
-
-func get_range() -> float:
-	return max_value - min_value
 	
 func _set_vector_tick_positions():
 	tick_positions.clear()

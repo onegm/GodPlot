@@ -1,7 +1,5 @@
 @tool
 class_name Gridlines extends Control
-## Class responsible for drawing gridlines on the graph. An instance of [Gridlines]
-## only draws either the vertical or horizontal gridlines.
 
 var color : Color
 var major_thickness : float = 1.0

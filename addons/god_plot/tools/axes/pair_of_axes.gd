@@ -62,14 +62,12 @@ func _ready() -> void:
 func get_min_limits() -> Vector2: return Vector2(x_axis.min_value, y_axis.min_value)
 	
 func set_min_limits(min_limits : Vector2):
-	min_limits = Rounder.floor_vector_to_decimal_places(min_limits, decimal_places)
 	x_axis.min_value = min_limits.x
 	y_axis.min_value = min_limits.y
 	
 func get_max_limits() -> Vector2: return Vector2(x_axis.max_value, y_axis.max_value)
 	
 func set_max_limits(max_limits : Vector2):
-	max_limits = Rounder.ceil_vector_to_decimal_places(max_limits, decimal_places)
 	x_axis.max_value = max_limits.x
 	y_axis.max_value = max_limits.y
 
@@ -90,7 +88,7 @@ func _draw() -> void:
 func _update_margin():
 	margin.bottom = _calculate_bottom_margin()
 	margin.left = _calculate_left_margin()
-	margin.right =  font_size/3 * (get_max_num_digits(x_axis.min_value, x_axis.max_value) + decimal_places.x)
+	margin.right =  font_size/3 * (DigitCounter.get_max_num_digits(x_axis.min_value, x_axis.max_value) + decimal_places.x)
 
 func _calculate_bottom_margin() -> float:
 	var result = x_axis.tick_length if x_axis.num_ticks > 0 else 0.0
@@ -103,23 +101,16 @@ func _calculate_left_margin(y_title_width : float = 0.0) -> float:
 	result += y_axis.tick_length if y_axis.num_ticks > 0 else 0.0
 	result += font_size if y_labels.visible else 0.0
 	result += thickness
-	result += font_size / 1.5 * (get_max_num_digits(y_axis.min_value, y_axis.max_value) + decimal_places.y)
+	result += font_size / 1.5 * (DigitCounter.get_max_num_digits(y_axis.min_value, y_axis.max_value) + decimal_places.y)
 	result += y_title_margin
 	return result
-
-static func get_max_num_digits(num_1 : float, num_2 : float) -> int:
-	return max(get_num_digits(num_1), get_num_digits(num_2))
-
-static func get_num_digits(num : float) -> int:
-	num = abs(num)
-	return floor(log(num)/log(10)) if num > 0 else 1
 
 func _set_bottom_left_corner():
 	bottom_left_corner.position = Vector2(margin.left, -margin.bottom + size.y)
 
 func _set_axes_origin_positions_and_lengths():
-	x_axis.origin = Vector2.UP * y_axis.get_zero_position_clipped()
-	y_axis.origin = Vector2.RIGHT * x_axis.get_zero_position_clipped()
+	x_axis.origin = Vector2.UP * y_axis.get_zero_position_along_axis_clipped()
+	y_axis.origin = Vector2.RIGHT * x_axis.get_zero_position_along_axis_clipped()
 	
 	x_axis.length = size.x - (margin.left + margin.right)
 	y_axis.length = size.y - (margin.bottom + margin.top)
