@@ -73,9 +73,12 @@ func get_range() -> float:
 
 func _update_tick_positions():
 	tick_positions_along_axis.clear()
+	if is_zero_approx(tick_interval): 
+		return
 	var zero_position = get_zero_position_along_axis_clipped()
 	var tick_position : float = zero_position
-	while tick_position <= length:
+	
+	while tick_position < length or is_equal_approx(tick_position, length):
 		tick_positions_along_axis.append(tick_position)
 		tick_position += tick_interval
 	
