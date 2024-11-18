@@ -89,7 +89,9 @@ class_name Graph extends Control
 		x_max = Rounder.round_num_to_decimal_place(value, x_decimal_places)
 		if x_max < x_min: x_min = x_max
 		queue_redraw()
-		
+
+## Number of major gridlines. May change to ensure accurate position of gridlines. 
+## More [member x_decimal_places] results in less variation.
 @export var x_tick_count: int = 10:
 	set(value):
 		x_tick_count = value
@@ -133,6 +135,8 @@ class_name Graph extends Control
 		y_max = Rounder.round_num_to_decimal_place(value, y_decimal_places)
 		if y_max < y_min: y_min = y_max
 		queue_redraw()
+## Number of major gridlines. May change to ensure accurate position of gridlines. 
+## More [member y_decimal_places] results in less variation.
 @export var y_tick_count: int = 10:
 	set(value):
 		y_tick_count = value
