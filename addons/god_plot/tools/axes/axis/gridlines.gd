@@ -33,7 +33,7 @@ func draw_major_gridlines():
 
 func _set_major_gridline_positions():
 	major_gridline_positions.clear()
-	for tick_position in origin_axis.tick_positions_along_axis:
+	for tick_position in origin_axis.get_tick_positions_along_axis():
 		major_gridline_positions.append(tick_position * origin_axis.direction)
 
 func draw_minor_gridlines():
