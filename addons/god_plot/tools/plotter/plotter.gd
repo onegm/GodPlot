@@ -72,12 +72,9 @@ func is_within_limits(point : Vector2) -> bool:
 	return 	point.clamp(min_limits, max_limits) == point
 
 func find_point_local_position(point : Vector2) -> Vector2:
-	var vector_from_graph_minimum = point - min_limits
-	var position_from_origin = Vector2(
-		vector_from_graph_minimum.x / range.x * axes.x_axis.length,
-		-vector_from_graph_minimum.y / range.y * axes.y_axis.length
-		)
-	return axes.get_axes_bottom_left_position() + position_from_origin
+	var position_from_minimum = point - min_limits
+	var pixel_position_from_minimum = axes.get_pixel_position_from_minimum(position_from_minimum)
+	return axes.get_axes_bottom_left_position() + pixel_position_from_minimum
 
 func find_y_position_of_area_base() -> float:
 	if max_limits.y < 0:

@@ -75,5 +75,5 @@ func get_tick_positions_along_axis() -> Array[float]:
 func get_tick_length() -> float:
 	return axis_ticks.length
 
-func get_value_interval() -> float:
-	return get_range()/float(num_ticks)
+func get_pixel_distance_from_minimum(distance_from_minimum : float) -> float:
+	return remap(distance_from_minimum, 0, get_range(), 0, length)

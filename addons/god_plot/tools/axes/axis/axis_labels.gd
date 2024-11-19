@@ -8,7 +8,7 @@ func _init(axis_to_label : Axis) -> void:
 	axis = axis_to_label
 
 func draw():
-	if !axis.num_ticks: return
+	if !axis.num_ticks or !axis.visible_labels: return
 	font_size = axis.font_size
 	var tick_positions_along_edge : Array = get_tick_positions_along_edge()
 	var tick_values : Array = axis.get_label_values_at_ticks()
