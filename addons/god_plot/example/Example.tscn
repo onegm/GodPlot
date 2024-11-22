@@ -37,7 +37,6 @@ horizontal_title = "Horizontal Title"
 vertical_title = "Vertical Title"
 font_color = Color(0, 0, 0, 1)
 axis_color = Color(0, 0, 0, 1)
-x_decimal_places = 0
 
 [node name="ScatterSquare" type="Node" parent="VSplitContainer/HSplitContainer2/LiveGraph"]
 unique_name_in_owner = true

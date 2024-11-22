@@ -1,5 +1,5 @@
 @tool
-class_name Gridlines extends Control
+class_name Gridlines extends CanDraw
 
 var color : Color
 var major_thickness : float = 1.0
@@ -18,14 +18,14 @@ func _init(origin : Axis, parallel : Axis) -> void:
 	origin_axis = origin
 	parallel_axis = parallel
 	
-func _draw() -> void:
-	draw_major_gridlines()
-	draw_minor_gridlines()
+func draw_on(canvas : CanvasItem) -> void:
+	draw_major_gridlines(canvas)
+	draw_minor_gridlines(canvas)
 
-func draw_major_gridlines():
+func draw_major_gridlines(canvas : CanvasItem):
 	_set_major_gridline_positions()
 	for major_pos in major_gridline_positions:
-		draw_line(
+		canvas.draw_line(
 			major_pos,
 			major_pos - parallel_axis.length * origin_axis.out_direction,
 			color, major_thickness
@@ -36,7 +36,7 @@ func _set_major_gridline_positions():
 	for tick_position in origin_axis.get_tick_positions_along_axis():
 		major_gridline_positions.append(tick_position * origin_axis.direction)
 
-func draw_minor_gridlines():
+func draw_minor_gridlines(canvas : CanvasItem):
 	if !minor_count:
 		return
 	_update_minor_interval()
@@ -45,7 +45,7 @@ func draw_minor_gridlines():
 	var minor_gridline_position = first_minor_position
 	var graph_edge = origin_axis.length * origin_axis.direction
 	while minor_gridline_position < graph_edge:
-		draw_line(
+		canvas.draw_line(
 			minor_gridline_position,
 			minor_gridline_position - parallel_axis.length * origin_axis.out_direction, 
 			color, minor_thickness

@@ -1,15 +1,17 @@
 @tool
-class_name AxisLabels
+class_name AxisLabels extends CanDraw
 
 var axis : Axis
+var font : Font = SystemFont.new()
 var font_size : float
+var canvas : CanvasItem
 
 func _init(axis_to_label : Axis) -> void:
 	axis = axis_to_label
 
-func draw():
+func draw_on(canvas_item : CanvasItem):
 	if !axis.num_ticks or !axis.visible_labels: return
-	font_size = axis.font_size
+	canvas = canvas_item
 	var tick_positions_along_edge : Array = get_tick_positions_along_edge()
 	var tick_values : Array = axis.get_label_values_at_ticks()
 	for i in tick_positions_along_edge.size():
@@ -35,8 +37,8 @@ func _calculate_label_offset(string_length : int) -> Vector2:
 	return offset
 
 func draw_label(label_position : Vector2, str : String):
-	axis.draw_string(
-		axis.get_theme_default_font(), label_position, 
+	canvas.draw_string(
+		font, label_position, 
 		str, HORIZONTAL_ALIGNMENT_LEFT, -1,
 		font_size, axis.color
 		)

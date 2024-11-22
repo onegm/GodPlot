@@ -1,15 +1,17 @@
-class_name AxisTicks
+class_name AxisTicks extends CanDraw
 
 var axis : Axis
 var interval : float = 0.0
 var length : float = 10.0
 var positions_along_axis : Array[float] = []
+var canvas : CanvasItem
 
 func _init(axis_to_mark : Axis):
 	axis = axis_to_mark
 
-func draw():
+func draw_on(canvas_item : CanvasItem):
 	if axis.num_ticks <= 0: return
+	canvas = canvas_item
 	_update_properties()
 	_draw_ticks()
 
@@ -50,7 +52,7 @@ func _convert_to_vector_position(position : float):
 	return position * axis.direction + axis.offset
 
 func _draw_tick(start : Vector2):
-	axis.draw_line(
+	canvas.draw_line(
 		start - length * axis.out_direction , 
 		start + length * axis.out_direction,
 		axis.color, axis.thickness / 3

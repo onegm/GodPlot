@@ -9,10 +9,19 @@ var max_limits := Vector2(x_max, y_max)
 
 func _ready() -> void:
 	super._ready()
-	add_child(series_container)
-	series_container.redraw_requested.connect(queue_redraw)
+	_setup_series_container()
+	_connect_plotter_to_axes_with_deferred_plotting()
 	child_order_changed.connect(_load_children_series)
 	_load_children_series()
+
+func _setup_series_container():
+	add_child(series_container)
+	series_container.redraw_requested.connect(queue_redraw)
+
+func _connect_plotter_to_axes_with_deferred_plotting():
+	pair_of_axes.draw.connect(
+		plotter.call_deferred.bind("plot_all", series_container.get_all_series())
+		)
 
 func _load_children_series():
 	if !is_inside_tree(): return
@@ -27,7 +36,6 @@ func remove_series(series : Series) -> void:
 func _draw() -> void:
 	_update_graph_limits()
 	super._draw()
-	plotter.plot_all(series_container.get_all_series())
 
 func _update_graph_limits() -> void:
 	min_limits = Vector2(x_min, y_min)
