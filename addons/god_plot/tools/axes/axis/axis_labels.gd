@@ -5,12 +5,13 @@ var axis : Axis
 var font : Font = SystemFont.new()
 var font_size : float
 var canvas : CanvasItem
+var visible : bool
 
 func _init(axis_to_label : Axis) -> void:
 	axis = axis_to_label
 
 func draw_on(canvas_item : CanvasItem):
-	if !axis.num_ticks or !axis.visible_labels: return
+	if !visible: return
 	canvas = canvas_item
 	var tick_positions_along_edge : Array = get_tick_positions_along_edge()
 	var tick_values : Array = axis.get_label_values_at_ticks()

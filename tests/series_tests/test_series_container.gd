@@ -14,6 +14,33 @@ func before_all():
 func before_each():
 	series_container.clear()
 
+func test_signals_start_disconnected():
+	assert_false(series_container.is_series_connected(series_1))
+	assert_false(series_container.is_series_connected(series_2))
+	assert_false(series_container.is_series_connected(series_3))
+
+func test_add_series_connects_signal():
+	series_container.add_series(series_1)
+	assert_true(series_container.is_series_connected(series_1))
+	
+func test_remove_series_disconnects_signal():
+	series_container.add_series(series_1)
+	series_container.add_series(series_2)
+	series_container.add_series(series_3)
+	
+	series_container.remove_series(series_2)
+	assert_false(series_container.is_series_connected(series_2))
+	assert_true(series_container.is_series_connected(series_1))
+	assert_true(series_container.is_series_connected(series_3))
+	
+func test_clear():
+	series_container.add_series(series_1)
+	series_container.add_series(series_2)
+	series_container.add_series(series_3)
+	
+	series_container.clear()
+	assert_eq(series_container.get_all_series().size(), 0)
+
 func test_add_series_in_order():
 	series_container.add_series(series_1)
 	assert_eq(series_container.get_all_series(), [series_1])
@@ -22,11 +49,6 @@ func test_add_series_in_order():
 	series_container.add_series(series_3)
 	assert_eq(series_container.get_all_series(), [series_1, series_2, series_3])
 
-func test_add_series_connects_signal():
-	assert_false(series_1.property_changed.is_connected(series_container.redraw_requested.emit))
-	series_container.add_series(series_1)
-	assert_true(series_1.property_changed.is_connected(series_container.redraw_requested.emit))
-	
 func test_add_series_does_not_add_duplicates():
 	series_container.add_series(series_1)
 	series_container.add_series(series_1)
@@ -40,25 +62,24 @@ func test_remove_series():
 	series_container.remove_series(series_2)
 	
 	assert_eq(series_container.get_all_series(), [series_1, series_3])
-	assert_false(series_2.property_changed.is_connected(series_container.redraw_requested.emit))
 	
 func test_get_min_value():
 	series_1.add_point(5, 10)
 	series_2.add_point(6, 8)
 	series_container.add_series(series_1)
 	series_container.add_series(series_2)
-	assert_eq(series_container.get_min_value(), Vector2(5, 8))
+	assert_eq(series_container.min_value, Vector2(5, 8))
 	series_1.add_point(-4, -2)
-	assert_eq(series_container.get_min_value(), Vector2(-4, -2))
+	assert_eq(series_container.min_value, Vector2(-4, -2))
 	
 func test_get_max_value():
 	series_1.add_point(5, 10)
 	series_2.add_point(6, 8)
 	series_container.add_series(series_1)
 	series_container.add_series(series_2)
-	assert_eq(series_container.get_max_value(), Vector2(6, 10))
+	assert_eq(series_container.max_value, Vector2(6, 10))
 	series_1.add_point(14, 22)
-	assert_eq(series_container.get_max_value(), Vector2(14, 22))
+	assert_eq(series_container.max_value, Vector2(14, 22))
 
 func after_all():
 	series_1.queue_free()

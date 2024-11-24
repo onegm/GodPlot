@@ -1,6 +1,7 @@
 class_name AxisTicks extends CanDraw
 
 var axis : Axis
+var intended_num_ticks : int
 var interval : float = 0.0
 var length : float = 10.0
 var positions_along_axis : Array[float] = []
@@ -10,7 +11,6 @@ func _init(axis_to_mark : Axis):
 	axis = axis_to_mark
 
 func draw_on(canvas_item : CanvasItem):
-	if axis.num_ticks <= 0: return
 	canvas = canvas_item
 	_update_properties()
 	_draw_ticks()
@@ -21,7 +21,10 @@ func _update_properties():
 	_update_tick_positions()
 
 func _update_interval():
-	var tick_value_interval =  axis.get_range() / float(axis.num_ticks)
+	if intended_num_ticks <= 0: 
+		interval = 0
+		return
+	var tick_value_interval =  axis.get_range() / float(intended_num_ticks)
 	var rounded_value_interval = Rounder.round_num_to_decimal_place(tick_value_interval, axis.decimal_places)
 	interval = remap(rounded_value_interval, 0, axis.get_range(), 0, axis.length)
 
@@ -57,3 +60,6 @@ func _draw_tick(start : Vector2):
 		start + length * axis.out_direction,
 		axis.color, axis.thickness / 3
 		)
+
+func get_length() -> float:
+	return length if !is_zero_approx(interval) else 0

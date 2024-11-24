@@ -29,17 +29,7 @@ var thickness : float:
 		y_axis.thickness = thickness
 
 var font_size : float
-var num_ticks : Vector2i:
-	set(value):
-		num_ticks = value
-		x_axis.num_ticks = num_ticks.x
-		y_axis.num_ticks = num_ticks.y
-
-var visible_tick_labels : bool:
-	set(value):
-		visible_tick_labels = value
-		x_axis.visible_labels = visible_tick_labels
-		y_axis.visible_labels = visible_tick_labels
+var visible_tick_labels : bool
 
 var decimal_places : Vector2i:
 	set(value):
@@ -85,16 +75,16 @@ func _update_margins():
 	
 
 func _update_bottom_margin():
-	var bottom_margin = x_axis.get_tick_length() if x_axis.num_ticks > 0 else 0.0
-	bottom_margin += font_size if x_axis.visible_labels else 0.0
+	var bottom_margin = x_axis.get_tick_length()
+	bottom_margin += font_size if visible_tick_labels else 0.0
 	bottom_margin += thickness
 	
 	margin.bottom = bottom_margin
 
 func _update_left_margin(y_title_width : float = 0.0):
 	var left_margin = y_title_width
-	left_margin += y_axis.get_tick_length() if y_axis.num_ticks > 0 else 0.0
-	left_margin += font_size if y_axis.visible_labels else 0.0
+	left_margin += y_axis.get_tick_length()
+	left_margin += font_size if visible_tick_labels else 0.0
 	left_margin += thickness
 	left_margin += font_size / 1.5 * (DigitCounter.get_max_num_digits(y_axis.min_value, y_axis.max_value) + decimal_places.y)
 	left_margin += y_title_margin
@@ -128,3 +118,12 @@ func set_font_and_size(font : Font, f_size : float):
 	font_size = f_size
 	x_axis.set_font_and_size(font, font_size)
 	y_axis.set_font_and_size(font, font_size)
+
+func set_num_ticks(num_vector : Vector2i):
+	x_axis.set_num_ticks(num_vector.x)
+	y_axis.set_num_ticks(num_vector.y)
+
+func set_label_visibility(is_visible : bool):
+	visible_tick_labels = is_visible
+	x_axis.set_label_visibility(is_visible)
+	y_axis.set_label_visibility(is_visible)

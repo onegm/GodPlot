@@ -4,8 +4,6 @@ class_name Graph2D extends Graph
 ## Used with a [Series] inheriting node to plot data on a 2D graph.
 
 var series_container := SeriesContainer.new()
-var min_limits := Vector2(x_min, y_min)
-var max_limits := Vector2(x_max, y_max)
 
 func _ready() -> void:
 	super._ready()
@@ -38,9 +36,18 @@ func _draw() -> void:
 	super._draw()
 
 func _update_graph_limits() -> void:
-	min_limits = Vector2(x_min, y_min)
-	max_limits = Vector2(x_max, y_max)
+	var min_limits = Vector2(x_min, y_min)
+	var max_limits = Vector2(x_max, y_max)
 	
 	if auto_scaling:
-		min_limits = series_container.get_min_value().min(min_limits)
-		max_limits = series_container.get_max_value().max(max_limits)
+		var data_min = Rounder.floor_vector_to_decimal_places(
+			series_container.min_value, Vector2(x_decimal_places, y_decimal_places)
+			)
+		var data_max = Rounder.ceil_vector_to_decimal_places(
+			series_container.max_value, Vector2(x_decimal_places, y_decimal_places)
+			)
+		min_limits = min_limits.min(data_min)
+		max_limits = max_limits.max(data_max)
+
+	pair_of_axes.set_min_limits(min_limits)
+	pair_of_axes.set_max_limits(max_limits)

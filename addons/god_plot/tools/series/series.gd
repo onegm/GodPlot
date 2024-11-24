@@ -48,10 +48,6 @@ static func _point_sort(a : Vector2, b : Vector2):
 		return a.y < b.y
 	return a.x < b.x
 
-func remove_front_point_by_x(x : float):
-	var point = Array(data).filter(func(point): return point.x == x).pop_front()
-	return remove_point(point)
-
 func remove_point(point : Vector2):
 	var point_idx = data.find(point)
 	if point_idx <= -1 : return null

@@ -1,35 +1,27 @@
 @tool
 class_name Axis extends CanDraw
 
+var axis_ticks := AxisTicks.new(self)
+var axis_labels := AxisLabels.new(self)
+
 var is_vertical : bool = false: 
 	set(value):
 		is_vertical = value
 		direction = Vector2.UP if is_vertical else Vector2.RIGHT
 		out_direction = Vector2.LEFT if is_vertical else Vector2.DOWN
 
-var min_value : float = 0:
-	set(value):
-		min_value = Rounder.floor_num_to_decimal_place(value, decimal_places)
-
-var max_value : float = 10:
-	set(value):
-		max_value = Rounder.ceil_num_to_decimal_place(value, decimal_places)
+var min_value : float = 0
+var max_value : float = 10
 
 var length : float = 500.0
-
-var thickness : float = 3.0
-
 var color : Color = Color.WHITE
 var offset : Vector2 = Vector2.ZERO
 var direction : Vector2 = Vector2.RIGHT
 var out_direction : Vector2 = Vector2.DOWN
 var decimal_places : int = 2
+var thickness : float = 3.0
 
-var axis_ticks := AxisTicks.new(self)
-var num_ticks : int = 10
 
-var axis_labels := AxisLabels.new(self)
-var visible_labels := true
 
 static func new_x_axis() -> Axis:
 	return Axis.new()
@@ -75,7 +67,7 @@ func get_tick_positions_along_axis() -> Array[float]:
 	return axis_ticks.positions_along_axis
 
 func get_tick_length() -> float:
-	return axis_ticks.length
+	return axis_ticks.get_length()
 
 func get_pixel_distance_from_minimum(distance_from_minimum : float) -> float:
 	return remap(distance_from_minimum, 0, get_range(), 0, length)
@@ -83,3 +75,9 @@ func get_pixel_distance_from_minimum(distance_from_minimum : float) -> float:
 func set_font_and_size(font : Font, size : float):
 	axis_labels.font = font
 	axis_labels.font_size = size
+
+func set_num_ticks(num : int):
+	axis_ticks.intended_num_ticks = num
+
+func set_label_visibility(is_visible : bool):
+	axis_labels.visible = is_visible
