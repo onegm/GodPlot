@@ -25,3 +25,16 @@ func test_ceil_num_does_not_change_whole_number():
 	assert_eq(Rounder.ceil_num_to_decimal_place(2.000, 1), 2.0)
 	assert_eq(Rounder.ceil_num_to_decimal_place(-7.000, 3), -7.0)
 	
+func test_floor_vector_to_decimal_places():
+	var vector = Vector2(12.735, -804.32)
+	var decimal_places = Vector2(0, 1)
+	var expected = Vector2(12, -804.4)
+	var result = Rounder.floor_vector_to_decimal_places(vector, decimal_places)
+	assert_eq(result, expected)
+	
+func test_ceil_vector_to_decimal_places():
+	var vector = Vector2(12.735, -804.32)
+	var decimal_places = Vector2(0, 1)
+	var expected = Vector2(13, -804.3)
+	var result = Rounder.ceil_vector_to_decimal_places(vector, decimal_places)
+	assert_eq(result, expected)
