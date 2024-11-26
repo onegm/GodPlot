@@ -40,5 +40,9 @@ func clear():
 	for series in series_arr.duplicate():
 		remove_series(series)
 
+func clear_data():
+	for series in series_arr:
+		series.clear_data()
+
 func is_series_connected(series : Series):
 	return series.property_changed.is_connected(on_property_changed)

@@ -51,3 +51,6 @@ func _update_graph_limits() -> void:
 
 	pair_of_axes.set_min_limits(min_limits)
 	pair_of_axes.set_max_limits(max_limits)
+
+func clear_data():
+	series_container.clear_data()
