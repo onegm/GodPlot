@@ -6,11 +6,12 @@ A Godot 4 plug-in for creating graphs. Works in the editor. The following graph 
 
 ## Example: 
 ![image](https://github.com/user-attachments/assets/802e9948-ab4a-478c-9842-6243ba98755a)
+![image](https://github.com/user-attachments/assets/bb2eedf6-a28c-4c8a-8a12-dc7f6caac801)
 
 
 Create a series
 ```GDScript
-	series_1 = ScatterSeries.new(Color.RED, 5.0)
+	series_1 = ScatterSeries.new(Color.RED, 5.0, ScatterSeries.SHAPE.CIRCLE) # Defaults to circle. Square, Triangle, Star, and X available.   
 	series_2 = AreaSeries.new(Color(0, 0, 1, 0.5))
 	series_3 = LineSeries.new(Color.SEA_GREEN, 2.0)
 ```
