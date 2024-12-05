@@ -1,6 +1,6 @@
 extends GutTest
 
-var series : Series
+var series : Series2D
 
 var unsorted_packed_vector2_array := PackedVector2Array([
 	Vector2(-2, 7),
@@ -23,7 +23,7 @@ func before_each():
 	series.set_data(sorted_packed_vector2_array)
 
 func test_static_sort_by_x():
-	var result = Series._sort_by_x(unsorted_packed_vector2_array)
+	var result = Series2D._sort_by_x(unsorted_packed_vector2_array)
 	assert_eq(result, sorted_packed_vector2_array)
 
 func test_clear():
@@ -56,7 +56,7 @@ func test_add_point_in_middle():
 	var point_to_add = Vector2(0, 0)
 	series.add_point_vector(point_to_add)
 	
-	var expected = Series._sort_by_x(PackedVector2Array([point_to_add]) + sorted_packed_vector2_array)
+	var expected = Series2D._sort_by_x(PackedVector2Array([point_to_add]) + sorted_packed_vector2_array)
 	
 	assert_eq(series.data, expected)
 

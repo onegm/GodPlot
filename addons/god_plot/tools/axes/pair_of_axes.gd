@@ -108,6 +108,11 @@ func _set_axes_offsets_and_lengths():
 func get_axes_bottom_left_position() -> Vector2:
 	return bottom_left_corner.position
 
+func get_pixel_position_from_bottom_left(point : Vector2):
+	var position_from_bottom_left = point - get_min_limits()
+	var pixel_position = get_pixel_position_from_minimum(position_from_bottom_left)
+	return get_axes_bottom_left_position() + pixel_position
+
 func get_pixel_position_from_minimum(vector_from_axes_minimum : Vector2) -> Vector2:
 	return Vector2(
 		x_axis.get_pixel_distance_from_minimum(vector_from_axes_minimum.x),

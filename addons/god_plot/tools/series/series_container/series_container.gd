@@ -29,12 +29,12 @@ func get_all_series() -> Array[Series]:
 func update_min_value():
 	min_value = Vector2(INF, INF)
 	for series in series_arr:
-		min_value = min_value.min(series.min_value)
+		min_value = min_value.min(series.get_min_limits())
 	
 func update_max_value():
 	max_value = Vector2(-INF, -INF)
 	for series in series_arr:
-		max_value = max_value.max(series.max_value)
+		max_value = max_value.max(series.get_max_limits())
 
 func clear():
 	for series in series_arr.duplicate():

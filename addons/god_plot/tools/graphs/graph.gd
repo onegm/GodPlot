@@ -2,7 +2,7 @@
 class_name Graph extends Control
 ## Abstract class for creating graphs. Use inheriting classes instead.
 
-@export var background_color : Color = Color.BLACK:
+@export var background_color : Color = Color.WHITE:
 	set(value):
 		background_color = value
 		color_rect.color = background_color
@@ -44,14 +44,14 @@ class_name Graph extends Control
 		_update_y_axis_title_rotation_and_position()
 		queue_redraw()
 
-@export var font_color : Color = Color.WHITE:
+@export var font_color : Color = Color.BLACK:
 	set(value):
 		font_color = value
-		_set_label_colors(font_color)
+		_set_label_colors()
 
 @export_group("Axes")
 
-@export var axis_color : Color = Color.WHITE:
+@export var axis_color : Color = Color.BLACK:
 	set(value):
 		axis_color = value
 		queue_redraw()
@@ -75,94 +75,7 @@ class_name Graph extends Control
 	set(value):
 		show_tick_labels = value
 		queue_redraw()
-		
-@export_group("X Axis", "x_")
-## Minimum value on x-axis. Precision must match [member x_decimal_places]
-@export var x_min: float = 0.0:
-	set(value):
-		x_min = Rounder.round_num_to_decimal_place(value, x_decimal_places)
-		if x_min > x_max: x_max = x_min
-		queue_redraw()
-## Maximum value on x-axis. Precision must match [member x_decimal_places]
-@export var x_max: float = 10.0:
-	set(value):
-		x_max = Rounder.round_num_to_decimal_place(value, x_decimal_places)
-		if x_max < x_min: x_min = x_max
-		queue_redraw()
 
-## Number of major gridlines. May change to ensure accurate position of gridlines. 
-## More [member x_decimal_places] results in less variation.
-@export var x_tick_count: int = 10:
-	set(value):
-		x_tick_count = value
-		queue_redraw()
-
-@export_range(0, 5) var x_decimal_places : int = 1:
-	set(value):
-		x_decimal_places = value
-		queue_redraw()
-@export_subgroup("Gridlines", "x_gridlines")
-@export_range(0, 1) var x_gridlines_opacity : float = 1.0:
-	set(value):
-		x_gridlines_opacity = value
-		queue_redraw()
-
-@export var x_gridlines_major_thickness : float = 1.0:
-	set(value):
-		x_gridlines_major_thickness = value
-		queue_redraw()
-
-@export_range(0, 10) var x_gridlines_minor : int = 0:
-	set(value):
-		x_gridlines_minor = value
-		queue_redraw()
-
-@export var x_gridlines_minor_thickness : float = 1.0:
-	set(value):
-		x_gridlines_minor_thickness = value
-		queue_redraw()
-
-@export_group("Y Axis", "y_")
-## Minimum value on y-axis. Precision must match [member y_decimal_places]
-@export var y_min: float = 0.0:
-	set(value):
-		y_min = Rounder.round_num_to_decimal_place(value, y_decimal_places)
-		if y_min > y_max: y_max = y_min
-		queue_redraw()
-## Maximum value on y-axis. Precision must match [member y_decimal_places]
-@export var y_max: float = 10.0:
-	set(value):
-		y_max = Rounder.round_num_to_decimal_place(value, y_decimal_places)
-		if y_max < y_min: y_min = y_max
-		queue_redraw()
-## Number of major gridlines. May change to ensure accurate position of gridlines. 
-## More [member y_decimal_places] results in less variation.
-@export var y_tick_count: int = 10:
-	set(value):
-		y_tick_count = value
-		queue_redraw()
-
-@export_range(0, 5) var y_decimal_places : int = 1:
-	set(value):
-		y_decimal_places = value
-		queue_redraw()
-@export_subgroup("Gridlines", "y_gridlines")
-@export_range(0, 1) var y_gridlines_opacity : float = 1.0:
-	set(value):
-		y_gridlines_opacity = value
-		queue_redraw()
-@export var y_gridlines_major_thickness : float = 1.0:
-	set(value):
-		y_gridlines_major_thickness = value
-		queue_redraw()
-@export_range(0, 10) var y_gridlines_minor : int = 0:
-	set(value):
-		y_gridlines_minor = value
-		queue_redraw()
-@export var y_gridlines_minor_thickness : float = 1.0:
-	set(value):
-		y_gridlines_minor_thickness = value
-		queue_redraw()
 
 var color_rect := ColorRect.new()
 var graph_v_box := VBoxContainer.new()
@@ -201,6 +114,7 @@ func _build_graph_title():
 	graph_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	graph_title.text = title
 	graph_title.visible = !title.is_empty()
+	graph_title.set("theme_override_colors/font_color", font_color)
 
 func _build_pair_of_axes():
 	graph_v_box.add_child(pair_of_axes)
@@ -217,6 +131,7 @@ func _build_y_axis_title():
 	y_axis_title.set_anchors_preset(Control.PRESET_CENTER_LEFT)	
 	y_axis_title.text = vertical_title
 	y_axis_title.visible = !vertical_title.is_empty()
+	y_axis_title.set("theme_override_colors/font_color", font_color)
 
 func _update_y_axis_title_rotation_and_position():
 	y_axis_title.size = y_axis_title.get_minimum_size()
@@ -235,6 +150,7 @@ func _build_x_axis_title():
 	x_axis_title.size_flags_vertical = SIZE_SHRINK_END
 	x_axis_title.text = horizontal_title
 	x_axis_title.visible = !horizontal_title.is_empty()
+	x_axis_title.set("theme_override_colors/font_color", font_color)
 
 func _on_theme_changed():
 	graph_title.add_theme_font_size_override("font_size", get_theme_font_size("", "") * title_size)
@@ -243,13 +159,12 @@ func _on_theme_changed():
 	pair_of_axes.font_size = get_theme_font_size("", "") * label_size
 	queue_redraw()
 	
-func _set_label_colors(label_color : Color) -> void:
-	graph_title.add_theme_color_override("font_color", label_color)
-	x_axis_title.add_theme_color_override("font_color", label_color)
-	y_axis_title.add_theme_color_override("font_color", label_color)
+func _set_label_colors() -> void:
+	graph_title.set("theme_override_colors/font_color", font_color)
+	x_axis_title.set("theme_override_colors/font_color", font_color)
+	y_axis_title.set("theme_override_colors/font_color", font_color)
 
 func _draw() -> void:
-	GraphToAxesMapper.map(self, pair_of_axes)
 	pair_of_axes.queue_redraw()
 
 func get_y_axis_title_width() -> float:
