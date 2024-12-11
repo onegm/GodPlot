@@ -3,11 +3,16 @@ class_name AxisLabels extends CanDraw
 
 var axis : Axis
 var font : Font = SystemFont.new()
-var font_size : float
+var font_size : float = 8.0:
+	set(value):
+		font_size = max(1.0, value)
 var canvas : CanvasItem
-var visible : bool
+var visible : bool = true
 
-func _init(axis_to_label : Axis) -> void:
+func _init() -> void:
+	pass
+
+func set_axis(axis_to_label : Axis):
 	axis = axis_to_label
 
 func draw_on(canvas_item : CanvasItem):

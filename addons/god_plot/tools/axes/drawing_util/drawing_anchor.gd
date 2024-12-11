@@ -1,3 +1,4 @@
+@tool
 class_name DrawingAnchor extends Control
 
 var drawing_objects : Array[CanDraw] = []

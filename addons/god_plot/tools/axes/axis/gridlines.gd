@@ -14,10 +14,13 @@ var minor_interval : float
 
 var major_gridline_positions : Array[Vector2] = []
 
-func _init(origin : Axis, parallel : Axis) -> void:
+func _init() -> void:
+	pass
+
+func set_origin_and_parallel_axes(origin : Axis, parallel : Axis):
 	origin_axis = origin
 	parallel_axis = parallel
-	
+
 func draw_on(canvas : CanvasItem) -> void:
 	draw_major_gridlines(canvas)
 	draw_minor_gridlines(canvas)

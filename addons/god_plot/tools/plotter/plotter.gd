@@ -7,7 +7,7 @@ var min_limits : Vector2
 var max_limits : Vector2
 var range : Vector2
 
-func _init(pair_of_axes : PairOfAxes) -> void:
+func set_pair_of_axes(pair_of_axes : PairOfAxes):
 	axes = pair_of_axes
 
 func plot_all(series_arr : Array[Series]):

@@ -32,13 +32,10 @@ size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
 background_color = Color(1, 1, 1, 1)
 title = "Example Chart"
-title_size = 1.5
 horizontal_title = "Horizontal Title"
 vertical_title = "Vertical Title"
 font_color = Color(0, 0, 0, 1)
 axis_color = Color(0, 0, 0, 1)
-x_tick_count = 7
-x_decimal_places = 0
 
 [node name="ScatterSquare" type="Node" parent="VSplitContainer/HSplitContainer2/LiveGraph"]
 unique_name_in_owner = true
@@ -53,10 +50,6 @@ color = Color(0.641681, 0, 0.0959515, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
-title = "Title
-(m)"
-horizontal_title = "Horizontal Title"
-vertical_title = "Vertical Title"
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
 layout_mode = 2
@@ -66,7 +59,6 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
-title = "Title"
 
 [node name="ColorRect2" type="ColorRect" parent="VSplitContainer/HSplitContainer"]
 layout_mode = 2

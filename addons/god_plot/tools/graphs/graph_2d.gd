@@ -33,9 +33,12 @@ func remove_series(series : Series) -> void:
 
 func _draw() -> void:
 	_update_graph_limits()
-	super._draw()
+	GraphToAxesMapper.map_graph2d_to_pair_of_axes(self, pair_of_axes)
+	pair_of_axes.queue_redraw()
 
 func _update_graph_limits() -> void:
+	if series_container.is_empty(): return 
+	
 	var min_limits = Vector2(x_min, y_min)
 	var max_limits = Vector2(x_max, y_max)
 	

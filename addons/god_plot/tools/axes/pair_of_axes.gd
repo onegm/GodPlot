@@ -3,10 +3,9 @@ class_name PairOfAxes extends Control
 
 var x_axis := Axis.new_x_axis()
 var y_axis := Axis.new_y_axis()
-var x_gridlines := Gridlines.new(x_axis, y_axis)
-var y_gridlines := Gridlines.new(y_axis, x_axis)
+var x_gridlines := Gridlines.new()
+var y_gridlines := Gridlines.new()
 
-	
 var bottom_left_corner := DrawingAnchor.new()
 
 var margin := {
@@ -28,16 +27,19 @@ var thickness : float:
 		x_axis.thickness = thickness
 		y_axis.thickness = thickness
 
-var font_size : float
-var visible_tick_labels : bool
+var font_size : float = 16.0
+var visible_tick_labels : bool = true
 
 var decimal_places : Vector2i:
 	set(value):
 		decimal_places = value
 		x_axis.decimal_places = decimal_places.x
 		y_axis.decimal_places = decimal_places.y
-	
+
 func _ready() -> void:
+	x_gridlines.set_origin_and_parallel_axes(x_axis, y_axis)
+	y_gridlines.set_origin_and_parallel_axes(y_axis, x_axis)
+
 	add_child(bottom_left_corner)
 	bottom_left_corner.add_drawing_object(x_axis)
 	bottom_left_corner.add_drawing_object(y_axis)
@@ -102,8 +104,11 @@ func _set_axes_offsets_and_lengths():
 	x_axis.offset = Vector2.UP * y_axis.get_zero_position_along_axis_clipped()
 	y_axis.offset = Vector2.RIGHT * x_axis.get_zero_position_along_axis_clipped()
 	
-	x_axis.length = size.x - (margin.left + margin.right)
-	y_axis.length = size.y - margin.bottom
+	var x_axis_length = size.x - (margin.left + margin.right)
+	x_axis.length = max(0, x_axis_length)
+	
+	var y_axis_length = size.y - margin.bottom
+	y_axis.length = max(0, y_axis_length)
 
 func get_axes_bottom_left_position() -> Vector2:
 	return bottom_left_corner.position
@@ -114,7 +119,7 @@ func get_pixel_position_from_minimum(vector_from_axes_minimum : Vector2) -> Vect
 		-y_axis.get_pixel_distance_from_minimum(vector_from_axes_minimum.y),
 		)
 
-func set_font_and_size(font : Font, f_size : float):
+func set_font_and_size(font : FontFile, f_size : float):
 	font_size = f_size
 	x_axis.set_font_and_size(font, font_size)
 	y_axis.set_font_and_size(font, font_size)

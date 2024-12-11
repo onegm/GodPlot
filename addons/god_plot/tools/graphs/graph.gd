@@ -171,10 +171,9 @@ var x_axis_title := Label.new()
 var y_axis_title := Label.new()
 
 var pair_of_axes := PairOfAxes.new()
-var plotter : Plotter = Plotter.new(pair_of_axes)
+var plotter : Plotter = Plotter.new()
 
 func _ready() -> void:
-	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_build_graph()
 	theme_changed.connect(_on_theme_changed)
 
@@ -208,6 +207,7 @@ func _build_pair_of_axes():
 	pair_of_axes.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_build_y_axis_title()
 	
+	plotter.set_pair_of_axes(pair_of_axes)
 	pair_of_axes.add_child(plotter)
 
 func _build_y_axis_title():
@@ -249,8 +249,7 @@ func _set_label_colors(label_color : Color) -> void:
 	y_axis_title.add_theme_color_override("font_color", label_color)
 
 func _draw() -> void:
-	GraphToAxesMapper.map(self, pair_of_axes)
-	pair_of_axes.queue_redraw()
+	pass
 
 func get_y_axis_title_width() -> float:
 	if rotated_v_title and y_axis_title.visible:

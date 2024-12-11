@@ -1,8 +1,8 @@
 @tool
 class_name Axis extends CanDraw
 
-var axis_ticks := AxisTicks.new(self)
-var axis_labels := AxisLabels.new(self)
+var axis_ticks := AxisTicks.new()
+var axis_labels := AxisLabels.new()
 
 var is_vertical : bool = false: 
 	set(value):
@@ -13,15 +13,15 @@ var is_vertical : bool = false:
 var min_value : float = 0
 var max_value : float = 10
 
-var length : float = 500.0
+var length : float = 500.0:
+	set(value):
+		length = max(0, value)
 var color : Color = Color.WHITE
 var offset : Vector2 = Vector2.ZERO
 var direction : Vector2 = Vector2.RIGHT
 var out_direction : Vector2 = Vector2.DOWN
 var decimal_places : int = 2
 var thickness : float = 3.0
-
-
 
 static func new_x_axis() -> Axis:
 	return Axis.new()
@@ -32,7 +32,8 @@ static func new_y_axis() -> Axis:
 	return axis
 
 func _init() -> void:
-	pass
+	axis_ticks.set_axis(self)
+	axis_labels.set_axis(self)
 
 func draw_on(canvas_item : CanvasItem) -> void:
 	_draw_axis_on(canvas_item)

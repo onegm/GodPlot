@@ -1,11 +1,11 @@
 class_name GraphToAxesMapper
 
-static func map(graph : Graph2D, axes : PairOfAxes):
+static func map_graph2d_to_pair_of_axes(graph : Graph2D, axes : PairOfAxes):
 	axes.set_num_ticks(Vector2i(graph.x_tick_count, graph.y_tick_count))
 	axes.set_label_visibility(graph.show_tick_labels)
 	axes.set_font_and_size(
-		graph.get_theme_font("", ""), 
-		graph.get_theme_font_size("", "") * graph.label_size
+		graph.get_theme_font(""), 
+		graph.get_theme_font_size("") * graph.label_size
 		)
 	axes.color = graph.axis_color
 	axes.thickness = graph.axis_thickness

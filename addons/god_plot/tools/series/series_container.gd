@@ -46,3 +46,6 @@ func clear_data():
 
 func is_series_connected(series : Series):
 	return series.property_changed.is_connected(on_property_changed)
+
+func is_empty():
+	return series_arr.is_empty()
