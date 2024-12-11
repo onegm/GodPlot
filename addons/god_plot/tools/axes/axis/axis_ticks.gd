@@ -1,4 +1,3 @@
-@tool
 class_name AxisTicks extends CanDraw
 
 var axis : Axis

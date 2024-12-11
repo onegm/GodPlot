@@ -50,6 +50,7 @@ color = Color(0.641681, 0, 0.0959515, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
+x_gridlines_minor = 2
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
 layout_mode = 2

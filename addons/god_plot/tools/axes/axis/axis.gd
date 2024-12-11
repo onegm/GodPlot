@@ -1,4 +1,3 @@
-@tool
 class_name Axis extends CanDraw
 
 var axis_ticks := AxisTicks.new()
@@ -69,6 +68,9 @@ func get_tick_positions_along_axis() -> Array[float]:
 
 func get_tick_length() -> float:
 	return axis_ticks.get_length()
+
+func get_tick_interval() -> float:
+	return axis_ticks.interval
 
 func get_pixel_distance_from_minimum(distance_from_minimum : float) -> float:
 	return remap(distance_from_minimum, 0, get_range(), 0, length)

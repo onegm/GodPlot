@@ -1,4 +1,3 @@
-@tool
 class_name AxisLabels extends CanDraw
 
 var axis : Axis

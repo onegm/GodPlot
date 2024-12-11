@@ -1,16 +1,19 @@
-@tool
 class_name Gridlines extends CanDraw
 
 var color : Color
 var major_thickness : float = 1.0
 var minor_thickness : float = 1.0
-var minor_count : int = 0
+var minor_count : int = 0:
+	set(value):
+		minor_count = maxi(0, value)
 ## The axis from which the gridlines are drawn. The major gridlines will match the ticks on that axis.
 var origin_axis : Axis
 ## The axis parallel to the gridlines. The gridlines will match the length of this axis.
 var parallel_axis : Axis
 
-var minor_interval : float
+var minor_interval : float:
+	set(value):
+		minor_interval = abs(value)
 
 var major_gridline_positions : Array[Vector2] = []
 
@@ -43,6 +46,8 @@ func draw_minor_gridlines(canvas : CanvasItem):
 	if !minor_count:
 		return
 	_update_minor_interval()
+	if is_zero_approx(minor_interval):
+		return
 	var first_minor_position = get_first_minor_position()
 	
 	var minor_gridline_position = first_minor_position
@@ -56,11 +61,11 @@ func draw_minor_gridlines(canvas : CanvasItem):
 		minor_gridline_position += minor_interval * origin_axis.direction
 
 func _update_minor_interval():
-	minor_interval = origin_axis.tick_interval / float(minor_count + 1)	
+	minor_interval = origin_axis.get_tick_interval() / float(minor_count + 1)	
 
 func get_first_minor_position() -> Vector2:
 	var first_minor_position = major_gridline_positions[0]
 	var smallest_remaining_gap = minor_interval * origin_axis.direction
-	while first_minor_position >= smallest_remaining_gap:
+	while first_minor_position > smallest_remaining_gap or first_minor_position.is_equal_approx(smallest_remaining_gap):
 		first_minor_position -= minor_interval * origin_axis.direction
 	return first_minor_position
