@@ -3,6 +3,93 @@ class_name Graph2D extends Graph
 ## A node for creating two-dimensional quantitative graphs. 
 ## Used with a [Series] inheriting node to plot data on a 2D graph.
 
+@export_group("X Axis", "x_")
+## Minimum value on x-axis. Precision must match [member x_decimal_places]
+@export var x_min: float = 0.0:
+	set(value):
+		x_min = Rounder.round_num_to_decimal_place(value, x_decimal_places)
+		if x_min > x_max: x_max = x_min
+		queue_redraw()
+## Maximum value on x-axis. Precision must match [member x_decimal_places]
+@export var x_max: float = 10.0:
+	set(value):
+		x_max = Rounder.round_num_to_decimal_place(value, x_decimal_places)
+		if x_max < x_min: x_min = x_max
+		queue_redraw()
+
+## Number of major gridlines. May change to ensure accurate position of gridlines. 
+## More [member x_decimal_places] results in less variation.
+@export var x_tick_count: int = 10:
+	set(value):
+		x_tick_count = value
+		queue_redraw()
+
+@export_range(0, 5) var x_decimal_places : int = 1:
+	set(value):
+		x_decimal_places = value
+		queue_redraw()
+@export_subgroup("Gridlines", "x_gridlines")
+@export_range(0, 1) var x_gridlines_opacity : float = 1.0:
+	set(value):
+		x_gridlines_opacity = value
+		queue_redraw()
+
+@export var x_gridlines_major_thickness : float = 1.0:
+	set(value):
+		x_gridlines_major_thickness = value
+		queue_redraw()
+
+@export_range(0, 10) var x_gridlines_minor : int = 0:
+	set(value):
+		x_gridlines_minor = value
+		queue_redraw()
+
+@export var x_gridlines_minor_thickness : float = 1.0:
+	set(value):
+		x_gridlines_minor_thickness = value
+		queue_redraw()
+
+@export_group("Y Axis", "y_")
+## Minimum value on y-axis. Precision must match [member y_decimal_places]
+@export var y_min: float = 0.0:
+	set(value):
+		y_min = Rounder.round_num_to_decimal_place(value, y_decimal_places)
+		if y_min > y_max: y_max = y_min
+		queue_redraw()
+## Maximum value on y-axis. Precision must match [member y_decimal_places]
+@export var y_max: float = 10.0:
+	set(value):
+		y_max = Rounder.round_num_to_decimal_place(value, y_decimal_places)
+		if y_max < y_min: y_min = y_max
+		queue_redraw()
+## Number of major gridlines. May change to ensure accurate position of gridlines. 
+## More [member y_decimal_places] results in less variation.
+@export var y_tick_count: int = 10:
+	set(value):
+		y_tick_count = value
+		queue_redraw()
+@export_range(0, 5) var y_decimal_places : int = 1:
+	set(value):
+		y_decimal_places = value
+		queue_redraw()
+@export_subgroup("Gridlines", "y_gridlines")
+@export_range(0, 1) var y_gridlines_opacity : float = 1.0:
+	set(value):
+		y_gridlines_opacity = value
+		queue_redraw()
+@export var y_gridlines_major_thickness : float = 1.0:
+	set(value):
+		y_gridlines_major_thickness = value
+		queue_redraw()
+@export_range(0, 10) var y_gridlines_minor : int = 0:
+	set(value):
+		y_gridlines_minor = value
+		queue_redraw()
+@export var y_gridlines_minor_thickness : float = 1.0:
+	set(value):
+		y_gridlines_minor_thickness = value
+		queue_redraw()
+
 var series_container := SeriesContainer.new()
 
 func _ready() -> void:
