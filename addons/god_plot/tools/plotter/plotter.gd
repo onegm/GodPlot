@@ -24,6 +24,8 @@ func _load_drawing_positions(series : Series) -> void:
 		_load_line_positions(series)
 	elif series is AreaSeries:
 		_load_area_positions(series)
+	elif series is HistogramSeries:
+		_load_histogram_positions(series)
 
 func _update_axes_info():
 	min_limits = axes.get_min_limits()
@@ -67,6 +69,26 @@ func _load_area_positions(series : AreaSeries) -> void:
 	)
 	area.add_point(ending_point)
 	to_plot.append(area)
+
+func _load_histogram_positions(series : HistogramSeries) -> void:
+	var base_y = find_y_position_of_area_base()
+	var data = [
+		Vector2(5, 3),
+		Vector2(15, 5),
+		Vector2(25, 9),
+		Vector2(35, 6),
+		Vector2(45, 2)
+	]
+	var bin_size = 50.0
+	for point in data:
+		var area = AreaPlot.new(series.color)
+		var point_position = find_point_local_position(point)
+		area.add_point(Vector2(point_position.x - bin_size/2.0, base_y))
+		area.add_point(Vector2(point_position.x - bin_size/2.0, point_position.y))
+		area.add_point(Vector2(point_position.x + bin_size/2.0, point_position.y))
+		area.add_point(Vector2(point_position.x + bin_size/2.0, base_y))
+		to_plot.append(area)
+
 
 func is_within_limits(point : Vector2) -> bool:
 	return 	point.clamp(min_limits, max_limits) == point

@@ -1,5 +1,5 @@
 @tool
-class_name LineSeries extends Series
+class_name LineSeries extends Series2D
 
 @export var thickness : float:
 	set(value):

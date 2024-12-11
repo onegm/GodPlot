@@ -1,11 +1,13 @@
 extends Control
 
 @onready var live_graph : Graph2D = %LiveGraph
-@onready var scatter_series_square : ScatterSeries = %ScatterSquare
+@onready var histogram : Histogram = %Histogram
 
+@onready var scatter_series_square : ScatterSeries = %ScatterSquare
 var scatter_series_x : ScatterSeries
 var area_series : AreaSeries
 var line_series : LineSeries
+var hist_series : HistogramSeries
 
 var timer : Timer = Timer.new()
 var x := 0.0
@@ -23,6 +25,9 @@ func _ready() -> void:
 	line_series = LineSeries.new(Color.SEA_GREEN, 2.0)
 	live_graph.add_series(line_series)
 	
+	hist_series = HistogramSeries.new()
+	histogram.add_series(hist_series)
+	
 	add_child(timer)
 	timer.wait_time = 0.25
 	timer.timeout.connect(add_points)
@@ -33,4 +38,5 @@ func add_points():
 	scatter_series_x.add_point(randf()*10, randf()*10)
 	area_series.add_point(x, sin(x)*5)
 	line_series.add_point(x, sqrt(x)*5)
+	hist_series.add_point(randi_range(0, 100))
 	x += 1/60.0

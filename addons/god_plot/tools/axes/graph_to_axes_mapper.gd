@@ -22,3 +22,5 @@ static func map_graph2d_to_pair_of_axes(graph : Graph2D, axes : PairOfAxes):
 	axes.y_gridlines.color = Color(graph.axis_color, graph.y_gridlines_opacity)
 	axes.y_title_margin = graph.get_y_axis_title_width()
 	
+static func map_histogram_to_pair_of_axes(histogram : Histogram, axes : PairOfAxes):
+	pass

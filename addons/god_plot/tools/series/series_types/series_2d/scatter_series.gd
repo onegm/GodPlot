@@ -1,5 +1,5 @@
 @tool
-class_name ScatterSeries extends Series
+class_name ScatterSeries extends Series2D
 ## [Series] object to store scatter plot information. 
 
 @export var size : float = 5.0:
