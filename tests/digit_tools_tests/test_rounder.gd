@@ -38,3 +38,21 @@ func test_ceil_vector_to_decimal_places():
 	var expected = Vector2(13, -804.3)
 	var result = Rounder.ceil_vector_to_decimal_places(vector, decimal_places)
 	assert_eq(result, expected)
+
+func test_ceil_num_to_multiple():
+	var num = 53.2
+	var multiple = 10.0
+	var expected = 60.0
+	assert_eq(Rounder.ceil_num_to_multiple(num, multiple), expected)
+
+func test_ceil_num_to_multiple_with_negative():
+	var num = -53.2
+	var multiple = 10.0
+	var expected = -50.0
+	assert_eq(Rounder.ceil_num_to_multiple(num, multiple), expected)
+
+func test_ceil_num_to_multiple_with_multiple_less_than_one():
+	var num = 53.2
+	var multiple = 0.5
+	var expected = 53.5
+	assert_eq(Rounder.ceil_num_to_multiple(num, multiple), expected)

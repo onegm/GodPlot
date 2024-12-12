@@ -1,18 +1,22 @@
 @tool
 class_name Histogram extends Graph
 
-@export var bin_size : float = 10.0
+@export var bin_size : float = 10.0:
+	set(value):
+		bin_size = abs(value)
+		x_max = _get_valid_x_max_from_value(x_max)
 @export_group("X Axis", "x_")
 ## Minimum value on x-axis. Precision must match [member x_decimal_places]
 @export var x_min: float = 0.0:
 	set(value):
 		x_min = Rounder.round_num_to_decimal_place(value, x_decimal_places)
 		if x_min > x_max: x_max = x_min
+		x_max = _get_valid_x_max_from_value(x_max)
 		queue_redraw()
-## Maximum value on x-axis. Precision must match [member x_decimal_places]
+## Maximum value on x-axis. Value will snap to multiple of [member bin_size]
 @export var x_max: float = 10.0:
 	set(value):
-		x_max = Rounder.round_num_to_decimal_place(value, x_decimal_places)
+		x_max = _get_valid_x_max_from_value(value)
 		if x_max < x_min: x_min = x_max
 		queue_redraw()
 @export_range(0, 5) var x_decimal_places : int = 1:
@@ -59,7 +63,6 @@ class_name Histogram extends Graph
 		queue_redraw()
 
 var series_container := SeriesContainer.new()
-
 
 func _ready() -> void:
 	super._ready()
@@ -113,3 +116,6 @@ func _update_graph_limits() -> void:
 
 func clear_data():
 	series_container.clear_data()
+	
+func _get_valid_x_max_from_value(value : float) -> float:
+	return Rounder.ceil_num_to_multiple(value - x_min, bin_size) + x_min
