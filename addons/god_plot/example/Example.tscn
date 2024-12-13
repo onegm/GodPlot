@@ -54,6 +54,7 @@ size_flags_horizontal = 3
 script = ExtResource("4_divu8")
 x_max = 100.0
 x_decimal_places = 0
+y_decimal_places = 0
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
 layout_mode = 2

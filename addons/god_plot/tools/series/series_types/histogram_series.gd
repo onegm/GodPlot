@@ -17,6 +17,7 @@ func add_point(value : float) -> void:
 	data.append(value)
 	data.sort()
 	_bin_value(value)
+	_update_min_and_max_limits(Vector2(_bin_to_value(get_bin_num(value)), binned_data[get_bin_num(value)]))
 	property_changed.emit()
 
 func _bin_data() -> Dictionary:
@@ -46,16 +47,20 @@ func _recalculate_min_and_max_limits():
 	min_limits = Vector2(x_min, 0)
 	max_limits = Vector2(x_max, max_count)
 
+func _bin_to_value(bin_num : int) -> float:
+	return min_x + bin_num*bin_size
+
 func remove_point(x : float):
 	data.erase(x)
+	_recalculate_min_and_max_limits()
 	property_changed.emit()
 
 func clear_data():
 	set_data([])
-	binned_data.clear()
-
+	
 func set_data(new_data : Array[float]):
 	data = new_data.duplicate()
 	data.sort()
 	_bin_data()
+	_recalculate_min_and_max_limits()
 	property_changed.emit()

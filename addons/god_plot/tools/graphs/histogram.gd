@@ -34,6 +34,11 @@ class_name Histogram extends Graph
 		queue_redraw()
 
 @export_group("Y Axis", "y_")
+## Starting maximum value of y-axis. Will increase automatically if data exceeds it. 
+@export var y_max: float = 10.0:
+	set(value):
+		y_max = abs(value)
+		queue_redraw()
 ## Number of major gridlines. May change to ensure accurate position of gridlines. 
 ## More [member y_decimal_places] results in less variation.
 @export var y_tick_count: int = 10:
@@ -97,17 +102,18 @@ func _draw() -> void:
 
 func _update_graph_limits() -> void:
 	var min_limits = Vector2(x_min, 0)
-	var max_limits = Vector2(x_max, 10.0)
+	var max_limits = Vector2(x_max, y_max)
 	
 	#if auto_scaling:
 		#var data_min = Rounder.floor_vector_to_decimal_places(
 			#series_container.min_value, Vector2(x_decimal_places, y_decimal_places)
 			#)
-		#var data_max = Rounder.ceil_vector_to_decimal_places(
-			#series_container.max_value, Vector2(x_decimal_places, y_decimal_places)
-			#)
 		#min_limits = min_limits.min(data_min)
-		#max_limits = max_limits.max(data_max)
+		
+	var data_max_y = Rounder.ceil_num_to_decimal_place(
+		series_container.max_value.y, y_decimal_places
+		)
+	max_limits = max_limits.max(Vector2(x_max, data_max_y))
 
 	pair_of_axes.set_min_limits(min_limits)
 	pair_of_axes.set_max_limits(max_limits)
