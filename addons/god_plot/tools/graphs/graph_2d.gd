@@ -124,8 +124,6 @@ func _draw() -> void:
 	pair_of_axes.queue_redraw()
 
 func _update_graph_limits() -> void:
-	if series_container.is_empty(): return 
-	
 	var min_limits = Vector2(x_min, y_min)
 	var max_limits = Vector2(x_max, y_max)
 	
