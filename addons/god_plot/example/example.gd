@@ -25,7 +25,7 @@ func _ready() -> void:
 	line_series = LineSeries.new(Color.SEA_GREEN, 2.0)
 	live_graph.add_series(line_series)
 	
-	hist_series = HistogramSeries.new()
+	hist_series = HistogramSeries.new(Color(0, 0, 1, 0.8))
 	histogram.add_series(hist_series)
 	
 	add_child(timer)

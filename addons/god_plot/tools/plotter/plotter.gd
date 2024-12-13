@@ -72,23 +72,18 @@ func _load_area_positions(series : AreaSeries) -> void:
 
 func _load_histogram_positions(series : HistogramSeries) -> void:
 	var base_y = find_y_position_of_area_base()
-	var data = [
-		Vector2(5, 3),
-		Vector2(15, 5),
-		Vector2(25, 9),
-		Vector2(35, 6),
-		Vector2(45, 2)
-	]
-	var bin_size = 50.0
-	for point in data:
+	var data = series.binned_data
+	var bin_size = get_scaled_pixel_width(series.bin_size) * 0.95
+	for bin in data:
 		var area = AreaPlot.new(series.color)
-		var point_position = find_point_local_position(point)
-		area.add_point(Vector2(point_position.x - bin_size/2.0, base_y))
-		area.add_point(Vector2(point_position.x - bin_size/2.0, point_position.y))
-		area.add_point(Vector2(point_position.x + bin_size/2.0, point_position.y))
-		area.add_point(Vector2(point_position.x + bin_size/2.0, base_y))
+		var bin_center = bin * series.bin_size + series.bin_size / 2
+		var bin_position = find_point_local_position(Vector2(bin_center, data[bin]))
+		bin_position.x -= axes.y_axis.thickness / 4.0
+		area.add_point(Vector2(bin_position.x - bin_size/2.0, base_y))
+		area.add_point(Vector2(bin_position.x - bin_size/2.0, bin_position.y))
+		area.add_point(Vector2(bin_position.x + bin_size/2.0, bin_position.y))
+		area.add_point(Vector2(bin_position.x + bin_size/2.0, base_y))
 		to_plot.append(area)
-
 
 func is_within_limits(point : Vector2) -> bool:
 	return 	point.clamp(min_limits, max_limits) == point
@@ -97,6 +92,9 @@ func find_point_local_position(point : Vector2) -> Vector2:
 	var position_from_minimum = point - min_limits
 	var pixel_position_from_minimum = axes.get_pixel_position_from_minimum(position_from_minimum)
 	return axes.get_axes_bottom_left_position() + pixel_position_from_minimum
+
+func get_scaled_pixel_width(width : float) -> float:
+	return remap(width, 0, axes.get_range().x, 0, axes.x_axis.length)
 
 func find_y_position_of_area_base() -> float:
 	if max_limits.y < 0:

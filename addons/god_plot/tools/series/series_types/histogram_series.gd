@@ -10,8 +10,8 @@ var min_x : float = 0.0:
 var bin_size : float = 10.0
 var binned_data : Dictionary = {}
 
-func _init() -> void:
-	pass
+func _init(display_color : Color = Color.BLUE) -> void:
+	color = display_color
 
 func add_point(value : float) -> void:
 	data.append(value)

@@ -52,9 +52,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("4_divu8")
-bin_size = 3.0
-x_min = 5.0
-x_max = 41.0
+x_max = 100.0
+x_decimal_places = 0
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
 layout_mode = 2

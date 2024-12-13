@@ -96,20 +96,18 @@ func _draw() -> void:
 	pair_of_axes.queue_redraw()
 
 func _update_graph_limits() -> void:
-	if series_container.is_empty(): return 
-	
 	var min_limits = Vector2(x_min, 0)
 	var max_limits = Vector2(x_max, 10.0)
 	
-	if auto_scaling:
-		var data_min = Rounder.floor_vector_to_decimal_places(
-			series_container.min_value, Vector2(x_decimal_places, y_decimal_places)
-			)
-		var data_max = Rounder.ceil_vector_to_decimal_places(
-			series_container.max_value, Vector2(x_decimal_places, y_decimal_places)
-			)
-		min_limits = min_limits.min(data_min)
-		max_limits = max_limits.max(data_max)
+	#if auto_scaling:
+		#var data_min = Rounder.floor_vector_to_decimal_places(
+			#series_container.min_value, Vector2(x_decimal_places, y_decimal_places)
+			#)
+		#var data_max = Rounder.ceil_vector_to_decimal_places(
+			#series_container.max_value, Vector2(x_decimal_places, y_decimal_places)
+			#)
+		#min_limits = min_limits.min(data_min)
+		#max_limits = max_limits.max(data_max)
 
 	pair_of_axes.set_min_limits(min_limits)
 	pair_of_axes.set_max_limits(max_limits)
@@ -119,3 +117,6 @@ func clear_data():
 	
 func _get_valid_x_max_from_value(value : float) -> float:
 	return Rounder.ceil_num_to_multiple(value - x_min, bin_size) + x_min
+
+func get_x_tick_count() -> int:
+	return int((x_max - x_min) / bin_size)
