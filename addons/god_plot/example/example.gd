@@ -38,5 +38,5 @@ func add_points():
 	scatter_series_x.add_point(randf()*10, randf()*10)
 	area_series.add_point(x, sin(x)*5)
 	line_series.add_point(x, sqrt(x)*5)
-	hist_series.add_point(randi_range(0, 100))
+	hist_series.add_point(randi_range(40, 50))
 	x += 1/60.0

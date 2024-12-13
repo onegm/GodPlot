@@ -23,3 +23,6 @@ static func round_num_to_decimal_place(num : float, decimal_place : int) -> floa
 
 static func ceil_num_to_multiple(num : float, multiple : float) -> float:
 	return ceil(num / multiple) * multiple
+
+static func floor_num_to_multiple(num : float, multiple : float) -> float:
+	return floor(num / multiple) * multiple

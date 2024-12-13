@@ -1,7 +1,7 @@
 @tool
 class_name Graph2D extends Graph
 ## A node for creating two-dimensional quantitative graphs. 
-## Used with a [Series] inheriting node to plot data on a 2D graph.
+## Used with a [Series2D] inheriting node to plot data on a 2D graph.
 
 @export_group("X Axis", "x_")
 ## Minimum value on x-axis. Precision must match [member x_decimal_places]
