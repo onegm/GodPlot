@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://b1eqbeh55eyfi"]
+[gd_scene load_steps=6 format=3 uid="uid://b1eqbeh55eyfi"]
 
 [ext_resource type="Script" path="res://addons/god_plot/example/example.gd" id="1_dxxyd"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/graphs/graph_2d.gd" id="1_jlmqc"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/series_2d/scatter_series.gd" id="3_tmo5p"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/graphs/histogram.gd" id="4_divu8"]
+[ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/histogram_series.gd" id="5_w138o"]
 
 [node name="MainTest" type="Control"]
 layout_mode = 3
@@ -53,11 +54,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("4_divu8")
 bin_size = 2.0
-outlier_behavior = 2
+outlier_behavior = 1
 x_min = 40.0
 x_max = 50.0
 x_decimal_places = 0
+y_max = 100.0
 y_decimal_places = 0
+
+[node name="HistogramSeries" type="Node" parent="VSplitContainer/HSplitContainer2/Histogram"]
+script = ExtResource("5_w138o")
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
 layout_mode = 2

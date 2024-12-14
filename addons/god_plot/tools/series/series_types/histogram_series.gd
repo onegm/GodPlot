@@ -17,9 +17,14 @@ func add_point(value : float) -> void:
 	data.append(value)
 	data.sort()
 	var bin_num = _bin_value(value)
-	if value >= 50: 
-		printt(value, bin_num)
 	_update_min_and_max_limits(Vector2(value, binned_data[bin_num]))
+	property_changed.emit()
+
+func add_array(values : Array[float]) -> void:
+	data.append_array(values)
+	data.sort()
+	_bin_data()
+	_recalculate_min_and_max_limits()
 	property_changed.emit()
 
 func _bin_data() -> Dictionary:
@@ -61,9 +66,6 @@ func _recalculate_min_and_max_limits():
 	min_limits = Vector2(x_min, 0)
 	max_limits = Vector2(x_max, max_count)
 
-func _bin_to_value(bin_num : int) -> float:
-	return x_min + bin_num*bin_size
-
 func remove_point(x : float):
 	data.erase(x)
 	_recalculate_min_and_max_limits()
@@ -79,14 +81,19 @@ func set_data(new_data : Array[float]):
 	_recalculate_min_and_max_limits()
 	property_changed.emit()
 
-func set_limits(min_x : float, max_x : float):
+func set_properties_from_histogram(histogram : Histogram):
+	_set_limits(histogram.x_min, histogram.x_max)
+	_set_bin_size(histogram.bin_size)
+	_set_outlier_behavior(histogram.outlier_behavior)
+	
+func _set_limits(min_x : float, max_x : float):
 	x_min = min_x
 	x_max = max_x
 	_bin_data()
 
-func set_bin_size(size : float):
+func _set_bin_size(size : float):
 	bin_size = size
 	_bin_data()
 
-func set_outlier_behavior(behavior : Histogram.OUTLIER):
+func _set_outlier_behavior(behavior : Histogram.OUTLIER):
 	outlier_behavior = behavior

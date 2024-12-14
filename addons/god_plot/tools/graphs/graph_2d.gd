@@ -3,6 +3,12 @@ class_name Graph2D extends Graph
 ## A node for creating two-dimensional quantitative graphs. 
 ## Used with a [Series2D] inheriting node to plot data on a 2D graph.
 
+## Automatically adjusts axis min and max values to accommodate data. 
+@export var auto_scaling : bool = true:
+	set(value):
+		auto_scaling = value
+		queue_redraw()
+
 @export_group("X Axis", "x_")
 ## Minimum value on x-axis. Precision must match [member x_decimal_places]
 @export var x_min: float = 0.0:
@@ -16,14 +22,12 @@ class_name Graph2D extends Graph
 		x_max = Rounder.round_num_to_decimal_place(value, x_decimal_places)
 		if x_max < x_min: x_min = x_max
 		queue_redraw()
-
 ## Number of major gridlines. May change to ensure accurate position of gridlines. 
 ## More [member x_decimal_places] results in less variation.
 @export var x_tick_count: int = 10:
 	set(value):
 		x_tick_count = value
 		queue_redraw()
-
 @export_range(0, 5) var x_decimal_places : int = 1:
 	set(value):
 		x_decimal_places = value
@@ -33,17 +37,14 @@ class_name Graph2D extends Graph
 	set(value):
 		x_gridlines_opacity = value
 		queue_redraw()
-
 @export var x_gridlines_major_thickness : float = 1.0:
 	set(value):
 		x_gridlines_major_thickness = value
 		queue_redraw()
-
 @export_range(0, 10) var x_gridlines_minor : int = 0:
 	set(value):
 		x_gridlines_minor = value
 		queue_redraw()
-
 @export var x_gridlines_minor_thickness : float = 1.0:
 	set(value):
 		x_gridlines_minor_thickness = value
@@ -90,18 +91,18 @@ class_name Graph2D extends Graph
 		y_gridlines_minor_thickness = value
 		queue_redraw()
 
-var series_container := SeriesContainer.new()
+var plotter : Plotter = Plotter.new()
 
 func _ready() -> void:
 	super._ready()
-	_setup_series_container()
-	_connect_plotter_to_axes_with_deferred_plotting()
+	_setup_plotter()
 	child_order_changed.connect(_load_children_series)
 	_load_children_series()
 
-func _setup_series_container():
-	add_child(series_container)
-	series_container.redraw_requested.connect(queue_redraw)
+func _setup_plotter():
+	plotter.set_pair_of_axes(pair_of_axes)
+	pair_of_axes.add_child(plotter)
+	_connect_plotter_to_axes_with_deferred_plotting()
 
 func _connect_plotter_to_axes_with_deferred_plotting():
 	pair_of_axes.draw.connect(
@@ -139,6 +140,3 @@ func _update_graph_limits() -> void:
 
 	pair_of_axes.set_min_limits(min_limits)
 	pair_of_axes.set_max_limits(max_limits)
-
-func clear_data():
-	series_container.clear_data()
