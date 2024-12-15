@@ -8,7 +8,7 @@ func before_each():
 		7, 10, 2, 22.5, 83, 25, -52, 30, 31, 65, 99
 	]
 	series = autofree(HistogramSeries.new())
-	series.min_x = 0.0
+	series.x_min = 0.0
 	series.bin_size = 10.0
 	series.set_data(data)
 
@@ -65,7 +65,7 @@ func test_remove_point_that_does_not_exist():
 	assert_eq(series.data, expected)
 
 func test_bin_data():
-	series.min_x = 0
+	series.x_min = 0
 	var expected = {
 		-6 : 1,
 		0 : 2,
@@ -90,8 +90,8 @@ func test_get_bin_num_with_negative_bins():
 	assert_eq(series.get_bin_num(-5), -1)
 	assert_eq(series.get_bin_num(-12), -2)
 
-func test_get_bin_num_with_different_min_x():
-	series.min_x = 25
+func test_get_bin_num_with_different_x_min():
+	series.x_min = 25
 	series.bin_size = 25
 	assert_eq(series.get_bin_num(9), -1)
 	assert_eq(series.get_bin_num(25), 0)
@@ -126,7 +126,7 @@ func test_increment_bin_num_with_existing_bin():
 	assert_eq(series.binned_data, expected)
 
 func test_bin_value_adds_positive_bins():
-	series.min_x = 0
+	series.x_min = 0
 	series.bin_size = 10.0
 	series.binned_data.clear()
 	series._bin_value(8)
@@ -139,7 +139,7 @@ func test_bin_value_adds_positive_bins():
 	assert_eq(series.binned_data, expected)
 
 func test_bin_value_adds_negative_bins():
-	series.min_x = 50
+	series.x_min = 50
 	series.bin_size = 10.0
 	series.binned_data.clear()
 	series._bin_value(8)

@@ -59,12 +59,15 @@ func _increment_bin_num(bin_num : int):
 		binned_data[bin_num] = 1
 
 func _recalculate_min_and_max_limits():
-	var max_count = binned_data.values().max()
-	var x_min = x_min + binned_data.keys().min() * bin_size
-	var x_max = x_min + binned_data.keys().max() * bin_size
+	var max_count = binned_data.values().max() if !binned_data.is_empty() else 0.0
+	var min_bin = binned_data.keys().min() if !binned_data.is_empty() else 0.0
+	var max_bin = binned_data.keys().max() if !binned_data.is_empty() else 0.0
 	
-	min_limits = Vector2(x_min, 0)
-	max_limits = Vector2(x_max, max_count)
+	var min_x = x_min + min_bin * bin_size
+	var max_x = x_min + max_bin * bin_size
+	
+	min_limits = Vector2(min_x, 0)
+	max_limits = Vector2(max_x, max_count)
 
 func remove_point(x : float):
 	data.erase(x)

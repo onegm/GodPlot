@@ -1,6 +1,6 @@
 extends GutTest
 
-var plotter : Plotter
+var plotter : Graph2DPlotter
 var axes : PairOfAxes
 
 func before_all():
@@ -9,7 +9,8 @@ func before_all():
 	axes.set_min_limits(Vector2(randi()%100 - 50, randi()%100 - 50))
 	axes.set_max_limits(axes.get_min_limits() + Vector2(randi()%50, randi() %50))
 	
-	plotter = Plotter.new(axes)
+	plotter = Graph2DPlotter.new()
+	plotter.set_pair_of_axes(axes)
 	plotter._update_axes_info()
 
 func test_is_within_limits_true_for_axes_limits():
