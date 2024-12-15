@@ -125,20 +125,30 @@ func _update_graph_limits() -> void:
 	max_limits = max_limits.max(Vector2(x_max, data_max_y))
 	
 	if outlier_behavior == OUTLIER.FIT:
-		var data_max_x = series_container.max_value.x
-		data_max_x = _get_valid_x_max_from_value(data_max_x if data_max_x != x_max else data_max_x*1.000001)
+		var data_max_x = _get_valid_x_max_from_data()
 		var data_min_x = _get_valid_x_min_from_value(series_container.min_value.x)
+
 		max_limits.x = max(data_max_x, max_limits.x)
 		min_limits.x = min(data_min_x, min_limits.x)
 	
 	pair_of_axes.set_min_limits(min_limits)
 	pair_of_axes.set_max_limits(max_limits)
+	
+func _get_valid_x_max_from_data() -> float:
+	var data_max_x = series_container.max_value.x
+	if _is_on_bin_edge(data_max_x):
+		data_max_x += bin_size / 2.0
+	data_max_x = _get_valid_x_max_from_value(data_max_x)
+	return data_max_x
 
 func _get_valid_x_max_from_value(value : float) -> float:
 	return Rounder.ceil_num_to_multiple(value - x_min, bin_size) + x_min
 
 func _get_valid_x_min_from_value(value : float) -> float:
 	return Rounder.floor_num_to_multiple(value - x_min, bin_size) + x_min
+
+func _is_on_bin_edge(value : float) -> bool:
+	return is_equal_approx(value, _get_valid_x_max_from_value(value))
 
 func _update_all_series():
 	series_container.get_all_series().map(_update_series_properties)

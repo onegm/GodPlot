@@ -97,3 +97,17 @@ func _set_bin_size(size : float):
 
 func _set_outlier_behavior(behavior : Histogram.OUTLIER):
 	outlier_behavior = behavior
+
+func get_bin_center_positions() -> Dictionary:
+	var center_positions = {}
+	for bin in binned_data.keys():
+		center_positions[bin] = _bin_num_to_center_value(bin)
+	return center_positions
+
+func _bin_num_to_center_value(bin_num : int) -> float:
+	return x_min + bin_num * bin_size + bin_size / 2.0
+
+func get_bin_count(bin_num : int) -> int:
+	if not binned_data.has(bin_num):
+		return -1
+	return binned_data[bin_num]

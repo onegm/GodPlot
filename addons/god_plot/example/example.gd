@@ -7,7 +7,8 @@ extends Control
 var scatter_series_x : ScatterSeries
 var area_series : AreaSeries
 var line_series : LineSeries
-var hist_series : HistogramSeries
+@onready var hist_series : HistogramSeries = %HistogramSeries
+var hist_series_2 : HistogramSeries
 
 var timer : Timer = Timer.new()
 var x := 0.0
@@ -25,8 +26,11 @@ func _ready() -> void:
 	line_series = LineSeries.new(Color.SEA_GREEN, 2.0)
 	live_graph.add_series(line_series)
 	
-	hist_series = HistogramSeries.new(Color(0, 0, 1, 0.8))
+	
 	histogram.add_series(hist_series)
+	hist_series_2 = HistogramSeries.new(Color(1, 0, 1, 0.5))
+	histogram.add_series(hist_series_2)
+	hist_series_2.add_point(100.0)
 	
 	add_child(timer)
 	timer.wait_time = 0.25
@@ -38,5 +42,6 @@ func add_points():
 	scatter_series_x.add_point(randf()*10, randf()*10)
 	area_series.add_point(x, sin(x)*5)
 	line_series.add_point(x, sqrt(x)*5)
-	hist_series.add_point(randi_range(40, 50))
+	hist_series.add_point(randf_range(40, 60)) 
+	hist_series_2.add_point(randf_range(0, 100))
 	x += 1/60.0

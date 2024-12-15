@@ -91,7 +91,7 @@ class_name Graph2D extends Graph
 		y_gridlines_minor_thickness = value
 		queue_redraw()
 
-var plotter : Plotter = Plotter.new()
+var plotter : Graph2DPlotter = Graph2DPlotter.new()
 
 func _ready() -> void:
 	super._ready()
