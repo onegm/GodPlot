@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://df3xm52p8fm1y"
-path="res://.godot/imported/scatter_icon.svg-23acc42b1329fba9b791b2770ce4b459.ctex"
+uid="uid://c80yp1ol7t75m"
+path="res://.godot/imported/area_series.svg-252dbe6661c09a49be8b2d98cc82fc27.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/god_plot/icons/scatter_icon.svg"
-dest_files=["res://.godot/imported/scatter_icon.svg-23acc42b1329fba9b791b2770ce4b459.ctex"]
+source_file="res://addons/god_plot/icons/area_series.svg"
+dest_files=["res://.godot/imported/area_series.svg-252dbe6661c09a49be8b2d98cc82fc27.ctex"]
 
 [params]
 

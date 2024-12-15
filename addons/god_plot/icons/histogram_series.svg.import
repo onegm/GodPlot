@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cyu3iqbprxq4i"
-path="res://.godot/imported/line_icon.svg-2cf01743ba0844196d5a70cd80eecea5.ctex"
+uid="uid://bcn55qeoouxl4"
+path="res://.godot/imported/histogram_series.svg-bd02e1d7a10c089c67adc6fc8ee954b2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/god_plot/icons/line_icon.svg"
-dest_files=["res://.godot/imported/line_icon.svg-2cf01743ba0844196d5a70cd80eecea5.ctex"]
+source_file="res://addons/god_plot/icons/histogram_series.svg"
+dest_files=["res://.godot/imported/histogram_series.svg-bd02e1d7a10c089c67adc6fc8ee954b2.ctex"]
 
 [params]
 

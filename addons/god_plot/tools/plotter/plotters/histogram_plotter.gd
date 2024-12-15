@@ -16,7 +16,7 @@ func _load_drawing_positions(series : HistogramSeries) -> void:
 	_load_histogram_positions(series)
 
 func _load_histogram_positions(series : HistogramSeries) -> void:
-	var base_y = find_y_position_of_area_base()
+	var base_y = find_y_position_of_bar_base()
 	bin_size_px = _get_scaled_pixel_width(series.bin_size) * 0.95
 	var bin_center_positions : Dictionary = series.get_bin_center_positions()
 	for bin in bin_center_positions:
@@ -31,6 +31,10 @@ func _load_histogram_positions(series : HistogramSeries) -> void:
 		area.add_point(Vector2(bin_position.x + bin_size_px/2.0, bin_position.y))
 		area.add_point(Vector2(bin_position.x + bin_size_px/2.0, base_y))
 		to_plot.append(area)
+
+func find_y_position_of_bar_base() -> float:
+	var y_equals_zero = Vector2(min_limits.x, 0)
+	return find_point_local_position(y_equals_zero).y - axes.x_axis.thickness / 2.0
 
 func _get_scaled_pixel_width(width : float) -> float:
 	return remap(width, 0, axes.get_range().x, 0, axes.x_axis.length)

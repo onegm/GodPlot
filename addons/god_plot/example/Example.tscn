@@ -58,12 +58,13 @@ x_max = 100.0
 x_decimal_places = 0
 y_max = 50.0
 y_decimal_places = 0
-background_color = Color(0.310617, 0.310617, 0.310617, 1)
+title = "Random Numbers"
+horizontal_title = "Value"
+vertical_title = "Frequency"
 
 [node name="HistogramSeries" type="Node" parent="VSplitContainer/HSplitContainer2/Histogram"]
 unique_name_in_owner = true
 script = ExtResource("5_w138o")
-color = Color(0, 0, 1, 0.458824)
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
 layout_mode = 2

@@ -28,7 +28,7 @@ func _ready() -> void:
 	
 	
 	histogram.add_series(hist_series)
-	hist_series_2 = HistogramSeries.new(Color(1, 0, 1, 0.5))
+	hist_series_2 = HistogramSeries.new(Color(Color.WHITE, 0.5))
 	histogram.add_series(hist_series_2)
 	hist_series_2.add_point(100.0)
 	
@@ -42,6 +42,6 @@ func add_points():
 	scatter_series_x.add_point(randf()*10, randf()*10)
 	area_series.add_point(x, sin(x)*5)
 	line_series.add_point(x, sqrt(x)*5)
-	hist_series.add_point(randf_range(40, 60)) 
-	hist_series_2.add_point(randf_range(0, 100))
+	hist_series.add_point(randf_range(0, 10)**2) 
+	hist_series_2.add_point(sqrt(randf_range(0, 10000)))
 	x += 1/60.0
