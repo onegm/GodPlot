@@ -22,12 +22,16 @@ func test_set_data_sorts_data():
 	data.sort()
 	assert_eq(series.data, data)
 
+func test_add_point_adds_data():
+	var point_to_add = 50
+	series.add_point(point_to_add)
+	assert_eq(series.data.size(), data.size() + 1)
+
 func test_add_point_sorts_data():
 	var point_to_add = 50
 	series.add_point(point_to_add)
 	data.append(point_to_add)
 	data.sort()
-
 	assert_eq(series.data, data)
 
 func test_add_point_bins_data():
@@ -45,6 +49,36 @@ func test_add_point_bins_data():
 		9 : 1
 	}
 	assert_eq(series.binned_data, expected)
+
+
+func test_add_array_adds_data():
+	var points_to_add : Array[float] = [50, 34.2, -80, 95]
+	series.add_array(points_to_add)
+	assert_eq(series.data.size(), data.size() + points_to_add.size())
+
+func test_add_array_sorts_data():
+	var points_to_add : Array[float] = [50, 34.2, -80, 95]
+	series.add_array(points_to_add)
+	data.append_array(points_to_add)
+	data.sort()
+	assert_eq(series.data, data)
+
+func test_add_array_bins_data():
+	var points_to_add : Array[float] = [50, 34.2, -80, 95]
+	series.add_array(points_to_add)
+	var expected = {
+		-8 : 1,
+		-6 : 1,
+		0 : 2,
+		1 : 1,
+		2 : 2,
+		3 : 3,
+		5 : 1,
+		6 : 1,
+		8 : 1,
+		9 : 2
+	}
+	assert_eq(series.get_sorted_binned_data_dict(), expected)
 
 func test_remove_point_that_exists():
 	var index = randi() % series.data.size()
@@ -98,6 +132,25 @@ func test_get_bin_num_with_different_x_min():
 	assert_eq(series.get_bin_num(49), 0)
 	assert_eq(series.get_bin_num(50), 1)
 	assert_eq(series.get_bin_num(100), 3)
+
+func test_get_sorted_binned_data_dict():
+	series.binned_data = {
+		8 : 5,
+		2 : 3,
+		0 : 1,
+		4 : 1,
+		3 : 1,
+		7 : 1,
+	}
+	var expected = {
+		0 : 1,
+		2 : 3,
+		3 : 1,
+		4 : 1,
+		7 : 1,
+		8 : 5,
+	}
+	assert_eq(series.get_sorted_binned_data_dict(), expected)
 
 func test_increment_bin_num_with_new_bin():
 	series.binned_data.clear()

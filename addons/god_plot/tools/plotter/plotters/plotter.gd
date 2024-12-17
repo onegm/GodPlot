@@ -9,7 +9,7 @@ var range : Vector2
 func set_pair_of_axes(pair_of_axes : PairOfAxes):
 	axes = pair_of_axes
 
-func _update_axes_info():
+func _update_limits():
 	min_limits = axes.get_min_limits()
 	max_limits = axes.get_max_limits()
 	range = axes.get_range()

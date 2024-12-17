@@ -1,9 +1,9 @@
 extends Control
 
-@onready var live_graph : Graph2D = %LiveGraph
+@onready var live_graph : Graph2D = %Graph2D
 @onready var histogram : Histogram = %Histogram
 
-@onready var scatter_series_square : ScatterSeries = %ScatterSquare
+@onready var scatter_series_square : ScatterSeries = %ScatterSeries
 var scatter_series_x : ScatterSeries
 var area_series : AreaSeries
 var line_series : LineSeries

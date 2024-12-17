@@ -14,6 +14,7 @@ enum OUTLIER {
 		bin_size = abs(value)
 		x_max = _get_valid_x_max_from_value(x_max)
 		queue_redraw()
+@export_range(0.1, 1.0) var bar_width_scale = 0.95
 @export var outlier_behavior : OUTLIER = OUTLIER.IGNORE:
 	set(value):
 		outlier_behavior = value
@@ -80,7 +81,7 @@ enum OUTLIER {
 		y_gridlines_minor_thickness = value
 		queue_redraw()
 
-var plotter = HistogramPlotter.new()
+var plotter = HistogramPlotter.new(self)
 
 func _ready() -> void:
 	super._ready()

@@ -60,6 +60,16 @@ func test_add_point_in_middle():
 	
 	assert_eq(series.data, expected)
 
+func test_add_point_array():
+	var points_to_add : Array[Vector2] = [
+		Vector2.ONE * 5,
+		Vector2.ONE * -3,
+		Vector2.ONE * 12,
+		Vector2.ONE * 53,
+	]
+	series.add_point_array(points_to_add)
+	assert_eq(series.data.size(), sorted_packed_vector2_array.size() + points_to_add.size())
+
 func test_remove_point_that_exists():
 	var index = randi() % series.data.size()
 	var point_to_remove = sorted_packed_vector2_array[index]

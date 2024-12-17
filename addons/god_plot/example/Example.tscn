@@ -27,7 +27,7 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="LiveGraph" type="Control" parent="VSplitContainer/HSplitContainer2"]
+[node name="Graph2D" type="Control" parent="VSplitContainer/HSplitContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -39,7 +39,7 @@ vertical_title = "Vertical Title"
 font_color = Color(0, 0, 0, 1)
 axis_color = Color(0, 0, 0, 1)
 
-[node name="ScatterSquare" type="Node" parent="VSplitContainer/HSplitContainer2/LiveGraph"]
+[node name="ScatterSeries" type="Node" parent="VSplitContainer/HSplitContainer2/Graph2D"]
 unique_name_in_owner = true
 script = ExtResource("3_tmo5p")
 size = 4.0
@@ -65,6 +65,7 @@ vertical_title = "Frequency"
 [node name="HistogramSeries" type="Node" parent="VSplitContainer/HSplitContainer2/Histogram"]
 unique_name_in_owner = true
 script = ExtResource("5_w138o")
+data = Array[float]([0.0, 0.0])
 
 [node name="HSplitContainer" type="HSplitContainer" parent="VSplitContainer"]
 layout_mode = 2

@@ -10,7 +10,7 @@ static func _is_series2d(series : Series) -> bool:
 	return series is Series2D
 
 func _load_drawing_positions(series : Series2D) -> void:
-	_update_axes_info()
+	_update_limits()
 	if series is ScatterSeries: 
 		_load_scatter_positions(series)
 	elif series is LineSeries:

@@ -6,6 +6,33 @@ class_name Series2D extends Series
 		data = _sort_by_x(value)
 		property_changed.emit()
 
+func add_point(x : float, y : float) -> void:
+	add_point_vector(Vector2(x, y))
+	
+func add_point_vector(point : Vector2) -> void:
+	data.append(point)
+	data = _sort_by_x(data)
+	_update_min_and_max_limits(point)
+	property_changed.emit()
+
+func add_point_array(points : Array[Vector2]) -> void:
+	data.append_array(PackedVector2Array(points))
+	data = _sort_by_x(data)
+	_recalculate_min_and_max_limits()
+	property_changed.emit()
+
+func remove_point(point : Vector2):
+	var point_idx = data.find(point)
+	if point_idx <= -1 : return null
+	var removed_point = data[point_idx]
+	data.remove_at(point_idx)
+	property_changed.emit()
+	_recalculate_min_and_max_limits()
+	return removed_point
+
+func clear_data():
+	set_data(PackedVector2Array())
+
 func set_data_from_Vector2_array(array : Array[Vector2]):
 	set_data(PackedVector2Array(array))
 	
@@ -26,27 +53,4 @@ static func _point_sort(a : Vector2, b : Vector2):
 func _recalculate_min_and_max_limits():
 	min_limits = Vector2(INF, INF)
 	max_limits = Vector2(-INF, -INF)
-	for point in data:
-		min_limits = min_limits.min(point)
-		max_limits = max_limits.max(point)
-
-func clear_data():
-	set_data(PackedVector2Array())
-
-func add_point(x : float, y : float) -> void:
-	add_point_vector(Vector2(x, y))
-	
-func add_point_vector(point : Vector2) -> void:
-	data.append(point)
-	data = _sort_by_x(data)
-	_update_min_and_max_limits(point)
-	property_changed.emit()
-
-func remove_point(point : Vector2):
-	var point_idx = data.find(point)
-	if point_idx <= -1 : return null
-	var removed_point = data[point_idx]
-	data.remove_at(point_idx)
-	property_changed.emit()
-	_recalculate_min_and_max_limits()
-	return removed_point
+	Array(data).map(_update_min_and_max_limits)
