@@ -9,8 +9,8 @@ var length : float = 10.0
 var positions_along_axis : Array[float] = []
 var canvas : CanvasItem
 
-func _init():
-	pass
+func _init(axis_to_tick : Axis):
+	axis = axis_to_tick
 
 func set_axis(new_axis : Axis):
 	axis = new_axis
@@ -29,6 +29,18 @@ func _update_interval():
 	if intended_num_ticks <= 0: 
 		interval = 0.0
 		return
+	if axis.is_logarithmic:
+		_update_interval_logarithmic()
+	else:
+		_update_interval_linear()
+
+func _update_interval_logarithmic():
+	if axis.is_vertical:
+		_update_interval_linear()
+		return
+	interval = axis.length / axis.get_log_range()
+
+func _update_interval_linear():
 	var tick_value_interval =  axis.get_range() / float(intended_num_ticks)
 	var rounded_value_interval = Rounder.round_num_to_decimal_place(tick_value_interval, axis.decimal_places)
 	interval = remap(rounded_value_interval, 0, axis.get_range(), 0, axis.length)

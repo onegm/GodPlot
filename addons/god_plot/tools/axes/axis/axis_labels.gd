@@ -8,8 +8,8 @@ var font_size : float = 8.0:
 var canvas : CanvasItem
 var visible : bool = true
 
-func _init() -> void:
-	pass
+func _init(axis_to_label : Axis) -> void:
+	axis = axis_to_label
 
 func set_axis(axis_to_label : Axis):
 	axis = axis_to_label

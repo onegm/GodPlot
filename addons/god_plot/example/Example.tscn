@@ -50,6 +50,7 @@ color = Color(0.641681, 0, 0.0959515, 1)
 
 [node name="Histogram" type="Control" parent="VSplitContainer/HSplitContainer2"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("4_divu8")
@@ -72,6 +73,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="Graph2D2" type="Control" parent="VSplitContainer/HSplitContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")

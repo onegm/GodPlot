@@ -37,12 +37,15 @@ func test_get_zero_position_when_zero_is_greater_than_maximum():
 	axis.max_value = -5.0
 	assert_eq(axis.get_zero_position_along_axis_clipped(), axis.length)
 
-func test_get_tick_positions_along_axis():
+func test_get_linear_tick_positions_along_axis():
+	axis.is_logarithmic = false
+	axis.axis_ticks._update_properties()
 	var result = axis.get_tick_positions_along_axis()
 	var expected : Array[float] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100] 
 	assert_eq(result, expected)
 
-func test_get_label_values_at_ticks():
+func test_get_linear_label_values_at_ticks():
+	axis.is_logarithmic = false
 	var result = axis.get_label_values_at_ticks()
 	var expected : Array[float] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 	assert_eq(result, expected)

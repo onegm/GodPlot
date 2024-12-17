@@ -1,8 +1,8 @@
 class_name Axis extends CanDraw
 
-var axis_ticks := AxisTicks.new()
-var axis_labels := AxisLabels.new()
-
+var axis_ticks := AxisTicks.new(self)
+var axis_labels := AxisLabels.new(self)
+var is_logarithmic := false
 var is_vertical : bool = false: 
 	set(value):
 		is_vertical = value
@@ -22,6 +22,9 @@ var out_direction : Vector2 = Vector2.DOWN
 var decimal_places : int = 2
 var thickness : float = 3.0
 
+func _init() -> void:
+	pass
+
 static func new_x_axis() -> Axis:
 	return Axis.new()
 
@@ -29,10 +32,6 @@ static func new_y_axis() -> Axis:
 	var axis = Axis.new()
 	axis.is_vertical = true
 	return axis
-
-func _init() -> void:
-	axis_ticks.set_axis(self)
-	axis_labels.set_axis(self)
 
 func draw_on(canvas_item : CanvasItem) -> void:
 	_draw_axis_on(canvas_item)
@@ -47,6 +46,11 @@ func _draw_axis_on(canvas_item : CanvasItem):
 func get_range() -> float:
 	return max_value - min_value
 
+func get_log_range() -> float:
+	var axis_max = max_value
+	var axis_min = min_value if !is_zero_approx(min_value) else 1.0
+	return ceilf(log(axis_max / axis_min) / log(10))
+
 func get_zero_position_along_axis_clipped() -> float:
 	if min_value >= 0:
 		return 0.0
@@ -56,6 +60,19 @@ func get_zero_position_along_axis_clipped() -> float:
 		return (0.0 - min_value) / get_range() * length
 
 func get_label_values_at_ticks() -> Array[float]:
+	if is_logarithmic:
+		return _get_logarithmic_values_at_ticks()
+	return _get_linear_values_at_ticks()
+
+func _get_logarithmic_values_at_ticks() -> Array[float]:
+	var tick_values : Array[float] = []
+	var log_range = get_log_range()
+	for tick_position in get_tick_positions_along_axis():
+		var value = 10 ** (tick_position / length * log_range) * min_value
+		tick_values.append(value)
+	return tick_values
+
+func _get_linear_values_at_ticks() -> Array[float]:
 	var tick_values : Array[float] = []
 	var range := get_range()
 	for tick_position in get_tick_positions_along_axis():
