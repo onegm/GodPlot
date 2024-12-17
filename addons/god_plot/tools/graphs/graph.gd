@@ -10,7 +10,11 @@ class_name Graph extends Control
 	set(value):
 		border_margin = max(0, value)
 		graph_v_box.set_offsets_preset(PRESET_FULL_RECT, PRESET_MODE_MINSIZE, border_margin)
-
+@export var origin_offset := Vector2.ZERO:
+	set(value):
+		origin_offset = value
+		pair_of_axes.offset = origin_offset
+		queue_redraw()
 @export_group("Titles")
 @export_multiline var title : String = "":
 	set(value):

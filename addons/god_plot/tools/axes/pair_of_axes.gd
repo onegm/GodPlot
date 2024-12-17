@@ -5,6 +5,7 @@ var x_axis := Axis.new_x_axis()
 var y_axis := Axis.new_y_axis()
 var x_gridlines := Gridlines.new()
 var y_gridlines := Gridlines.new()
+var offset := Vector2.ZERO
 
 var bottom_left_corner := DrawingAnchor.new()
 
@@ -80,6 +81,7 @@ func _update_bottom_margin():
 	var bottom_margin = x_axis.get_tick_length()
 	bottom_margin += font_size if visible_tick_labels else 0.0
 	bottom_margin += thickness
+	bottom_margin += offset.y
 	
 	margin.bottom = bottom_margin
 
@@ -90,6 +92,7 @@ func _update_left_margin(y_title_width : float = 0.0):
 	left_margin += thickness
 	left_margin += font_size / 1.5 * (DigitCounter.get_max_num_digits(y_axis.min_value, y_axis.max_value) + decimal_places.y)
 	left_margin += y_title_margin
+	left_margin += offset.x
 	
 	margin.left = left_margin
 
