@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1eqbeh55eyfi"]
+[gd_scene load_steps=8 format=3 uid="uid://b1eqbeh55eyfi"]
 
 [ext_resource type="Script" path="res://addons/god_plot/example/example.gd" id="1_dxxyd"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/graphs/graph_2d.gd" id="1_jlmqc"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/series_2d/scatter_series.gd" id="3_tmo5p"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/graphs/histogram.gd" id="4_divu8"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/histogram_series.gd" id="5_w138o"]
+[ext_resource type="Script" path="res://addons/god_plot/tools/graphs/heat_map.gd" id="6_l22vk"]
+
+[sub_resource type="Gradient" id="Gradient_isyrf"]
 
 [node name="MainTest" type="Control"]
 layout_mode = 3
@@ -58,6 +61,7 @@ x_max = 100.0
 x_decimal_places = 0
 y_max = 50.0
 y_decimal_places = 0
+origin_offset = Vector2(-16.635, 0)
 title = "Random Numbers"
 horizontal_title = "Value"
 vertical_title = "Frequency"
@@ -81,3 +85,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0.00134256, 0.256689, 0.890407, 1)
+
+[node name="HeatMap" type="Control" parent="VSplitContainer/HSplitContainer/ColorRect2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_l22vk")
+gradient = SubResource("Gradient_isyrf")
+x_min = -10.0
+y_min = -10.0
+background_color = Color(0.362829, 0.362829, 0.362829, 1)
