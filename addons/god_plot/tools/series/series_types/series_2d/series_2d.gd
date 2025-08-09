@@ -6,6 +6,14 @@ class_name Series2D extends Series
 		data = _sort_by_x(value)
 		property_changed.emit()
 
+func _init() -> void:
+	pass
+
+static func from_point_array(point_array : Array[Vector2]) -> Series2D:
+	var new_series_2d : Series2D = Series2D.new()
+	new_series_2d.data = PackedVector2Array(point_array)
+	return new_series_2d
+
 func add_point(x : float, y : float) -> void:
 	add_point_vector(Vector2(x, y))
 	

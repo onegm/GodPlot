@@ -11,17 +11,10 @@ class_name Graph2D extends Graph
 
 @export_group("X Axis", "x_")
 ## Minimum value on x-axis. Precision must match [member x_decimal_places]
-@export var x_min: float = 0.0:
-	set(value):
-		x_min = Rounder.round_num_to_decimal_place(value, x_decimal_places)
-		if x_min > x_max: x_max = x_min
-		queue_redraw()
+@export var x_min: float = 0.0: set = set_x_min
 ## Maximum value on x-axis. Precision must match [member x_decimal_places]
-@export var x_max: float = 10.0:
-	set(value):
-		x_max = Rounder.round_num_to_decimal_place(value, x_decimal_places)
-		if x_max < x_min: x_min = x_max
-		queue_redraw()
+@export var x_max: float = 10.0: set = set_x_max
+
 ## Number of major gridlines. May change to ensure accurate position of gridlines. 
 ## More [member x_decimal_places] results in less variation.
 @export var x_tick_count: int = 10:
@@ -52,17 +45,10 @@ class_name Graph2D extends Graph
 
 @export_group("Y Axis", "y_")
 ## Minimum value on y-axis. Precision must match [member y_decimal_places]
-@export var y_min: float = 0.0:
-	set(value):
-		y_min = Rounder.round_num_to_decimal_place(value, y_decimal_places)
-		if y_min > y_max: y_max = y_min
-		queue_redraw()
+@export var y_min: float = 0.0: set = set_y_min
 ## Maximum value on y-axis. Precision must match [member y_decimal_places]
-@export var y_max: float = 10.0:
-	set(value):
-		y_max = Rounder.round_num_to_decimal_place(value, y_decimal_places)
-		if y_max < y_min: y_min = y_max
-		queue_redraw()
+@export var y_max: float = 10.0: set = set_y_max
+
 ## Number of major gridlines. May change to ensure accurate position of gridlines. 
 ## More [member y_decimal_places] results in less variation.
 @export var y_tick_count: int = 10:
@@ -91,7 +77,7 @@ class_name Graph2D extends Graph
 		y_gridlines_minor_thickness = value
 		queue_redraw()
 
-var plotter : Graph2DPlotter = Graph2DPlotter.new()
+var plotter : Plotter = Graph2DPlotter.new()
 
 func _ready() -> void:
 	super._ready()
@@ -140,3 +126,24 @@ func _update_graph_limits() -> void:
 
 	pair_of_axes.set_min_limits(min_limits)
 	pair_of_axes.set_max_limits(max_limits)
+
+func set_x_min(value : float) -> void:
+	x_min = Rounder.round_num_to_decimal_place(value, x_decimal_places)
+	if x_min > x_max: x_max = x_min
+	queue_redraw()
+
+func set_x_max(value : float) -> void:
+	x_max = Rounder.round_num_to_decimal_place(value, x_decimal_places)
+	if x_max < x_min: x_min = x_max
+	queue_redraw()
+	
+func set_y_min(value : float) -> void:
+	y_min = Rounder.round_num_to_decimal_place(value, y_decimal_places)
+	if y_min > y_max: y_max = y_min
+	queue_redraw()
+
+func set_y_max(value : float) -> void:
+	y_max = Rounder.round_num_to_decimal_place(value, y_decimal_places)
+	if y_max < y_min: y_min = y_max
+	queue_redraw()
+	

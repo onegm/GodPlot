@@ -1,6 +1,12 @@
 @tool
 class_name HistogramSeries extends Series
 
+
+@export var color : Color = Color.BLUE:
+	set(value):
+		color = value
+		property_changed.emit()
+
 @export var data : Array[float] = []
 
 var x_min : float = 0.0

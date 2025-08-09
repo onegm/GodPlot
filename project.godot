@@ -17,6 +17,12 @@ config/features=PackedStringArray("4.3", "GL Compatibility")
 
 enabled=PackedStringArray("res://addons/god_plot/plugin.cfg", "res://addons/gut/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://tests/": "pink"
+}
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

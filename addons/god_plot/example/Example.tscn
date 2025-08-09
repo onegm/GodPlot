@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b1eqbeh55eyfi"]
+[gd_scene load_steps=9 format=3 uid="uid://b1eqbeh55eyfi"]
 
 [ext_resource type="Script" path="res://addons/god_plot/example/example.gd" id="1_dxxyd"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/graphs/graph_2d.gd" id="1_jlmqc"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://addons/god_plot/tools/graphs/histogram.gd" id="4_divu8"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/histogram_series.gd" id="5_w138o"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/graphs/heat_map.gd" id="6_l22vk"]
+[ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/series_2d/series_2d.gd" id="7_8gaf5"]
 
 [sub_resource type="Gradient" id="Gradient_isyrf"]
 
@@ -49,7 +50,6 @@ size = 4.0
 shape = 1
 stroke = 1.0
 data = PackedVector2Array(0, 0, 5, 5)
-color = Color(0.641681, 0, 0.0959515, 1)
 
 [node name="Histogram" type="Control" parent="VSplitContainer/HSplitContainer2"]
 unique_name_in_owner = true
@@ -96,5 +96,8 @@ grow_vertical = 2
 script = ExtResource("6_l22vk")
 gradient = SubResource("Gradient_isyrf")
 x_min = -10.0
-y_min = -10.0
+y_max = 20.0
 background_color = Color(0.362829, 0.362829, 0.362829, 1)
+
+[node name="Series2D" type="Node" parent="VSplitContainer/HSplitContainer/ColorRect2/HeatMap"]
+script = ExtResource("7_8gaf5")
