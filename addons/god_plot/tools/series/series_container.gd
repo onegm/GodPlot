@@ -23,6 +23,9 @@ func remove_series(series : Series):
 	series.property_changed.disconnect(on_property_changed)
 	series_arr.erase(series)
 
+func remove_all_series():
+	series_arr.map(remove_series)
+
 func get_all_series() -> Array[Series]:
 	return series_arr
 

@@ -18,7 +18,7 @@ func test_clear():
 
 func test_set_data_sorts_data():
 	series.clear_data()
-	series.set_data(data)
+	series.set_data(data.duplicate())
 	data.sort()
 	assert_eq(series.data, data)
 
@@ -78,7 +78,7 @@ func test_add_array_bins_data():
 		8 : 1,
 		9 : 2
 	}
-	assert_eq(series.get_sorted_binned_data_dict(), expected)
+	assert_eq(series.get_binned_data(), expected)
 
 func test_remove_point_that_exists():
 	var index = randi() % series.data.size()
@@ -110,30 +110,11 @@ func test_bin_data():
 		8 : 1,
 		9 : 1
 	}
-	var binned_data = series._bin_data()
+	series._bin_data()
 	
-	assert_eq(binned_data, expected)
+	assert_eq(series.binned_data, expected)
 
-func test_get_bin_num():
-	assert_eq(series.get_bin_num(0), 0)
-	assert_eq(series.get_bin_num(9), 0)
-	assert_eq(series.get_bin_num(10), 1)
-	assert_eq(series.get_bin_num(124), 12)
-
-func test_get_bin_num_with_negative_bins():
-	assert_eq(series.get_bin_num(-5), -1)
-	assert_eq(series.get_bin_num(-12), -2)
-
-func test_get_bin_num_with_different_x_min():
-	series.x_min = 25
-	series.bin_size = 25
-	assert_eq(series.get_bin_num(9), -1)
-	assert_eq(series.get_bin_num(25), 0)
-	assert_eq(series.get_bin_num(49), 0)
-	assert_eq(series.get_bin_num(50), 1)
-	assert_eq(series.get_bin_num(100), 3)
-
-func test_get_sorted_binned_data_dict():
+func test_get_binned_data_sorts_bins():
 	series.binned_data = {
 		8 : 5,
 		2 : 3,
@@ -150,57 +131,4 @@ func test_get_sorted_binned_data_dict():
 		7 : 1,
 		8 : 5,
 	}
-	assert_eq(series.get_sorted_binned_data_dict(), expected)
-
-func test_increment_bin_num_with_new_bin():
-	series.binned_data.clear()
-	series._increment_bin_num(0)
-	series._increment_bin_num(5)
-	
-	var expected = {
-		0 : 1,
-		5 : 1
-	}
-	assert_eq(series.binned_data, expected)
-
-func test_increment_bin_num_with_existing_bin():
-	series.binned_data.clear()
-	series._increment_bin_num(0)
-	series._increment_bin_num(0)
-	series._increment_bin_num(0)
-	series._increment_bin_num(0)
-	series._increment_bin_num(5)
-	series._increment_bin_num(5)
-	
-	var expected = {
-		0 : 4,
-		5 : 2
-	}
-	assert_eq(series.binned_data, expected)
-
-func test_bin_value_adds_positive_bins():
-	series.x_min = 0
-	series.bin_size = 10.0
-	series.binned_data.clear()
-	series._bin_value(8)
-	series._bin_value(12)
-	series._bin_value(19)
-	var expected = {
-		0 : 1,
-		1 : 2
-	}
-	assert_eq(series.binned_data, expected)
-
-func test_bin_value_adds_negative_bins():
-	series.x_min = 50
-	series.bin_size = 10.0
-	series.binned_data.clear()
-	series._bin_value(8)
-	series._bin_value(12)
-	series._bin_value(70)
-	var expected = {
-		-5: 1,
-		-4 : 1,
-		2 : 1
-	}
-	assert_eq(series.binned_data, expected)
+	assert_eq(series.get_binned_data(), expected)

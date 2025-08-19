@@ -1,7 +1,6 @@
 @tool
 class_name HistogramSeries extends Series
 
-
 @export var color : Color = Color.BLUE:
 	set(value):
 		color = value
@@ -14,7 +13,7 @@ var x_max : float = 10.0
 
 var bin_size : float = 10.0
 var binned_data : Dictionary = {}
-var outlier_behavior : Histogram.OUTLIER = Histogram.OUTLIER.IGNORE
+var histogram_binner : HistogramBinner = HistogramBinner.new(self)
 
 func _init(display_color : Color = Color.BLUE) -> void:
 	color = display_color
@@ -22,47 +21,19 @@ func _init(display_color : Color = Color.BLUE) -> void:
 func add_point(value : float) -> void:
 	data.append(value)
 	data.sort()
-	var bin_num = _bin_value(value)
+	var bin_num = histogram_binner.bin_value(value)
 	_update_min_and_max_limits(Vector2(value, binned_data[bin_num]))
 	property_changed.emit()
 
 func add_array(values : Array[float]) -> void:
 	data.append_array(values)
 	data.sort()
-	values.map(_bin_value)
+	values.map(histogram_binner.bin_value)
 	_recalculate_min_and_max_limits()
 	property_changed.emit()
 
-func _bin_data() -> Dictionary:
-	binned_data.clear()
-	data.map(_bin_value)
-	return binned_data
-
-func _bin_value(value : float) -> int:
-	value = _value_adjusted_for_outlier_behavior(value)
-	var bin_num = get_bin_num(value)
-	_increment_bin_num(bin_num)
-	return bin_num
-
-func _value_adjusted_for_outlier_behavior(value : float) -> float:
-	match outlier_behavior:
-		Histogram.OUTLIER.IGNORE:
-			return value
-		Histogram.OUTLIER.INCLUDE:
-			return clamp(value, x_min, x_max - bin_size / 2.0)
-		Histogram.OUTLIER.FIT:
-			return value
-		_:
-			return value
-
-func get_bin_num(value : float) -> int:
-	return floor((value - x_min) / bin_size)
-
-func _increment_bin_num(bin_num : int):
-	if binned_data.has(bin_num):
-		binned_data[bin_num] += 1
-	else:
-		binned_data[bin_num] = 1
+func _bin_data():
+	binned_data = histogram_binner.get_binned_data()
 
 func _recalculate_min_and_max_limits():
 	var max_count = binned_data.values().max() if !binned_data.is_empty() else 0.0
@@ -105,9 +76,9 @@ func _set_bin_size(size : float):
 	_bin_data()
 
 func _set_outlier_behavior(behavior : Histogram.OUTLIER):
-	outlier_behavior = behavior
+	histogram_binner.outlier_behavior = behavior
 
-func get_binned_data() -> Array[Vector2]:
+func get_bars_center_positions() -> Array[Vector2]:
 	var result : Array[Vector2] = []
 	for bin in binned_data.keys():
 		result.append(
@@ -121,9 +92,12 @@ func get_binned_data() -> Array[Vector2]:
 func _bin_num_to_center_value(bin_num : int) -> float:
 	return x_min + bin_num * bin_size + bin_size / 2.0
 
-func get_sorted_binned_data_dict() -> Dictionary:
+func get_binned_data() -> Dictionary:
 	var keys = binned_data.keys()
 	keys.sort()
 	var result_dict = {}
 	keys.map(func(key): result_dict[key] = binned_data[key])
 	return result_dict
+
+func get_data() -> Array[float]:
+	return data

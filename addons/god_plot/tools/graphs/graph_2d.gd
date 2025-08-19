@@ -97,7 +97,7 @@ func _connect_plotter_to_axes_with_deferred_plotting():
 
 func _load_children_series():
 	if !is_inside_tree(): return
-	get_children().filter(func(child): return child is Series).map(add_series)
+	get_children().filter(func(child): return child is Series2D).map(add_series)
 
 func add_series(series : Series) -> void:
 	series_container.add_series(series)

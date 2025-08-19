@@ -30,7 +30,17 @@ func _validate_property(property: Dictionary) -> void:
 func _ready() -> void:
 	plotter = Plotter.new()
 	_setup_plotter()
-	_load_children_series() ## overrite to limit to one child/series with warning
+	_load_children_series()
+
+func _load_children_series():
+	if !is_inside_tree(): return
+	
+	series_container.remove_all_series()
+	var all_series : Array = get_children().filter(func(child): return child is Series2D)
+	if all_series.is_empty(): return
+	add_series(all_series.front())
+	if all_series.size() > 1:
+		push_warning("HeatMap has more than one Series child. Only first series is used.")
 
 func set_x_max(value : float):
 	x_max = _get_valid_x_max_from_value(value)
