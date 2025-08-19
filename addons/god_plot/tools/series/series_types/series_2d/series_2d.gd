@@ -20,7 +20,7 @@ func add_point(x : float, y : float) -> void:
 func add_point_vector(point : Vector2) -> void:
 	data.append(point)
 	data = _sort_by_x(data)
-	_update_min_and_max_limits(point)
+	_update_min_and_max_values(point)
 	property_changed.emit()
 
 func add_point_array(points : Array[Vector2]) -> void:
@@ -59,6 +59,6 @@ static func _point_sort(a : Vector2, b : Vector2):
 	return a.x < b.x
 
 func _recalculate_min_and_max_limits():
-	min_limits = Vector2(INF, INF)
-	max_limits = Vector2(-INF, -INF)
-	Array(data).map(_update_min_and_max_limits)
+	min_values = Vector2(INF, INF)
+	max_values = Vector2(-INF, -INF)
+	Array(data).map(_update_min_and_max_values)

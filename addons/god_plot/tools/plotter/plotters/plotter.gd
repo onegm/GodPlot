@@ -10,8 +10,8 @@ func set_pair_of_axes(pair_of_axes : PairOfAxes):
 	axes = pair_of_axes
 
 func _update_limits():
-	min_limits = axes.get_min_limits()
-	max_limits = axes.get_max_limits()
+	min_limits = axes.get_min_values()
+	max_limits = axes.get_max_values()
 	range = axes.get_range()
 
 func find_point_local_position(point : Vector2) -> Vector2:

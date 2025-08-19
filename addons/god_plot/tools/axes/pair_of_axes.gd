@@ -47,17 +47,17 @@ func _ready() -> void:
 	bottom_left_corner.add_drawing_object(x_gridlines)
 	bottom_left_corner.add_drawing_object(y_gridlines)
 
-func get_min_limits() -> Vector2: return Vector2(x_axis.min_value, y_axis.min_value)
+func get_min_values() -> Vector2: return Vector2(x_axis.min_value, y_axis.min_value)
 	
-func set_min_limits(min_limits : Vector2):
-	x_axis.min_value = min_limits.x
-	y_axis.min_value = min_limits.y
+func set_min_values(min_values : Vector2):
+	x_axis.min_value = min_values.x
+	y_axis.min_value = min_values.y
 	
-func get_max_limits() -> Vector2: return Vector2(x_axis.max_value, y_axis.max_value)
+func get_max_values() -> Vector2: return Vector2(x_axis.max_value, y_axis.max_value)
 	
-func set_max_limits(max_limits : Vector2):
-	x_axis.max_value = max_limits.x
-	y_axis.max_value = max_limits.y
+func set_max_values(max_values : Vector2):
+	x_axis.max_value = max_values.x
+	y_axis.max_value = max_values.y
 
 func get_range() -> Vector2:
 	return Vector2(x_axis.get_range(), y_axis.get_range())

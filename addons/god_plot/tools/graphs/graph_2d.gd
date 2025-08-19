@@ -106,13 +106,13 @@ func remove_series(series : Series) -> void:
 	series_container.remove_series(series)
 
 func _draw() -> void:
-	_update_graph_limits()
+	_update_graph_boundaries()
 	GraphToAxesMapper.map_graph2d_to_pair_of_axes(self, pair_of_axes)
 	pair_of_axes.queue_redraw()
 
-func _update_graph_limits() -> void:
-	var min_limits = Vector2(x_min, y_min)
-	var max_limits = Vector2(x_max, y_max)
+func _update_graph_boundaries() -> void:
+	var min_values = Vector2(x_min, y_min)
+	var max_values = Vector2(x_max, y_max)
 	
 	if auto_scaling:
 		var data_min = Rounder.floor_vector_to_decimal_places(
@@ -121,11 +121,11 @@ func _update_graph_limits() -> void:
 		var data_max = Rounder.ceil_vector_to_decimal_places(
 			series_container.max_value, Vector2(x_decimal_places, y_decimal_places)
 			)
-		min_limits = min_limits.min(data_min)
-		max_limits = max_limits.max(data_max)
+		min_values = min_values.min(data_min)
+		max_values = max_values.max(data_max)
 
-	pair_of_axes.set_min_limits(min_limits)
-	pair_of_axes.set_max_limits(max_limits)
+	pair_of_axes.set_min_values(min_values)
+	pair_of_axes.set_max_values(max_values)
 
 func set_x_min(value : float) -> void:
 	x_min = Rounder.round_num_to_decimal_place(value, x_decimal_places)

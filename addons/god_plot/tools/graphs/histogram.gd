@@ -111,29 +111,29 @@ func remove_series(series : HistogramSeries) -> void:
 	series_container.remove_series(series)
 
 func _draw() -> void:
-	_update_graph_limits()
+	_update_graph_boundaries()
 	_update_all_series()
 	GraphToAxesMapper.map_histogram_to_pair_of_axes(self, pair_of_axes)
 	pair_of_axes.queue_redraw()
 
-func _update_graph_limits() -> void:
-	var min_limits = Vector2(x_min, 0)
-	var max_limits = Vector2(x_max, y_max)
+func _update_graph_boundaries() -> void:
+	var min_values = Vector2(x_min, 0)
+	var max_values = Vector2(x_max, y_max)
 	
 	var data_max_y = Rounder.ceil_num_to_decimal_place(
 		series_container.max_value.y, y_decimal_places
 		)
-	max_limits = max_limits.max(Vector2(x_max, data_max_y))
+	max_values = max_values.max(Vector2(x_max, data_max_y))
 	
 	if outlier_behavior == OUTLIER.FIT:
 		var data_max_x = _get_valid_x_max_from_data()
 		var data_min_x = _get_valid_x_min_from_value(series_container.min_value.x)
 
-		max_limits.x = max(data_max_x, max_limits.x)
-		min_limits.x = min(data_min_x, min_limits.x)
+		max_values.x = max(data_max_x, max_values.x)
+		min_values.x = min(data_min_x, min_values.x)
 	
-	pair_of_axes.set_min_limits(min_limits)
-	pair_of_axes.set_max_limits(max_limits)
+	pair_of_axes.set_min_values(min_values)
+	pair_of_axes.set_max_values(max_values)
 	
 func _get_valid_x_max_from_data() -> float:
 	var data_max_x = series_container.max_value.x
