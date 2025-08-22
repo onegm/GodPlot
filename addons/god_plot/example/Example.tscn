@@ -36,6 +36,9 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
+x_min = -3.0
+x_max = 11.0
+y_min = -3.0
 background_color = Color(1, 1, 1, 1)
 title = "Example Chart"
 horizontal_title = "Horizontal Title"
@@ -81,24 +84,16 @@ layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_jlmqc")
 
-[node name="ColorRect2" type="ColorRect" parent="VSplitContainer/HSplitContainer"]
+[node name="HeatMap" type="Control" parent="VSplitContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-color = Color(0.00134256, 0.256689, 0.890407, 1)
-
-[node name="HeatMap" type="Control" parent="VSplitContainer/HSplitContainer/ColorRect2"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 script = ExtResource("6_l22vk")
 gradient = SubResource("Gradient_isyrf")
-x_min = -10.0
-y_max = 20.0
-background_color = Color(0.362829, 0.362829, 0.362829, 1)
+auto_scaling = false
+x_max = 50.0
+x_tick_count = 5
+x_gridlines_minor = 3
+y_max = 100.0
 
-[node name="Series2D" type="Node" parent="VSplitContainer/HSplitContainer/ColorRect2/HeatMap"]
+[node name="Series2D" type="Node" parent="VSplitContainer/HSplitContainer/HeatMap"]
 script = ExtResource("7_8gaf5")

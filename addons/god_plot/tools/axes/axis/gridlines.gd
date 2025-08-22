@@ -52,7 +52,7 @@ func draw_minor_gridlines(canvas : CanvasItem):
 	
 	var minor_gridline_position = first_minor_position
 	var graph_edge = origin_axis.length * origin_axis.direction
-	while minor_gridline_position < graph_edge:
+	while minor_gridline_position.length() < graph_edge.length():
 		canvas.draw_line(
 			minor_gridline_position,
 			minor_gridline_position - parallel_axis.length * origin_axis.out_direction, 
@@ -67,5 +67,5 @@ func get_first_minor_position() -> Vector2:
 	var first_minor_position = major_gridline_positions[0]
 	var smallest_remaining_gap = minor_interval * origin_axis.direction
 	while first_minor_position > smallest_remaining_gap or first_minor_position.is_equal_approx(smallest_remaining_gap):
-		first_minor_position -= minor_interval * origin_axis.direction
+		first_minor_position -= abs(smallest_remaining_gap)
 	return first_minor_position

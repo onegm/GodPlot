@@ -65,7 +65,7 @@ func get_range() -> Vector2:
 func _draw() -> void:
 	update()
 	bottom_left_corner.queue_redraw()
-	
+
 func update():
 	_update_margins()
 	_set_bottom_left_corner()

@@ -16,20 +16,21 @@ class_name HeatMap extends Graph2D
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name in [
+		"auto_scaling",
 		"x_tick_count",
 		"x_gridlines_opacity",
-		"x_gridlines_minor",
+		#"x_gridlines_minor",
 		"x_gridlines_minor_thickness",
 		"y_gridlines_opacity",
-		"y_gridlines_minor",
+		#"y_gridlines_minor",
 		"y_gridlines_minor_thickness",
 		"y_tick_count"
 		]:
 		property.usage = PROPERTY_USAGE_NO_EDITOR
 
 func _ready() -> void:
-	plotter = Plotter.new()
-	_setup_plotter()
+	super._ready()
+	auto_scaling = false
 	_load_children_series()
 
 func _load_children_series():
@@ -45,25 +46,22 @@ func _load_children_series():
 func set_x_max(value : float):
 	x_max = _get_valid_x_max_from_value(value)
 	super.set_x_max(x_max)
+	update_tick_counts()
 
 func set_x_min(value : float):
 	x_min = _get_valid_x_min_from_value(value)
 	super.set_x_min(x_min)
+	update_tick_counts()
 
 func set_y_max(value : float):
 	y_max = _get_valid_y_max_from_value(value)
 	super.set_y_max(y_max)
+	update_tick_counts()
 
 func set_y_min(value : float):
 	y_min = _get_valid_y_min_from_value(value)
 	super.set_y_min(y_min)
-
-func _get_valid_x_max_from_data() -> float:
-	var data_max_x = series_container.max_value.x
-	if _is_on_bin_edge(data_max_x):
-		data_max_x += bin_width / 2.0
-	data_max_x = _get_valid_x_max_from_value(data_max_x)
-	return data_max_x
+	update_tick_counts()
 
 func _get_valid_x_max_from_value(value : float) -> float:
 	return Rounder.ceil_num_to_multiple(value - x_min, bin_width) + x_min
@@ -79,9 +77,13 @@ func _get_valid_y_min_from_value(value : float) -> float:
 
 func _is_on_bin_edge(value : float) -> bool:
 	return is_equal_approx(value, _get_valid_x_max_from_value(value))
+	
+func update_tick_counts():
+	x_tick_count = get_x_tick_count()
+	y_tick_count = get_y_tick_count()
 
 func get_x_tick_count() -> int:
-	return int(pair_of_axes.get_range().x / bin_width)
+	return int((x_max - x_min) / bin_width)
 
 func get_y_tick_count() -> int:
-	return int(pair_of_axes.get_range().y / bin_height)
+	return int((y_max - y_min) / bin_height)
