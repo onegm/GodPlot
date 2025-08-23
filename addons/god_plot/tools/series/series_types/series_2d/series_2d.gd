@@ -46,6 +46,7 @@ func set_data_from_Vector2_array(array : Array[Vector2]):
 	
 func set_data(data_2D : PackedVector2Array):
 	data = _sort_by_x(data_2D)
+	_recalculate_min_and_max_limits()
 	property_changed.emit()
 	
 static func _sort_by_x(series : PackedVector2Array) -> PackedVector2Array:

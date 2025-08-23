@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://addons/god_plot/tools/graphs/histogram.gd" id="4_divu8"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/histogram_series.gd" id="5_w138o"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/graphs/heat_map.gd" id="6_l22vk"]
-[ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/series_2d/series_2d.gd" id="7_8gaf5"]
+[ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/series_2d/heat_map_series.gd" id="7_su4vn"]
 
 [sub_resource type="Gradient" id="Gradient_isyrf"]
 
@@ -89,12 +89,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("6_l22vk")
 gradient = SubResource("Gradient_isyrf")
+bin_width = 5.0
 auto_scaling = false
 x_max = 50.0
-x_tick_count = 5
-x_gridlines_minor = 3
 y_max = 100.0
-y_gridlines_minor = 3
 
-[node name="Series2D" type="Node" parent="VSplitContainer/HSplitContainer/HeatMap"]
-script = ExtResource("7_8gaf5")
+[node name="HeatMapSeries" type="Node" parent="VSplitContainer/HSplitContainer/HeatMap"]
+unique_name_in_owner = true
+script = ExtResource("7_su4vn")

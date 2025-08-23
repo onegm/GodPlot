@@ -22,3 +22,9 @@ func find_point_local_position(point : Vector2) -> Vector2:
 func _draw() -> void:
 	for plot_point in to_plot:
 		plot_point.draw_on(self)
+
+func _get_scaled_pixel_width(width : float) -> float:
+	return remap(width, 0, axes.get_range().x, 0, axes.x_axis.length)
+
+func _get_scaled_pixel_height(height : float) -> float:
+	return remap(height, 0, axes.get_range().y, 0, axes.y_axis.length)

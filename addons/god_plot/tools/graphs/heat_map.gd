@@ -14,6 +14,8 @@ class_name HeatMap extends Graph2D
 		y_max = _get_valid_y_max_from_value(y_max)
 		queue_redraw()
 
+var heat_map_binner : HeatMapBinner = HeatMapBinner.new(self)
+
 func _validate_property(property: Dictionary) -> void:
 	if property.name in [
 		"auto_scaling",
@@ -29,6 +31,7 @@ func _validate_property(property: Dictionary) -> void:
 		property.usage = PROPERTY_USAGE_NO_EDITOR
 
 func _ready() -> void:
+	plotter = HeatMapPlotter.new(self)
 	super._ready()
 	auto_scaling = false
 	_load_children_series()
@@ -42,6 +45,13 @@ func _load_children_series():
 	add_series(all_series.front())
 	if all_series.size() > 1:
 		push_warning("HeatMap has more than one Series child. Only first series is used.")
+
+func add_series(series : Series):
+	if series is not HeatMapSeries:
+		printerr(series, " is not a HeatMapSeries")
+	var heat_map_series : HeatMapSeries = series as HeatMapSeries
+	super.add_series(heat_map_series)
+	heat_map_series.heat_map_binner = heat_map_binner
 
 func set_x_max(value : float):
 	x_max = _get_valid_x_max_from_value(value)

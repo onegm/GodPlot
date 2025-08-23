@@ -26,9 +26,6 @@ func find_y_position_of_bar_base() -> float:
 	var y_equals_zero = Vector2(min_limits.x, 0)
 	return find_point_local_position(y_equals_zero).y - axes.x_axis.thickness / 2.0
 
-func _get_scaled_pixel_width(width : float) -> float:
-	return remap(width, 0, axes.get_range().x, 0, axes.x_axis.length)
-
 func _load_histogram_positions(series : HistogramSeries) -> void:
 	var binned_data : Array[Vector2] = series.get_bars_center_positions()
 	binned_data.map(_load_histogram_bar.bind(series.color))

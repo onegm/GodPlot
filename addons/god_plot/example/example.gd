@@ -10,6 +10,8 @@ var line_series : LineSeries
 @onready var hist_series : HistogramSeries = %HistogramSeries
 var hist_series_2 : HistogramSeries
 
+@onready var heat_map_series : HeatMapSeries = %HeatMapSeries
+
 var timer : Timer = Timer.new()
 var x := 0.0
 
@@ -32,6 +34,8 @@ func _ready() -> void:
 	histogram.add_series(hist_series_2)
 	hist_series_2.add_point(100.0)
 	
+	
+	
 	add_child(timer)
 	timer.wait_time = 0.25
 	timer.timeout.connect(add_points)
@@ -44,4 +48,5 @@ func add_points():
 	line_series.add_point(x, sqrt(x)*5)
 	hist_series.add_point(randf_range(0, 10)**2) 
 	hist_series_2.add_point(sqrt(randf_range(0, 10000)))
+	heat_map_series.add_point_vector(Vector2(randf_range(0, 50), randf_range(0, 100)))
 	x += 1/60.0
