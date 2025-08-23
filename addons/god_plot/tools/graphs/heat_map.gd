@@ -46,22 +46,22 @@ func _load_children_series():
 func set_x_max(value : float):
 	x_max = _get_valid_x_max_from_value(value)
 	super.set_x_max(x_max)
-	update_tick_counts()
+	_update_tick_counts()
 
 func set_x_min(value : float):
 	x_min = _get_valid_x_min_from_value(value)
 	super.set_x_min(x_min)
-	update_tick_counts()
+	_update_tick_counts()
 
 func set_y_max(value : float):
 	y_max = _get_valid_y_max_from_value(value)
 	super.set_y_max(y_max)
-	update_tick_counts()
+	_update_tick_counts()
 
 func set_y_min(value : float):
 	y_min = _get_valid_y_min_from_value(value)
 	super.set_y_min(y_min)
-	update_tick_counts()
+	_update_tick_counts()
 
 func _get_valid_x_max_from_value(value : float) -> float:
 	return Rounder.ceil_num_to_multiple(value - x_min, bin_width) + x_min
@@ -78,7 +78,7 @@ func _get_valid_y_min_from_value(value : float) -> float:
 func _is_on_bin_edge(value : float) -> bool:
 	return is_equal_approx(value, _get_valid_x_max_from_value(value))
 	
-func update_tick_counts():
+func _update_tick_counts():
 	x_tick_count = get_x_tick_count()
 	y_tick_count = get_y_tick_count()
 

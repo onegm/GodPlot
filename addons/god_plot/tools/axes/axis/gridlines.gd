@@ -66,6 +66,6 @@ func _update_minor_interval():
 func get_first_minor_position() -> Vector2:
 	var first_minor_position = major_gridline_positions[0]
 	var smallest_remaining_gap = minor_interval * origin_axis.direction
-	while first_minor_position > smallest_remaining_gap or first_minor_position.is_equal_approx(smallest_remaining_gap):
+	while first_minor_position.length() > smallest_remaining_gap.length() or first_minor_position.is_equal_approx(smallest_remaining_gap):
 		first_minor_position -= abs(smallest_remaining_gap)
 	return first_minor_position
