@@ -1,3 +1,4 @@
+@tool
 class_name HeatMapSeries extends Series2D
 
 var heat_map_binner : HeatMapBinner

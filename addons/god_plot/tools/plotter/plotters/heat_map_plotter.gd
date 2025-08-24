@@ -17,8 +17,8 @@ func _is_heat_map_series(series : Series) -> bool:
 func _load_drawing_positions(series : HeatMapSeries) -> void:
 	_update_limits()
 	bin_size_px = Vector2(
-		_get_scaled_pixel_width(heat_map.bin_width),
-		_get_scaled_pixel_height(heat_map.bin_height)
+		_get_scaled_pixel_width(heat_map.bin_size.x),
+		_get_scaled_pixel_height(heat_map.bin_size.y)
 		)
 	_load_heat_map_positions(series)
 
@@ -36,8 +36,8 @@ func get_bin_positions_and_colors(binned_data : Dictionary) -> Dictionary:
 
 func bin_to_graph_position(bin : Vector2) -> Vector2:
 	return Vector2(
-		heat_map.x_min + bin.x * heat_map.bin_width,
-		heat_map.y_min + bin.y * heat_map.bin_height
+		heat_map.x_min + bin.x * heat_map.bin_size.x,
+		heat_map.y_min + bin.y * heat_map.bin_size.y
 	)
 
 func _load_heat_map_squares_positions(bins_plot_data : Dictionary) -> void:
@@ -54,4 +54,7 @@ func _load_heat_map_squares_positions(bins_plot_data : Dictionary) -> void:
 		to_plot.append(rect)
 
 func is_within_limits(position : Vector2) -> bool:
-	return position >= min_limits and position <= max_limits
+	return (
+		position.x >= min_limits.x and position.y >= min_limits.y and 
+		position.x < max_limits.x and position.y < max_limits.y
+		)
