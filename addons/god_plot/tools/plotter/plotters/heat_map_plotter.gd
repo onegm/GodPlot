@@ -20,9 +20,16 @@ func _load_drawing_positions(series : HeatMapSeries) -> void:
 	_load_heat_map_positions(series)
 
 func _load_heat_map_positions(series : HeatMapSeries) -> void:
-	var bins = series.get_binned_data().keys()
-	var bin_positions = bins.map(bin_to_graph_position)
-	bin_positions.map(_load_heat_map_squares_positions.bind(Color.PINK))
+	var bins_plot_data : Dictionary = get_bin_positions_and_colors(series.get_binned_data())
+	_load_heat_map_squares_positions(bins_plot_data)
+
+func get_bin_positions_and_colors(binned_data : Dictionary) -> Dictionary:
+	var result = {}
+	for bin in binned_data:
+		var position = bin_to_graph_position(bin)
+		var color = heat_map.get_color_from_value(binned_data[bin])
+		result[position] = color
+	return result
 
 func bin_to_graph_position(bin : Vector2) -> Vector2:
 	return Vector2(
@@ -30,20 +37,18 @@ func bin_to_graph_position(bin : Vector2) -> Vector2:
 		heat_map.y_min + bin.y * heat_map.bin_height
 	)
 
-func _load_heat_map_squares_positions(square_center : Vector2, color : Color) -> void:
-		if not is_within_limits(square_center):
-			return
-		var position_px = find_point_local_position(square_center)
-		var square = ScatterPlot.new(
+func _load_heat_map_squares_positions(bins_plot_data : Dictionary) -> void:
+	for bin_position in bins_plot_data:
+		if not is_within_limits(bin_position):
+			continue
+		var position_px = find_point_local_position(bin_position)
+		var bin_color = bins_plot_data[bin_position]
+		var rect = HeatMapRect.new(
 			position_px,
-			color,
-			heat_map.bin_width,
-			ScatterSeries.SHAPE.SQUARE,
-			true,
-			0.0
+			bin_color,
+			bin_size_px
 			)
-		print(_get_scaled_pixel_width(heat_map.bin_width), " :: ", axes.get_range().x)
-		to_plot.append(square)
+		to_plot.append(rect)
 
 func is_within_limits(position : Vector2) -> bool:
 	return position >= min_limits and position <= max_limits

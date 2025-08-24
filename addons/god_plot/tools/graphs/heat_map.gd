@@ -3,6 +3,8 @@ class_name HeatMap extends Graph2D
 ## A node for creating heat maps.
 
 @export var gradient : Gradient = Gradient.new()
+@export var min_value : float = 0.0
+@export var max_value : float = 10.0
 @export var bin_width : float = 10.0:
 	set(value):
 		bin_width = abs(value)
@@ -97,3 +99,7 @@ func get_x_tick_count() -> int:
 
 func get_y_tick_count() -> int:
 	return int((y_max - y_min) / bin_height)
+
+func get_color_from_value(value : float):
+	var mapped_value = remap(value, min_value, max_value, 0.0, 1.0)
+	return gradient.sample(mapped_value)
