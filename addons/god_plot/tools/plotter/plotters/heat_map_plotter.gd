@@ -16,7 +16,10 @@ func _is_heat_map_series(series : Series) -> bool:
 
 func _load_drawing_positions(series : HeatMapSeries) -> void:
 	_update_limits()
-	bin_size_px = Vector2(_get_scaled_pixel_width(heat_map.bin_width), _get_scaled_pixel_height(heat_map.bin_height))
+	bin_size_px = Vector2(
+		_get_scaled_pixel_width(heat_map.bin_width),
+		_get_scaled_pixel_height(heat_map.bin_height)
+		)
 	_load_heat_map_positions(series)
 
 func _load_heat_map_positions(series : HeatMapSeries) -> void:

@@ -9,6 +9,8 @@
 [ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/series_2d/heat_map_series.gd" id="7_su4vn"]
 
 [sub_resource type="Gradient" id="Gradient_isyrf"]
+offsets = PackedFloat32Array(0, 0.1, 0.5, 1)
+colors = PackedColorArray(0, 0, 0, 0.705882, 0.815686, 0.117647, 0.0862745, 0.705882, 0.988235, 0.847059, 0, 0.705882, 0.0862745, 0.839216, 0, 0.705882)
 
 [node name="MainTest" type="Control"]
 layout_mode = 3
@@ -92,7 +94,9 @@ gradient = SubResource("Gradient_isyrf")
 bin_width = 5.0
 auto_scaling = false
 x_max = 50.0
+x_gridlines_opacity = 0.0
 y_max = 100.0
+y_gridlines_opacity = 0.0
 
 [node name="HeatMapSeries" type="Node" parent="VSplitContainer/HSplitContainer/HeatMap"]
 unique_name_in_owner = true
