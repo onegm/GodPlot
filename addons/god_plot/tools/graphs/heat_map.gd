@@ -46,9 +46,14 @@ func _load_children_series():
 func add_series(series : Series):
 	if series is not HeatMapSeries:
 		printerr(series, " is not a HeatMapSeries")
-	var heat_map_series : HeatMapSeries = series as HeatMapSeries
+		return
+	change_series(series as HeatMapSeries)
+
+func change_series(heat_map_series: HeatMapSeries):
+	series_container.remove_all_series()
 	super.add_series(heat_map_series)
 	heat_map_series.heat_map_binner = heat_map_binner
+	heat_map_series.bin_data()
 
 func set_x_max(value : float):
 	x_max = _get_valid_x_max_from_value(value)
@@ -87,14 +92,14 @@ func _update_tick_counts():
 	y_tick_count = get_y_tick_count()
 
 func get_x_tick_count() -> int:
-	return int((x_max - x_min) / bin_size.x)
+	return int((x_max - x_min) / bin_width)
 
 func get_y_tick_count() -> int:
-	return int((y_max - y_min) / bin_size.y)
+	return int((y_max - y_min) / bin_height)
 
 func update_bin_size():
-	bin_size.x = bin_width
-	bin_size.y = bin_height
+	bin_size.x = get_effective_bin_width()
+	bin_size.y = get_effective_bin_height()
 	
 	update_max_values()
 	
@@ -108,3 +113,18 @@ func update_max_values():
 func get_color_from_value(value : float):
 	var mapped_value = remap(value, min_value, max_value, 0.0, 1.0)
 	return gradient.sample(mapped_value)
+
+func get_effective_bin_width():
+	return bin_width / (x_gridlines_minor + 1)
+	
+func get_effective_bin_height():
+	return bin_height / (y_gridlines_minor + 1)
+
+func set_x_gridlines_minor(value : int):
+	super.set_x_gridlines_minor(value)
+	bin_size.x = get_effective_bin_width()
+
+func set_y_gridlines_minor(value : int):
+	super.set_y_gridlines_minor(value)
+	bin_size.y = get_effective_bin_height()
+	

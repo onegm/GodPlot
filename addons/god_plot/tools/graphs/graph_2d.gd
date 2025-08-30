@@ -34,10 +34,7 @@ class_name Graph2D extends Graph
 	set(value):
 		x_gridlines_major_thickness = value
 		queue_redraw()
-@export_range(0, 10) var x_gridlines_minor : int = 0:
-	set(value):
-		x_gridlines_minor = value
-		queue_redraw()
+@export_range(0, 10) var x_gridlines_minor : int = 0: set = set_x_gridlines_minor
 @export var x_gridlines_minor_thickness : float = 1.0:
 	set(value):
 		x_gridlines_minor_thickness = value
@@ -68,10 +65,7 @@ class_name Graph2D extends Graph
 	set(value):
 		y_gridlines_major_thickness = value
 		queue_redraw()
-@export_range(0, 10) var y_gridlines_minor : int = 0:
-	set(value):
-		y_gridlines_minor = value
-		queue_redraw()
+@export_range(0, 10) var y_gridlines_minor : int = 0: set = set_y_gridlines_minor
 @export var y_gridlines_minor_thickness : float = 1.0:
 	set(value):
 		y_gridlines_minor_thickness = value
@@ -147,3 +141,10 @@ func set_y_max(value : float) -> void:
 	if y_max < y_min: y_min = y_max
 	queue_redraw()
 	
+func set_x_gridlines_minor(value : int):
+		x_gridlines_minor = value
+		queue_redraw()
+
+func set_y_gridlines_minor(value : int):
+		y_gridlines_minor = value
+		queue_redraw()

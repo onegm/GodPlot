@@ -92,15 +92,14 @@ size_flags_horizontal = 3
 script = ExtResource("6_l22vk")
 gradient = SubResource("Gradient_isyrf")
 auto_scaling = false
-x_max = 40.0
-x_tick_count = 4
+x_min = -50.0
+x_max = 50.0
 x_decimal_places = 0
-x_gridlines_opacity = 0.0
-y_min = -100.0
-y_max = 100.0
-y_tick_count = 20
+x_gridlines_minor = 3
+y_min = -50.0
+y_max = 50.0
 y_decimal_places = 0
-y_gridlines_opacity = 0.0
+y_gridlines_minor = 3
 
 [node name="HeatMapSeries" type="Node" parent="VSplitContainer/HSplitContainer/HeatMap"]
 unique_name_in_owner = true
