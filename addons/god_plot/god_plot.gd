@@ -11,8 +11,8 @@ func _enter_tree() -> void:
 	add_custom_type("Histogram", "Control", preload("tools/graphs/histogram.gd"), preload("icons/histogram.svg"))
 	add_custom_type("HistogramSeries", "Node", preload("tools/series/series_types/histogram_series.gd"), preload("icons/histogram_series.svg"))
 		
-	add_custom_type("HeatMap", "Control", preload("tools/graphs/heat_map.gd"), preload("icons/histogram.svg"))
-	add_custom_type("HeatMapSeries", "Node", preload("tools/series/series_types/series_2d/heat_map_series.gd"), preload("icons/histogram_series.svg"))
+	add_custom_type("HeatMap", "Control", preload("tools/graphs/heat_map.gd"), preload("icons/heat_map.svg"))
+	add_custom_type("HeatMapSeries", "Node", preload("tools/series/series_types/series_2d/heat_map_series.gd"), preload("res://addons/god_plot/icons/heat_map_series.svg"))
 
 func _exit_tree() -> void:
 	remove_custom_type("Graph2D")
@@ -22,3 +22,6 @@ func _exit_tree() -> void:
 
 	remove_custom_type("Histogram")
 	remove_custom_type("HistogramSeries")
+	
+	remove_custom_type("HeatMap")
+	remove_custom_type("HeatMapSeries")

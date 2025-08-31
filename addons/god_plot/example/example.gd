@@ -48,5 +48,5 @@ func add_points():
 	line_series.add_point(x, sqrt(x)*5)
 	hist_series.add_point(randf_range(0, 10)**2) 
 	hist_series_2.add_point(sqrt(randf_range(0, 10000)))
-	heat_map_series.add_point_vector(Vector2(randfn(0, 20), randfn(0, 20)))
+	heat_map_series.add_point_vector(Vector2(randfn(0, 15), randfn(0, 15)))
 	x += 1/60.0

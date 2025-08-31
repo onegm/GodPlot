@@ -5,12 +5,12 @@
 [ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/series_2d/scatter_series.gd" id="3_tmo5p"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/graphs/histogram.gd" id="4_divu8"]
 [ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/histogram_series.gd" id="5_w138o"]
-[ext_resource type="Script" path="res://addons/god_plot/tools/graphs/heat_map.gd" id="6_l22vk"]
-[ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/series_2d/heat_map_series.gd" id="7_su4vn"]
+[ext_resource type="Script" path="res://addons/god_plot/tools/graphs/heat_map.gd" id="6_plhrt"]
+[ext_resource type="Script" path="res://addons/god_plot/tools/series/series_types/series_2d/heat_map_series.gd" id="7_g013p"]
 
-[sub_resource type="Gradient" id="Gradient_isyrf"]
+[sub_resource type="Gradient" id="Gradient_qyngm"]
 offsets = PackedFloat32Array(0, 0.1, 0.5, 1)
-colors = PackedColorArray(0, 0, 0, 0.705882, 0.815686, 0.117647, 0.0862745, 0.705882, 0.988235, 0.847059, 0, 0.705882, 0.0862745, 0.839216, 0, 0.705882)
+colors = PackedColorArray(0, 0, 0, 0, 0.972549, 0, 0.14902, 0.72549, 0.869619, 0.653731, 0, 0.72549, 0.447149, 0.799403, 1.15514e-06, 0.72549)
 
 [node name="MainTest" type="Control"]
 layout_mode = 3
@@ -89,19 +89,18 @@ script = ExtResource("1_jlmqc")
 [node name="HeatMap" type="Control" parent="VSplitContainer/HSplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-script = ExtResource("6_l22vk")
-gradient = SubResource("Gradient_isyrf")
+script = ExtResource("6_plhrt")
+gradient = SubResource("Gradient_qyngm")
 auto_scaling = false
 x_min = -50.0
 x_max = 50.0
-x_decimal_places = 0
-x_gridlines_minor = 3
+x_gridlines_opacity = 0.5
+x_gridlines_minor = 1
 y_min = -50.0
 y_max = 50.0
-y_decimal_places = 0
-y_gridlines_minor = 3
+y_gridlines_opacity = 0.5
+y_gridlines_minor = 1
 
 [node name="HeatMapSeries" type="Node" parent="VSplitContainer/HSplitContainer/HeatMap"]
 unique_name_in_owner = true
-script = ExtResource("7_su4vn")
-data = PackedVector2Array(10, 10, 10, 10, 10, 10, 10, 10)
+script = ExtResource("7_g013p")
