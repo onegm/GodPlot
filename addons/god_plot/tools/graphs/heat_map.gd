@@ -21,8 +21,6 @@ func _validate_property(property: Dictionary) -> void:
 	if property.name in [
 		"auto_scaling",
 		"x_tick_count",
-		"x_gridlines_minor_thickness",
-		"y_gridlines_minor_thickness",
 		"y_tick_count"
 		]:
 		property.usage = PROPERTY_USAGE_NO_EDITOR

@@ -34,8 +34,6 @@ func _ready() -> void:
 	histogram.add_series(hist_series_2)
 	hist_series_2.add_point(100.0)
 	
-	
-	
 	add_child(timer)
 	timer.wait_time = 0.25
 	timer.timeout.connect(add_points)

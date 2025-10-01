@@ -64,6 +64,10 @@ class_name Graph extends Control
 	set(value):
 		show_tick_labels = value
 		queue_redraw()
+@export var bring_to_front: bool = false:
+	set(value):
+		bring_to_front = value
+		queue_redraw()
 
 var color_rect := ColorRect.new()
 var graph_v_box := VBoxContainer.new()
@@ -105,6 +109,7 @@ func _build_graph_title():
 
 func _build_pair_of_axes():
 	graph_v_box.add_child(pair_of_axes)
+	if bring_to_front: pair_of_axes.bring_to_front()
 	pair_of_axes.resized.connect(queue_redraw)
 	pair_of_axes.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_build_y_axis_title()

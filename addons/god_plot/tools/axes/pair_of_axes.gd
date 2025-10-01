@@ -135,3 +135,6 @@ func set_label_visibility(is_visible : bool):
 	visible_tick_labels = is_visible
 	x_axis.set_label_visibility(is_visible)
 	y_axis.set_label_visibility(is_visible)
+
+func bring_to_front():
+	bottom_left_corner.z_index = 2

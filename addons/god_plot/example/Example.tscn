@@ -67,6 +67,7 @@ x_max = 100.0
 x_decimal_places = 0
 y_max = 50.0
 y_decimal_places = 0
+y_gridlines_minor = 3
 origin_offset = Vector2(-16.635, 0)
 title = "Random Numbers"
 horizontal_title = "Value"
@@ -94,12 +95,13 @@ gradient = SubResource("Gradient_qyngm")
 auto_scaling = false
 x_min = -50.0
 x_max = 50.0
-x_gridlines_opacity = 0.5
+x_gridlines_major_thickness = 2.0
 x_gridlines_minor = 1
 y_min = -50.0
 y_max = 50.0
-y_gridlines_opacity = 0.5
+y_gridlines_major_thickness = 2.0
 y_gridlines_minor = 1
+bring_to_front = true
 
 [node name="HeatMapSeries" type="Node" parent="VSplitContainer/HSplitContainer/HeatMap"]
 unique_name_in_owner = true

@@ -4,6 +4,7 @@ A Godot 4 plug-in for creating graphs. Works in the editor. The following graph 
 - Line graphs
 - Area graphs
 - Histograms
+- Heat Maps
 
 ## Example: 
 ![image](https://github.com/user-attachments/assets/802e9948-ab4a-478c-9842-6243ba98755a)
@@ -17,6 +18,7 @@ Create a series
 	area_series = AreaSeries.new(Color(0, 0, 1, 0.5))
 	line_series = LineSeries.new(Color.SEA_GREEN, 2.0)
 	histogram_series = HistogramSeries.new(Color.BLUE)
+	heat_map_series = HeatMapSeries.new()
 ```
 Add series to a Graph2D and Histogram nodes
 ```GDScript
@@ -24,6 +26,7 @@ Add series to a Graph2D and Histogram nodes
 	graph_2d.add_series(area_series)	
 	graph_2d.add_series(line_series)
 	histogram.add_series(histogram_series)
+	heat_map.add_series(heat_map_series)
 ```
 Add data to series
 ```GDScript
@@ -31,6 +34,7 @@ Add data to series
 	area_series.add_point(x, sin(x)*5)
 	line_series.add_point(x, sqrt(x)*5)
 	histogram_series.add_point(randf_range(0, 100))
+	heat_map_series.add_point_vector(Vector2(randfn(0, 15), randfn(0, 15)))
 ```
 ## Graph options
 ![graph_options](https://github.com/user-attachments/assets/8cff2d7f-158b-44d2-85b5-2fe64e9d0cd0)
