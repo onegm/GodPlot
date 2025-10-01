@@ -10,6 +10,7 @@ A Godot 4 plug-in for creating graphs. Works in the editor. The following graph 
 ![image](https://github.com/user-attachments/assets/802e9948-ab4a-478c-9842-6243ba98755a)
 ![image](https://github.com/user-attachments/assets/bb2eedf6-a28c-4c8a-8a12-dc7f6caac801)
 ![histogram_preview](https://github.com/user-attachments/assets/6667412d-f1d6-40c2-9db1-74da5e86cb28)
+<img width="970" height="632" alt="heat_map_example" src="https://github.com/user-attachments/assets/6327b906-348a-4711-96dd-047526f320a9" />
 
 Create a series
 
